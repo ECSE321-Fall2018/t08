@@ -16,7 +16,7 @@ Then, you can use `git pull origin master` to pull from GitHub.
 
 ### Making a New Branch
 
-All changes to the repository should *not* be made on the master branch. Rather, you should make your own branch. To create a new branch, enter `git branch <branch-name>`. To actually switch to this branch (as you will still be on the master branch), enter `git checkout <branch-name>`. To list all the branches, simply enter `git branch`.
+All changes to the repository should *not* be made on the master branch. Rather, you should make your own branch. To create a new branch, enter `git branch <branch-name>` (without the '<>'. To actually switch to this branch (as you will still be on the master branch), enter `git checkout <branch-name>`. To list all the branches, simply enter `git branch`.
 
 Once you have created all of your changes on your branch, you can push to GitHub as described below.
 
