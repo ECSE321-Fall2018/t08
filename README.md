@@ -58,11 +58,12 @@ To push your commits to GitHub from your branch, use the command `git push -u or
         1. In the `"Commit Message"`, you can automatically close an issue by including the phrase `closes #4` (in this case `#4` is the ID number of the issue, you can find this number in the "Issues" tab on GitHub).
         2. Aside from `closes`, you can use the keywords: `close`, `closed`, `fix`, `fixes`, `fixed`, `resolve`, `resolves`, or `resolved`. It can be capitalized too.
 7. Push your code to online master branch: `git push -u origin <your-branch-name>` (DO NOT push from your local master branch).
-8. Check the ["Pull requests" tab on GitHub](https://github.com/ECSE321-Fall2018/t08/pulls). Travis CI will tell you if your build succeeded or failed in the Pull requests tab.
-9. If it failed, go back to step 5.
-10. If it succeeded, get someone to approve it in "Pull requests" tab.
-11. If you didn't automatically close the issue you were trying to fix in step 6.1.1, you can do that manually right now. Go to the "Issues" tab, click the issue you fixed, then press the "Close issue" button.
-12. Switch to master branch: `git checkout master`
-13. Pull from master branch: `git pull origin master`
+8. Go to the ["Pull requests" tab on GitHub](https://github.com/ECSE321-Fall2018/t08/pulls). Press the "Create pull request" button for your branch.
+9. Travis CI will tell you if your build succeeded or failed in the Pull requests tab.
+10. If it failed, go back to step 5.
+11. If it succeeded, get someone to approve it in "Pull requests" tab.
+12. If you didn't automatically close the issue you were trying to fix in step 6.1.1, you can do that manually right now. Go to the "Issues" tab, click the issue you fixed, then press the "Close issue" button.
+13. Switch to master branch: `git checkout master`
+14. Pull from master branch: `git pull origin master`
 
 I know process is tedious and annoying, but we need to do this to get a good grade for our backlog (a todo list of issues).
