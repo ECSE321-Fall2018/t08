@@ -73,6 +73,8 @@ class RideRequest
 {
   int requestID;
     boolean isAccepted;
+  int fromUserID;
+  int toUserID;
 }
 
 class Feedback
@@ -114,7 +116,7 @@ class Driver
 class Passenger
 {
   position 405 139 109 39;
-  position.association Passenger__RideRequest 6,57 3,0;
+  position.association Passenger__RideRequest 8,58 3,0;
 }
 
 class Administrator
@@ -145,7 +147,7 @@ class Vehicle
 
 class RideRequest
 {
-  position 541 401 118 57;
+  position 541 401 158 90;
 }
 
 class Feedback
