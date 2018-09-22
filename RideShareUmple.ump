@@ -1,0 +1,166 @@
+class User
+{
+    username;
+emailAddress;
+password;
+int userID;
+enum status;
+boolean isAdmin;
+enum userType;
+int age;
+name;
+enum gender;
+* -- 1..3 UserRole;
+}
+
+class UserRole
+{
+}
+
+class Driver
+{
+  enum rating;
+isA UserRole;
+  1 -- 1 Vehicle;
+}
+
+class Passenger
+{
+  int ridesTaken;
+isA UserRole;
+  1..4 -- 0..* RideRequest;
+}
+
+class Administrator
+{
+   
+     
+  isA UserRole;
+* -- * Trips;
+}
+
+class Trips
+{
+}
+
+class ATrip
+{
+     
+int pickupTime;
+double cost;
+date;
+int tripID;
+enum status;
+startLocation;
+endLocation;
+info;
+* -- 1 Vehicle;
+  1 -- 0..4 RideRequest;
+  * -- * Feedback;
+  * -- 1 Trips;
+  * -- 1 Driver;
+  }
+
+class Vehicle
+{
+  manufacturer;
+  model;
+   colour;
+  int nbOfSeats;
+  }
+
+class RideRequest
+{
+  int requestID;
+    boolean isAccepted;
+}
+
+class Feedback
+{
+  review;
+  iint score;
+  * -- 1 Passenger;
+}
+
+class Rideshare
+{
+}
+
+class AStop
+{
+  location;
+  * -- 1 ATrip;
+}
+
+//$?[End_of_model]$?
+
+class User
+{
+  position 22 30 164 211;
+    position.association User__UserRole 164,21 0,22;
+}
+
+class UserRole
+{
+  position 257 29 109 41;
+}
+
+class Driver
+{
+  position 235 140 109 39;
+  position.association Driver__Vehicle 0,44 50,0;
+}
+
+class Passenger
+{
+  position 405 139 109 39;
+  position.association Passenger__RideRequest 6,57 3,0;
+}
+
+class Administrator
+{
+  position 599 140 109 41;
+  position.association Administrator__Trips 50,39 110,0;
+}
+
+class Trips
+{
+  position 285 302 109 39;
+}
+
+class ATrip
+{
+  position 279 401 162 160;
+  position.association ATrip__Vehicle 0,21 166,22;
+  position.association ATrip__RideRequest 163,20 0,21;
+  position.association ATrip__Feedback 163,86 1,0;
+  position.association ATrip__Trips 49,0 50,39;
+  position.association ATrip__Driver 2,0 27,57;
+  }
+
+class Vehicle
+{
+  position 60 401 109 126;
+}
+
+class RideRequest
+{
+  position 541 401 118 57;
+}
+
+class Feedback
+{
+  position 550 526 118 57;
+  position.association Feedback__Passenger 0,41 26,57;
+}
+
+class Rideshare
+{
+  position 794 35 109 41;
+}
+
+class AStop
+{
+  position 62 562 127 58;
+  position.association AStop__ATrip 127,9 0,157;
+}
