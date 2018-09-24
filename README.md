@@ -1,4 +1,4 @@
-# InterCity Car System (to be named)
+# RideShare
 
 ## TravisCI Build Status
 
