@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ecse321.t08</groupId>
-	<artifactId>intercity-car</artifactId>
+	<artifactId>rideshare</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>intercity-car</name>
+	<name>rideshare</name>
 	<description>Backend for Intercity Travel Application</description>
 
 	<parent>
