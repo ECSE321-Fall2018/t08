@@ -1,6 +1,8 @@
 import java.util.Set;
 import java.util.HashSet;
 
+
+
 public class ATrip {
 /**
     * <pre>
@@ -10,6 +12,7 @@ public class ATrip {
     * </pre>
     */
    private TripsList tripsList;
+   private int tripStatus = 0; //0 for ongoing, 1 planned, 2 for completed
    
    public void setTripsList(TripsList value) {
       this.tripsList = value;
@@ -49,16 +52,12 @@ public class ATrip {
       return this.date;
    }
    
-   private enum status {
-	   ONGOING, COMPLETED, PLANNED
+   public void setStatus(int value) {
+      this.tripStatus = value;
    }
    
-   public void setStatus(enum value) {
-      this.status = value;
-   }
-   
-   public enum getStatus() {
-      return this.status;
+   public int getStatus() {
+      return this.tripStatus;
    }
    
    private String startLocation;

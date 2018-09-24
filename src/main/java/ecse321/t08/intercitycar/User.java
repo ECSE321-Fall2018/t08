@@ -1,9 +1,13 @@
 import java.util.Set;
 import java.util.HashSet;
 
+
+
 public class User {
 private Set<UserRole> userRole;
    
+    private boolean isUserActive = false;
+    
    public void setUserRole(Set<UserRole> value) {
       this.userRole = value;
    }
@@ -53,16 +57,14 @@ private Set<UserRole> userRole;
       return this.userID;
    }
    
-   private enum status {
-	   INACTIVE, ACTIVE
+
+   
+   public void setStatus(boolean value) {
+      this.isUserActive = value;
    }
    
-   public void setStatus(enum value) {
-      this.status = value;
-   }
-   
-   public status getStatus() {
-      return this.status;
+   public boolean getStatus() {
+      return this.isUserActive;
    }
    
    private String name;
