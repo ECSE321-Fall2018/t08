@@ -1,12 +1,27 @@
+package ecse321.t08.rideshare.Entity;
+
 import java.util.Set;
 import java.util.HashSet;
+import javax.persistence.*;
 
 
 
+@Entity
+@Table(name = "user")
 public class User {
 private Set<UserRole> userRole;
    
+
+    private int userID;
     private boolean isUserActive = false;
+    private String userName;
+    private String emailAddress;
+    private String password;
+
+    
+    private String name;
+
+
     
    public void setUserRole(Set<UserRole> value) {
       this.userRole = value;
@@ -16,9 +31,6 @@ private Set<UserRole> userRole;
       return this.userRole;
    }
    
-   
-   private String userName;
-   
    public void setUserName(String value) {
       this.userName = value;
    }
@@ -26,9 +38,7 @@ private Set<UserRole> userRole;
    public String getUserName() {
       return this.userName;
    }
-   
-   private String emailAddress;
-   
+    
    public void setEmailAddress(String value) {
       this.emailAddress = value;
    }
@@ -37,22 +47,22 @@ private Set<UserRole> userRole;
       return this.emailAddress;
    }
    
-   private int password;
    
-   public void setPassword(int value) {
+   public void setPassword(String value) {
       this.password = value;
    }
    
-   public int getPassword() {
+   public String getPassword() {
       return this.password;
    }
    
-   private int userID;
    
    public void setUserID(int value) {
       this.userID = value;
    }
    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
    public int getUserID() {
       return this.userID;
    }
@@ -67,7 +77,6 @@ private Set<UserRole> userRole;
       return this.isUserActive;
    }
    
-   private String name;
    
    public void setName(String value) {
       this.name = value;
@@ -77,6 +86,8 @@ private Set<UserRole> userRole;
       return this.name;
    }
    
+    
+
    public void logIn() {
       // TODO implement this operation
       throw new UnsupportedOperationException("not implemented");
