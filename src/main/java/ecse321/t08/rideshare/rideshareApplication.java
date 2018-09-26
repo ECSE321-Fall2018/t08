@@ -13,8 +13,8 @@ public class rideshareApplication {
     public String home(){
         return "RideShare";
     }
-    
-	public static void main(String[] args) {
+
+    public static void main(String[] args) {
 		SpringApplication.run(rideshareApplication.class, args);
 	}
 }
