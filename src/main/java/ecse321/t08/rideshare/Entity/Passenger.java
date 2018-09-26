@@ -1,3 +1,4 @@
+package ecse321.t08.rideshare.Entity;
 
 public class Passenger extends UserRole {
    private int ridesTaken;

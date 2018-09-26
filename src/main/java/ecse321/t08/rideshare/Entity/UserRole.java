@@ -1,3 +1,5 @@
+package ecse321.t08.rideshare.Entity;
+
 import java.util.Set;
 
 public class UserRole {

@@ -1,3 +1,4 @@
+package ecse321.t08.rideshare.Entity;
 
 public class Administrator extends UserRole {
    /**
