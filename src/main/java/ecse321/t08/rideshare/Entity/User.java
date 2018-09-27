@@ -7,26 +7,29 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 private Set<UserRole> userRole;
    
 
     private int userID;
-    private boolean isUserActive = false;
     private String userName;
+    private boolean isUserActive = false;
     private String emailAddress;
+    private String fullName;
     private String password;
 
     
-    private String name;
+  
 
 
     
    public void setUserRole(Set<UserRole> value) {
       this.userRole = value;
    }
-   
+
+   @ManyToMany
+   @JoinTable(name = "user_role", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="role_id"))
    public Set<UserRole> getUserRole() {
       return this.userRole;
    }
@@ -78,12 +81,12 @@ private Set<UserRole> userRole;
    }
    
    
-   public void setName(String value) {
-      this.name = value;
+   public void setFullName(String value) {
+      this.fullName = value;
    }
    
-   public String getName() {
-      return this.name;
+   public String getFullName() {
+      return this.fullName;
    }
    
     
