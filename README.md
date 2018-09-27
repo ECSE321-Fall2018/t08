@@ -1,43 +1,47 @@
 # RideShare
 
 ## TravisCI Build Status
+To check the details on why our TravisCI build succeeded or failed:
 
 [![Build Status](https://travis-ci.com/ECSE321-Fall2018/t08.svg?token=atEt1SppUvzajjRzBkhC&branch=master)](https://travis-ci.com/ECSE321-Fall2018/t08)
 
-## Using this Git Repository
+## How Everything Works
+If you're clueless about what's going on, here's a summary.
 
-### Cloning
+- **GitHub:** Where our code is stored.
+- **Git:** Where you copy GitHub code to computer and upload it back to GitHub.
+- **TravisCI:** It checks that the code you uploaded to GitHub is okay (to a certain extent).
+- **Maven:** It's a build tool. It compiles and tests our Java code for us.
+- **Gradle:** We don't need it phew.
+- **Spring:** Helps us manage HTTP Requests (e.g. create, update, delete user) to our website.
+- **Heroku:** What we are using to host our website and our backend.
 
-To clone this repository, enter `git clone https://github.com/ECSE321-Fall2018/t08` in the desired directory.
+## How to Use this GitHub Repository
 
-### Pulling
-
-**Before pushing any changes or creating a new branch, it is highly recommended that you pull.**
-
-**Before pulling, make sure that you are in the master branch.**
-To switch to the master branch, enter `git checkout master`.
-Then, you can use `git pull origin master` to pull from GitHub.
-
-### Making a New Branch
-
-All changes to the repository should *not* be made on the master branch. Rather, you should make your own branch. To create a new branch, enter `git branch <branch-name>` (without the '<>'). To actually switch to this branch (as you will still be on the master branch), enter `git checkout <branch-name>`. To list all the branches, simply enter `git branch`.
-
-Once you have created all of your changes on your branch, you can push to GitHub as described below.
-
-### Committing
-
-You can use `git commit -m "Commit Message"` to commit. Note that the commit message should ideally be something like `Closes #3` if you are closing issue number 3.
-
-### Pushing 
-
-To push your commits to GitHub from your branch, use the command `git push -u origin <branch-name>`. This should automatically display a pull request on GitHub. Go online to the GitHub repository and there should be an option for you to create your pull request from your push. This pull request will then be reviewed by another member before you can merge this branch with the master.
+### How to Clone
+To clone this repository, enter `git clone https://github.com/ECSE321-Fall2018/t08` in the desired directory. It will create a `t08` folder containing our project code.
 
 ### How to Make Changes to Our Project
 
+#### Quick Guide
+1. Before making changes or switching branches, make sure to pull.
+2. Do not make changes in the master branch.
+    1. Instead, make a new branch: `git branch <branch-name>`
+    2. Go to new branch: `git checkout <branch-name>`
+    3. List all branches: `git branch`
+2. Only pull from the master branch.
+    1. Go to master branch: `git checkout master`
+    2. Pull from master branch: `git pull origin master`
+3. To commit changes: `git commit -m "Commit Message"`
+    1. If you want ot close issue 3 for example, your commit message should include `Closes #3`.
+4. To push changes to GitHub: `git push -u origin <branch-name>`
+5. To merge pushed changes with master branch, create a pull request and get one person to approve your request.
+
+#### Long Guide
 1. Go to the ["Issues" tab on GitHub](https://github.com/ECSE321-Fall2018/t08/issues).
 2. Look for an issue to fix or create your own issue (press "New issue").
     1. If you are fixing another person's issue:
-        1. You can leave a comment if you have questions for the guy who created the issue.
+        1. You can leave a comment if you have questions for the guy (or girl) who created the issue.
         2. Go directly to step 3.
     2. If you are creating your own issue:
         1. You must add the label/milestone sprint1, sprint2, or sprint3. Otherwise, the TA won't be able to check our issues.
@@ -46,7 +50,7 @@ To push your commits to GitHub from your branch, use the command `git push -u or
             2. If it's really important but we have time, use the "Priority 2" label.
             3. If it's somewhat important, use the "Priority 3" label.
         2. You can add other labels like "bug", "help wanted", or "question" to make your issue more helpful to others.
-        3. If you want to include a comment for your issue, it should be in the form of a user story: `As a <type of user>, I would like <feature description> so that <rationale>.`
+        3. If you want to include a comment for your issue, it can be in the form of a user story: `As a <type of user>, I would like <feature description> so that <rationale>.`
         4. Example user story: `As a course instructor, I would like to add content to a course so that enrolled students can access it on demand`.
 3. Create branch: `git branch <branch-name>`
 4. Go to branch: `git checkout <branch-name>`
@@ -66,4 +70,22 @@ To push your commits to GitHub from your branch, use the command `git push -u or
 13. Switch to master branch: `git checkout master`
 14. Pull from master branch: `git pull origin master`
 
-I know process is tedious and annoying, but we need to do this to get a good grade for our backlog (a todo list of issues).
+## Maven
+Whenever you make changes to our Java files and want to run the code, run this command on the terminal:
+```bash
+mvn test
+```
+It will compile, run, and test the code. You can see the output and possible error messages.
+
+## Spring
+
+## Heroku
+How to access our website:
+1. Go to [Heroku](https://heroku.com) and login.
+2. Click on "rideshare08".
+3. Press "Open App".
+4. Enjoy the beauty of our website!
+
+How to access our database code:
+1. Install Heroku CLI.
+2. heroku git:clone -a rideshare08 (not in our `t08` Git repository!)
