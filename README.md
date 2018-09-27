@@ -13,7 +13,7 @@ If you're clueless about what's going on, here's a summary.
 - **TravisCI:** It checks that the code you uploaded to GitHub is okay (to a certain extent).
 - **Maven:** It's a build tool. It compiles and tests our Java code for us.
 - **Gradle:** We don't need it phew.
-- **Spring:** Helps us send HTTP Requests (e.g. create, update, delete user) to our website.
+- **Spring:** Helps us manage HTTP Requests (e.g. create, update, delete user) to our website.
 - **Heroku:** What we are using to host our website and our backend.
 
 ## How to Use this GitHub Repository
