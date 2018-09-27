@@ -8,9 +8,9 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan("ecse321.t08.rideshare")
 @SpringBootApplication
 public class rideshareApplication {
-
-
-	public static void main(String[] args) {
+  
+    public static void main(String[] args) {
 		SpringApplication.run(rideshareApplication.class, args);
 	}
+  
 }
