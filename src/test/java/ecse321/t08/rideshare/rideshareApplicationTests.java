@@ -1,18 +1,76 @@
 package ecse321.t08.rideshare;
 
-import org.junit.Test;
-import static org.junit.Assert.assertTrue;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
+
+
+import org.mockito.InjectMocks;
+
+import org.mockito.invocation.InvocationOnMock;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
+
+import ecse321.t08.rideshare.Controller.UserController;
+import ecse321.t08.rideshare.Entity.User;
+import ecse321.t08.rideshare.Entity.UserRole;
+import  ecse321.t08.rideshare.Repository.UserRepository;
+
+
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import static org.mockito.Mockito.*;
+import org.mockito.runners.MockitoJUnitRunner;
+
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
+
+
+@RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 public class rideshareApplicationTests {
 
-	@Test
-	public void answerTrue() {
-        assertTrue(true);
+	@Mock
+	private UserRepository userDao;
+
+	@InjectMocks
+	private UserController userController;
+
+	private static final String USER_KEY = "username";
+	private static final String NONEXISTING_USER_KEY = "nonusername";
+
+	@Before
+	public void setMockOutput() {
+		System.out.println("Setting Up Test For User Query Found");
+		when(userDao.getUser(anyString())).thenAnswer((InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(USER_KEY)) {
+				User user = new User();
+				user.setUserName(USER_KEY);
+				user.setFullName("test");
+				user.setEmailAddress("test");
+				user.setStatus(false);
+				user.setPassword("test");
+				return user;
+			} else {
+				return null;
+			}
+		});
 	}
 
+	@Test
+	public void testUserQueryFound() {
+		System.out.println("Testing User Query Found");
+		assertEquals(userController.getUser(USER_KEY), USER_KEY);
+	}
+
+	@Test
+	public void testUserQueryNotFound() {
+		System.out.println("Testing User Query Not Found");
+		assertEquals(userController.getUser(NONEXISTING_USER_KEY), "NOT FOUND");
+	}
 }

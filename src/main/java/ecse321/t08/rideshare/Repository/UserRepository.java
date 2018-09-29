@@ -26,4 +26,10 @@ public class UserRepository {
         entityManager.persist(user);
         return user;
     }
+
+    @Transactional
+    public User getUser(String userName) {
+	    User user = entityManager.find(User.class, userName);
+	    return user;
+    }
 }
