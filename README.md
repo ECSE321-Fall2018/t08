@@ -13,7 +13,7 @@ If you're clueless about what's going on, here's a summary.
 - **TravisCI:** It checks that the code you uploaded to GitHub is okay (to a certain extent).
 - **Maven:** It's a build tool. It compiles and tests our Java code for us.
 - **Gradle:** We don't need it phew.
-- **Spring:** Helps us manage HTTP Requests (e.g. create, update, delete user) to our website.
+- **Spring Boot:** Helps us manage HTTP Requests (e.g. create, update, delete user) to our website.
 - **Heroku:** What we are using to host our website and our backend.
 
 ## How to Use this GitHub Repository
@@ -27,8 +27,9 @@ To clone this repository, enter `git clone https://github.com/ECSE321-Fall2018/t
 1. Before making changes or switching branches, make sure to pull.
 2. Do not make changes in the master branch.
     1. Instead, make a new branch: `git branch <branch-name>`
-    2. Go to new branch: `git checkout <branch-name>`
-    3. List all branches: `git branch`
+    2. This new branch is basically a copy of the master branch.
+    3. Go to new branch: `git checkout <branch-name>`
+    4. List all branches: `git branch`
 2. Only pull from the master branch.
     1. Go to master branch: `git checkout master`
     2. Pull from master branch: `git pull origin master`
@@ -77,7 +78,8 @@ mvn test
 ```
 It will compile, run, and test the code. You can see the output and possible error messages.
 
-## Spring
+## Spring Boot
+If you don't know how to use Spring Boot, watch this [Spring Boot tutorial](https://www.youtube.com/watch?v=msXL2oDexqw&list=PLqq-6Pq4lTTbx8p2oCgcAQGQyqN8XeA1x).
 
 ## Heroku
 How to access our website:
@@ -86,6 +88,26 @@ How to access our website:
 3. Press "Open App".
 4. Enjoy the beauty of our website!
 
-How to access our database code:
+How to download our database repository:
 1. Install Heroku CLI.
-2. heroku git:clone -a rideshare08 (not in our `t08` Git repository!)
+2. `heroku git:clone -a rideshare08` (not in our `t08` Git repository!)
+You should get a folder called `rideshare08`.
+
+How to access the backend stuff in our database repository:
+1. Install Postgres.
+2. In `rideshare08`, run this command: `heroku pg:psql`
+You should now be able to access our Postgresql databases and tables:
+- Go to to a database: `USE database_name;`
+- Check the data in table: `SELECT columns FROM table_name;`
+To add, edit, and delete databases and tables, check out this [W3Schools tutorial](https://www.w3schools.com/sql/).
+
+Note: If `heroku pg:psql` doesn't work and you are on Windows, follow these steps:
+1. Press Windows key.
+2. Type "path".
+3. Press "Edit the System Environment Variables".
+4. Press "Environment Variables".
+5. Edit the "Path" user variable.
+6. Press "New".
+7. Paste this in `C:\Program Files\PostgreSQL\<version-number>\bin`
+8. Press "OK" for everything.
+9. Now run `heroku pg:psql` again.
