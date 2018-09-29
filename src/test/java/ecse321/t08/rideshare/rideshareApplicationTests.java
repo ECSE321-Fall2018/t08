@@ -9,10 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class rideshareApplicationTests {
-
 	@Test
 	public void answerTrue() {
-        assertTrue(true);
+		assertTrue(true);
 	}
-
 }
