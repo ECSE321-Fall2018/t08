@@ -27,8 +27,9 @@ To clone this repository, enter `git clone https://github.com/ECSE321-Fall2018/t
 1. Before making changes or switching branches, make sure to pull.
 2. Do not make changes in the master branch.
     1. Instead, make a new branch: `git branch <branch-name>`
-    2. Go to new branch: `git checkout <branch-name>`
-    3. List all branches: `git branch`
+    2. This new branch is basically a copy of the master branch.
+    3. Go to new branch: `git checkout <branch-name>`
+    4. List all branches: `git branch`
 2. Only pull from the master branch.
     1. Go to master branch: `git checkout master`
     2. Pull from master branch: `git pull origin master`
@@ -79,6 +80,7 @@ It will compile, run, and test the code. You can see the output and possible err
 
 ## Spring
 
+
 ## Heroku
 How to access our website:
 1. Go to [Heroku](https://heroku.com) and login.
@@ -86,6 +88,11 @@ How to access our website:
 3. Press "Open App".
 4. Enjoy the beauty of our website!
 
-How to access our database code:
+How to download our database repository:
 1. Install Heroku CLI.
-2. heroku git:clone -a rideshare08 (not in our `t08` Git repository!)
+2. `heroku git:clone -a rideshare08` (not in our `t08` Git repository!)
+You should get a folder called `rideshare08`.
+
+How to access the backend stuff in our database repository:
+1. Install Postgres.
+2. In `rideshare08`, run this command: `heroku post

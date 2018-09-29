@@ -1,7 +1,7 @@
 package ecse321.t08.rideshare.Entity;
 
 public class Vehicle {
-   private int nbOfSeats;
+  private int nbOfSeats;
    
    public void setNbOfSeats(int value) {
       this.nbOfSeats = value;
