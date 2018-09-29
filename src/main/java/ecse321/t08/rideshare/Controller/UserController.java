@@ -21,6 +21,23 @@ public class UserController{
         User newUser = repository.createUser(userName, getStatus, emailAddress, name, password);
         return "User " + userName + " created!";
     }
+    
+    @PostMapping("/login")
+    @ResponseBody
+    pubic String login(String userName, String password) {
+    	User aUser = repository.findUser(userName);
+    	if (aUser.getPassword() == password) {
+    		repository.findUser(userName)
+    			.map(user -> {
+    				user.setStatus(true);
+    				user.logIn();
+    				})
+    			return "You are logged in"
+    	}
+    	else {
+    		return "password not recognized";
+    	}
+    }
 }
     
 
