@@ -16,7 +16,7 @@ public class VehicleRepository {
 	EntityManager entityManager;
 	
 	@Transactional
-	public ATrip createVehicle(int nbOfSeats, String colour, String model) {
+	public Vehicle createVehicle(int nbOfSeats, String colour, String model) {
         Vehicle aVehicle = new Vehicle();
         aVehicle.setNbOfSeats(nbOfSeats);
         aVehicle.setColour(colour);

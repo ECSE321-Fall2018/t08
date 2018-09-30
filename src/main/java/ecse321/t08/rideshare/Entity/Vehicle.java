@@ -1,7 +1,5 @@
 package ecse321.t08.rideshare.Entity;
 
-@Entity
-@Table(name = "vehicles")
 public class Vehicle {
 
 	private int nbOfSeats;
