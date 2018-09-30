@@ -34,7 +34,7 @@ public class ATripController {
 			if (findTrip == null) {
 				return "TRIP NOT FOUND";
 			}
-			return "WAAAAAAAAA";
+			return "TRIP FOUND";
 			//return findTrip.getTrip();
 		}
 		//value = "logout", required = false
