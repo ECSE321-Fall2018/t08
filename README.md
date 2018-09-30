@@ -57,9 +57,10 @@ To clone this repository, enter `git clone https://github.com/ECSE321-Fall2018/t
 4. Go to branch: `git checkout <branch-name>`
 5. **Fix the issue (this is the step where you actually make changes to the code in our project!).**
 6. Commit your code:
-    1. Add to commit: `git add .`
-    2. Undo step 1: `git reset` 
-    3. Commit: `git commit -m "Commit Message"`
+    1. Add to commit: `git add <filename>`
+    2. Ensure that the proper files are green in `git status`
+    3. To undo step 1: `git reset` 
+    4. Commit: `git commit -m "Commit Message"`
         1. In the `"Commit Message"`, you can automatically close an issue by including the phrase `closes #4` (in this case `#4` is the ID number of the issue, you can find this number in the "Issues" tab on GitHub).
         2. Aside from `closes`, you can use the keywords: `close`, `closed`, `fix`, `fixes`, `fixed`, `resolve`, `resolves`, or `resolved`. It can be capitalized too.
 7. Push your code to online master branch: `git push -u origin <your-branch-name>` (DO NOT push from your local master branch).
