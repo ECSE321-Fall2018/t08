@@ -10,8 +10,14 @@ import java.util.Set;
 public class UserRole {
 
    private Long id;
+   private String role;
+
+   public UserRole() {
+
+   }
 
    @Id
+   @Column(name="role_id")
    @GeneratedValue(strategy = GenerationType.AUTO)
    public Long getId() {
       return id;
@@ -19,6 +25,15 @@ public class UserRole {
 
    public void setId(Long id) {
       this.id = id;
+   }
+
+   @Column(name="role")
+   public String getRole() {
+      return role;
+   }
+
+   public void setRole(String role) {
+      this.role = role;
    }
 
    @ManyToMany(cascade = CascadeType.ALL)
