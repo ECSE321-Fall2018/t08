@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
-public class rideshareApplicationTests {
+public class rideshareUserTests {
 
 	@Mock
 	private UserRepository userDao;
@@ -66,7 +66,7 @@ public class rideshareApplicationTests {
 	}
 
 	@Test
-	public void testUserSimpeQueryFound() {
+	public void testUserSimpleQueryFound() {
 		System.out.println("Testing User Query Found");
 		assertEquals(userController.getUser(USER_ID), USER_KEY);
 	}

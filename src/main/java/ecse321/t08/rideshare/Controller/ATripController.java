@@ -29,7 +29,7 @@ public class ATripController {
 	  }
 
 	  @RequestMapping(value="/trips/{id}", method=RequestMethod.GET)
-	  	  public ATrip getUser(@PathVariable("id") int id) {
+	  	  public ATrip getTrip(@PathVariable("id") int id) {
 		  ATrip trip = repository.getTrip(id);
 		  return trip;
 	  }
