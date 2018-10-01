@@ -36,7 +36,7 @@ public class UserController{
         return user.getUserName();
     }
 
-    @RequestMapping(value="/find/", method=RequestMethod.GET)
+    @RequestMapping(value="/find", method=RequestMethod.POST)
     @ResponseBody
     public List<User> findUser(@RequestParam(value="username", required=true) String userName,
                                @RequestParam(value="name", required=true) String name,
