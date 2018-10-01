@@ -11,14 +11,14 @@ import ecse321.t08.rideshare.Repository.ATripRepository;
 public class ATripController {
 
 	 @Autowired
-	    ATripRepository repository;
+	 ATripRepository repository;
 
 
 
-	    @RequestMapping(value="/createATrip", method=RequestMethod.POST)
-	    @ResponseBody
-	    public String createATrip(int tripID, double cost, int date, String startLocation, String endLocation){
-	        ATrip newATrip = repository.createATrip(tripID, cost, date, startLocation, endLocation);
-	        return "ATrip " + tripID + " created!";
-	    }
+	 @RequestMapping(value="/createATrip", method=RequestMethod.POST)
+	 @ResponseBody
+	 public String createATrip(int tripID, double cost, int date, String startLocation, String endLocation){
+	 	ATrip newATrip = repository.createATrip(tripID, cost, date, startLocation, endLocation);
+	 	return "ATrip " + tripID + " created!";
+	 }
 }
