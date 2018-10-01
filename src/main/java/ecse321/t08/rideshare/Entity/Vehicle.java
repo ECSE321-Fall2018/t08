@@ -1,6 +1,7 @@
 package ecse321.t08.rideshare.Entity;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
