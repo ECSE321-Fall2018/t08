@@ -13,7 +13,7 @@ import java.util.List;
 public class UserRepository {
 
 	@PersistenceContext
-    private EntityManager em;
+    EntityManager em;
 
     public void setEntityManager(EntityManager entityManager) {
         this.em = entityManager;
