@@ -1,5 +1,10 @@
 package ecse321.t08.rideshare.Entity;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="vehicle")
 public class Vehicle {
 
 	private int nbOfSeats;
@@ -44,6 +49,7 @@ public class Vehicle {
 		this.driver = value;
 	}
 
+	@Id
 	public Driver getDriver() {
 		return this.driver;
 	}
