@@ -1,8 +1,6 @@
 package ecse321.t08.rideshare.Entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -35,6 +33,7 @@ public class ATrip {
    }
 
    @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
    public int getTripID() {
       return this.tripID;
    }

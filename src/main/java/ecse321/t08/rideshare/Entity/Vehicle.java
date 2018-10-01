@@ -1,13 +1,13 @@
 package ecse321.t08.rideshare.Entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="vehicle")
 public class Vehicle {
 
+
+	private int vehicleId;
 	private int nbOfSeats;
 	private String colour;
 	private String model;
@@ -54,5 +54,16 @@ public class Vehicle {
 	public Driver getDriver() {
 		return this.driver;
 	}
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	public int getVehicleId() {
+		return vehicleId;
+	}
+
+	public void setVehicleId(int vehicleId) {
+		this.vehicleId = vehicleId;
+	}
+
 
 }
