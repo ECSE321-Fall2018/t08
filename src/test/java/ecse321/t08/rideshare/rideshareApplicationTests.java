@@ -41,16 +41,18 @@ public class rideshareApplicationTests {
 	private UserController userController;
 
 	private static final String USER_KEY = "username";
+	private static final int USER_ID = -1;
 	private static final String USER_EMAIL = "testemail@testemail.com";
 	private static final String USER_FULLNAME = "testuserfullname";
-	private static final String NONEXISTING_USER_KEY = "nonusername";
+	private static final int NONEXISTING_USER_ID = -2;
 
 	@Before
 	public void setMockOutput() {
 		System.out.println("Setting Up Test For User Query Found");
-		when(userDao.getUser(anyString())).thenAnswer((InvocationOnMock invocation) -> {
-			if(invocation.getArgument(0).equals(USER_KEY)) {
+		when(userDao.getUser(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+			if(invocation.getArgument(0).equals(USER_ID)) {
 				User user = new User();
+				user.setUserID(USER_ID);
 				user.setUserName(USER_KEY);
 				user.setFullName(USER_FULLNAME);
 				user.setEmailAddress(USER_EMAIL);
@@ -66,13 +68,13 @@ public class rideshareApplicationTests {
 	@Test
 	public void testUserSimpeQueryFound() {
 		System.out.println("Testing User Query Found");
-		assertEquals(userController.getUser(USER_KEY), USER_KEY);
+		assertEquals(userController.getUser(USER_ID), USER_KEY);
 	}
 
 
 	@Test
 	public void testUserQueryNotFound() {
 		System.out.println("Testing User Query Not Found");
-		assertEquals(userController.getUser(NONEXISTING_USER_KEY), "NOT FOUND");
+		assertEquals(userController.getUser(NONEXISTING_USER_ID), "NOT FOUND");
 	}
 }

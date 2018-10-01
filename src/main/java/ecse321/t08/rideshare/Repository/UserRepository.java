@@ -1,5 +1,4 @@
 package ecse321.t08.rideshare.Repository;
-import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -29,8 +28,8 @@ public class UserRepository {
     }
 
     @Transactional
-    public User getUser(String userName) {
-	    User user = em.find(User.class, userName);
+    public User getUser(int userId) {
+	    User user = em.find(User.class, userId);
 	    return user;
     }
 
