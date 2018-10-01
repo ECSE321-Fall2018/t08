@@ -15,13 +15,6 @@ public class UserRepository {
 	@PersistenceContext
     EntityManager em;
 
-    public void setEntityManager(EntityManager entityManager) {
-        this.em = entityManager;
-    }
-
-    public EntityManager getEntityManager() {
-        return em;
-    }
 
 	@Transactional
 	public User createUser(String userName, boolean isuseractive, String emailaddress, String fullname, String password) {
