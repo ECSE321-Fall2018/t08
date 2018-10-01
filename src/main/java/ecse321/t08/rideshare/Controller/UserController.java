@@ -6,6 +6,9 @@ import org.springframework.web.bind.annotation.*;
 import ecse321.t08.rideshare.Entity.User;
 import ecse321.t08.rideshare.Repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("api/user")
 public class UserController{
@@ -15,18 +18,35 @@ public class UserController{
     
     @RequestMapping(value="/createUser", method=RequestMethod.POST)
     @ResponseBody
-    public String createUser(String userName, boolean getStatus, String emailAddress, String name, String password){
+    public String createUser(@RequestParam(value="username", required=true) String userName,
+                             @RequestParam(value="status", required=true) boolean getStatus,
+                             @RequestParam(value="email", required=true) String emailAddress,
+                             @RequestParam(value="name", required=true) String name,
+                             @RequestParam(value="password", required=true) String password) {
         User newUser = repository.createUser(userName, getStatus, emailAddress, name, password);
         return "User " + userName + " created!";
     }
 
-    @RequestMapping(value="/{username}", method=RequestMethod.GET)
+    @RequestMapping(value="/users/{username}", method=RequestMethod.GET)
     public String getUser(@PathVariable("username") String userName) {
         User user = repository.getUser(userName);
         if(user == null) {
             return "NOT FOUND";
         }
         return user.getUserName();
+    }
+
+    @RequestMapping(value="/find/", method=RequestMethod.GET)
+    @ResponseBody
+    public List<User> findUser(@RequestParam(value="username", required=true) String userName,
+                               @RequestParam(value="name", required=true) String name,
+                               @RequestParam(value="email", required=true) String emailAddress) {
+        List<User> userList = repository.findUser(userName, emailAddress, name);
+        if(userList.isEmpty()) {
+            System.out.println("NOT FOUND");
+        }
+
+        return userList;
     }
 
 

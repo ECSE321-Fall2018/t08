@@ -1,10 +1,12 @@
 package ecse321.t08.rideshare.Entity;
 
+import javax.persistence.*;
 import java.util.Set;
 import java.util.HashSet;
 
 
-
+@Entity
+@Table(name="ATrip")
 public class ATrip {
 /**
     * <pre>
@@ -29,7 +31,9 @@ public class ATrip {
    public void setTripID(int value) {
       this.tripID = value;
    }
-   
+
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
    public int getTripID() {
       return this.tripID;
    }

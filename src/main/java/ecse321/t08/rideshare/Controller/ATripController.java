@@ -13,16 +13,16 @@ import java.util.*;
 public class ATripController {
 
 	 @Autowired
-	    ATripRepository repository;
+	 ATripRepository repository;
 
 
 
-	    @RequestMapping(value="/createATrip", method=RequestMethod.POST)
-	    @ResponseBody
-	    public String createATrip(int tripID, double cost, int date, String startLocation, String endLocation){
+	  @RequestMapping(value="/createATrip", method=RequestMethod.POST)
+	  @ResponseBody
+	  public String createATrip(int tripID, double cost, int date, String startLocation, String endLocation){
 	        ATrip newATrip = repository.createATrip(tripID, cost, date, startLocation, endLocation);
 	        return "ATrip " + tripID + " created!";
-	    }
+	  }
 
 		@RequestMapping(value="/getTrip", method=RequestMethod.GET)
 		public String getTrip(@RequestParam(value = "cost", required = false) Double cost,
@@ -48,4 +48,5 @@ public class ATripController {
 		//OK Use similar method than userController
 		//create appropriate method in repository
 		//use appropriate strings uppercase methods to make searches
+
 }
