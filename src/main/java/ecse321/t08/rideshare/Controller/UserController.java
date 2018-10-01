@@ -27,9 +27,9 @@ public class UserController{
         return "User " + userName + " created!";
     }
 
-    @RequestMapping(value="/users/{username}", method=RequestMethod.GET)
-    public String getUser(@PathVariable("username") String userName) {
-        User user = repository.getUser(userName);
+    @RequestMapping(value="/users/{id}", method=RequestMethod.GET)
+    public String getUser(@PathVariable("id") int id) {
+        User user = repository.getUser(id);
         if(user == null) {
             return "NOT FOUND";
         }

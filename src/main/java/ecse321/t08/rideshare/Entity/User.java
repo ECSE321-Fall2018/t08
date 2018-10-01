@@ -12,7 +12,6 @@ import javax.persistence.*;
 public class User {
 
 
-   private Set<UserRole> userRole;
    private int userID;
    private String userName;
    private boolean isUserActive = false;
@@ -20,20 +19,22 @@ public class User {
    private String fullName;
    private String password;
 
+   private String role; //Either Driver, Passenger or Administrator
+
+   //Driver
+   private String vehicle_id;
 
    public User() {
    }
-/*
+
    public User(User user) {
       this.isUserActive = user.getStatus();
       this.emailAddress = user.getEmailAddress();
-      this.userRole = user.getUserRole();
       this.fullName = user.getFullName();
       this.userName =user.getUserName();
       this.userID = user.getUserID();
       this.password = user.getPassword();
    }
-*/
 
 
    public void setUserID(int value) {
@@ -95,24 +96,4 @@ public class User {
    }
 
 
-   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-   @JoinTable(name = "user_role", joinColumns = @JoinColumn(name="user_id"), inverseJoinColumns=@JoinColumn(name="role_id"))
-   public Set<UserRole> getUserRole() {
-      return this.userRole;
-   }
-
-   public void setUserRoles(Set<UserRole> userRole)  {
-      this.userRole = userRole;
-   }
-
-   public void logIn() {
-      // TODO implement this operation
-      throw new UnsupportedOperationException("not implemented");
-   }
-   
-   public void logOut() {
-      // TODO implement this operation
-      throw new UnsupportedOperationException("not implemented");
-   }
-   
    }
