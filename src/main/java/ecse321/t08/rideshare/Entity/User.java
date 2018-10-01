@@ -20,9 +20,10 @@ public class User {
    private String fullName;
    private String password;
 
+
    public User() {
    }
-
+/*
    public User(User user) {
       this.isUserActive = user.getStatus();
       this.emailAddress = user.getEmailAddress();
@@ -32,7 +33,7 @@ public class User {
       this.userID = user.getUserID();
       this.password = user.getPassword();
    }
-
+*/
 
 
    public void setUserID(int value) {
