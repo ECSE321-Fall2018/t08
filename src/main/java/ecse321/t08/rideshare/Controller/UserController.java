@@ -35,7 +35,7 @@ public class UserController{
         }
         return user.getUserName();
     }
-/*
+
     @RequestMapping(value="/find/", method=RequestMethod.GET)
     @ResponseBody
     public List<User> findUser(@RequestParam(value="username", required=true) String userName,
@@ -48,7 +48,7 @@ public class UserController{
 
         return userList;
     }
-*/
+
 
 }
     

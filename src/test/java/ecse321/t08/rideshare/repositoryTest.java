@@ -42,7 +42,7 @@ public class repositoryTest  {
     @Before
     public void setup() {
        // when(entityManager.find((Class<?>) any(), any())).thenReturn(null);
-       // userDao.setEntityManager(entityManager);
+        //userDao.setEntityManager(entityManager);
     }
 
     @Test
