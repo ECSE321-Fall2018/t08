@@ -12,6 +12,7 @@ public class Vehicle {
 	private String colour;
 	private String model;
 	private int driverId;
+	private String type;
 
 	@Column(name="driverid")
 	public int getDriverId() {
@@ -49,6 +50,14 @@ public class Vehicle {
 		return this.model;
 	}
 
+	public void setType(String value){
+		this.type = value;
+	}
+
+	@Column(name="vehicleType")
+	public String getVehicleType(){
+		return this.type;
+	}
 
 	@Id
 	@Column(name="vehicleid")
