@@ -40,6 +40,7 @@ public class rideshareVehicleTests {
     private static final int SEATS = 4;
     private static final String COLOUR = "blue";
     private static final String MODEL = "CarModel";
+    private static final String VEHICLE_TYPE = "Minivan";
     private static final int VEHICLE_ID = -1;
     private static final int NONEXISTING_VEHICLE_ID = -2;
 
@@ -55,6 +56,7 @@ public class rideshareVehicleTests {
                 vehicle.setColour(COLOUR);
                 vehicle.setDriverId(DRIVER_ID);
                 vehicle.setModel(MODEL);
+                vehicle.setVehicleType(VEHICLE_TYPE);
                 return vehicle;
             } else {
                 return null;

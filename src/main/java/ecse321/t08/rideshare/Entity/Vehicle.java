@@ -12,7 +12,7 @@ public class Vehicle {
 	private String colour;
 	private String model;
 	private int driverId;
-	private String type;
+	private String vehicleType;
 
 	@Column(name="driverid")
 	public int getDriverId() {
@@ -50,13 +50,13 @@ public class Vehicle {
 		return this.model;
 	}
 
-	public void setType(String value){
-		this.type = value;
+	public void setVehicleType(String value){
+		this.vehicleType = value;
 	}
 
 	@Column(name="vehicleType")
 	public String getVehicleType(){
-		return this.type;
+		return this.vehicleType;
 	}
 
 	@Id
