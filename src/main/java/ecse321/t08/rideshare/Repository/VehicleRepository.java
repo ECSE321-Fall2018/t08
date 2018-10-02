@@ -14,12 +14,13 @@ public class VehicleRepository {
 	EntityManager entityManager;
 	
 	@Transactional
-	public Vehicle createVehicle(int driverId, int nbOfSeats, String colour, String model) {
+	public Vehicle createVehicle(int driverId, int nbOfSeats, String colour, String model, String vehicleType) {
         Vehicle aVehicle = new Vehicle();
         aVehicle.setDriverId(driverId);
         aVehicle.setNbOfSeats(nbOfSeats);
         aVehicle.setColour(colour);
         aVehicle.setModel(model);
+        aVehicle.setVehicleType(vehicleType);
         entityManager.persist(aVehicle);
         return aVehicle;
 	}

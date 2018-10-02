@@ -18,11 +18,12 @@ public class VehicleController {
     @RequestMapping(value="/createvehicle", method=RequestMethod.POST)
     @ResponseBody
     public String createVehicle(@RequestParam(value="driverId", required=true) int driverId,
-                             @RequestParam(value="nbOfSeats", required=true) int nbOfSeats,
-                             @RequestParam(value="colour", required=true) String colour,
-                             @RequestParam(value="model", required=true) String model) {
+                                @RequestParam(value="nbOfSeats", required=true) int nbOfSeats,
+                                @RequestParam(value="colour", required=true) String colour,
+                                @RequestParam(value="model", required=true) String model,
+                                @RequestParam(value="vehicleType", required=true) String vehicleType) {
 
-            Vehicle vehicle = repository.createVehicle(driverId, nbOfSeats, colour, model);
+            Vehicle vehicle = repository.createVehicle(driverId, nbOfSeats, colour, model, vehicleType);
         return model + " created!";
     }
 
