@@ -17,21 +17,20 @@ public class ATripController {
 
 	  @RequestMapping(value="/createtrip", method=RequestMethod.POST)
 	  @ResponseBody
-	  public String createTrip(@RequestParam(value="status", required=true) int status,
-							   @RequestParam(value="cost", required=true) String cost,
-							   @RequestParam(value="startDate", required=true) int startDate,
-							   @RequestParam(value="endDate", required=true) int endDate,
-							   @RequestParam(value="startLocation", required=true) String startLocation,
-							   @RequestParam(value="stops", required=true) String stops,
-							   @RequestParam(value="vehicleId", required=true) int vehicleId) {
-		  ATrip newTrip = repository.createATrip(status, cost, startDate, endDate, startLocation, stops, vehicleId);
+	  public String createTrip(@RequestParam("status") int status,
+							   @RequestParam("cost") String cost,
+							   @RequestParam("startDate") int startDate,
+							   @RequestParam("endDate") int endDate,
+							   @RequestParam("startLocation") String startLocation,
+							   @RequestParam("stops") String stops,
+							   @RequestParam("vehicleId") int vehicleId) {
+		  repository.createATrip(status, cost, startDate, endDate, startLocation, stops, vehicleId);
 		  return "Trip created starting at " + startLocation + "!";
 	  }
 
 	  @RequestMapping(value="/trips/{id}", method=RequestMethod.GET)
-	  	  public ATrip getTrip(@PathVariable("id") int id) {
-		  ATrip trip = repository.getTrip(id);
-		  return trip;
+	  public ATrip getTrip(@PathVariable("id") int id) {
+	  		return repository.getTrip(id);
 	  }
 
 
