@@ -14,7 +14,6 @@ import javax.persistence.*;
 })
 public class User {
 
-
    private int userID;
    private String userName;
    private boolean isUserActive = false;
@@ -98,5 +97,9 @@ public class User {
       return this.fullName;
    }
 
+   public void setRole(String value) { this.role = value; }
+
+   @Column (name="role")
+   public String getRole() { return this.role; }
 
    }
