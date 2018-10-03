@@ -33,6 +33,35 @@ public class UserRepository {
 	    return user;
     }
 
+    @Transactional
+    public User updateUser(String userName, boolean isuseractive, String emailaddress, String fullname, String password) {
+        List<User> userList = em.createNamedQuery("User.findUserName")
+                .setParameter("username", userName)
+                .getResultList();
+
+
+        if(userList.isEmpty() || userList.size() > 1) {
+            return null;
+        }
+        User user = userList.get(0);
+
+        em.getTransaction().begin(); //Indicates to database that changes might begin to entity
+        if(user.getStatus() != isuseractive) {
+            user.setStatus(isuseractive);
+        }
+
+        if(!(user.getEmailAddress().equalsIgnoreCase(emailaddress))) {
+            user.setEmailAddress(emailaddress);
+        }
+
+        if(user.getFullName() != fullname) {
+            user.setFullName(fullname);
+        }
+        em.getTransaction().commit(); //Indicates to database that changes finished
+
+
+        return user;
+    }
 
     @Transactional
     public List<User> findUser(String userName, String emailAddress, String name) {

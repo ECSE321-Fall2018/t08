@@ -50,7 +50,7 @@ public class rideshareATripTests {
 
     @Before
     public void setMockTrueOutput() {
-        System.out.println("Setting Up Test For Vehicle Query Found");
+        System.out.println("Setting Up Test For Trip Query Found");
         when(tripDao.getTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             if(invocation.getArgument(0).equals(TRIP_ID)) {
                 ATrip trip = new ATrip();
