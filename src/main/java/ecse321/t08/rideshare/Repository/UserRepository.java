@@ -36,14 +36,16 @@ public class UserRepository {
     @Transactional
     public User updateUser(String userName, boolean isuseractive, String emailaddress, String fullname, String password) {
         List<User> userList = em.createNamedQuery("User.findUserName")
-                .setParameter("username", userName)
+                .setParameter("userName", userName)
                 .getResultList();
-
 
         if(userList.isEmpty() || userList.size() > 1) {
             return null;
         }
         User user = userList.get(0);
+        if(user.getPassword() != password) {
+            return null;
+        }
 
         em.getTransaction().begin(); //Indicates to database that changes might begin to entity
         if(user.getStatus() != isuseractive) {
