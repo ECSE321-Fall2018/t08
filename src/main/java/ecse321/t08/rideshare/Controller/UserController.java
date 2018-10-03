@@ -29,13 +29,13 @@ public class UserController{
 
     @RequestMapping(value="/updateUser", method=RequestMethod.POST)
     @ResponseBody
-    public String updateUser(@RequestParam(value="username", required=true) String userName,
+    public User updateUser(@RequestParam(value="username", required=true) String userName,
                              @RequestParam(value="status", required=false) boolean getStatus,
                              @RequestParam(value="email", required=false) String emailAddress,
                              @RequestParam(value="name", required=false) String name,
                              @RequestParam(value="password", required=true) String password) {
-        User newUser = repository.updateUser(userName, getStatus, emailAddress, name, password);
-        return "User " + userName + " updated!";
+        User user = repository.updateUser(userName, getStatus, emailAddress, name, password);
+        return user;
     }
 
     @RequestMapping(value="/users/{id}", method=RequestMethod.GET)
