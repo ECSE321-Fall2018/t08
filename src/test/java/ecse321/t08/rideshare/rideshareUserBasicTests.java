@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
-public class rideshareUserTests {
+public class rideshareUserBasicTests {
 
 	@Mock
 	private UserRepository userDao;
@@ -68,13 +68,13 @@ public class rideshareUserTests {
 	@Test
 	public void testUserSimpleQueryFound() {
 		System.out.println("Testing User Query Found");
-		assertEquals(userController.getUser(USER_ID), USER_KEY);
+		assertEquals(userController.getUser(USER_ID).getUserName(), USER_KEY);
 	}
 
 
 	@Test
 	public void testUserQueryNotFound() {
 		System.out.println("Testing User Query Not Found");
-		assertEquals(userController.getUser(NONEXISTING_USER_ID), "NOT FOUND");
+		assertEquals(userController.getUser(NONEXISTING_USER_ID), null);
 	}
 }

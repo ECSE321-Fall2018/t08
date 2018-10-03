@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
-public class rideshareATripTests {
+public class rideshareATripBasicTests {
 
     @Mock
     private ATripRepository tripDao;

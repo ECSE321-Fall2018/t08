@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
-public class rideshareVehicleTests {
+public class rideshareVehicleBasicTests {
 
     @Mock
     private VehicleRepository vehicleDao;

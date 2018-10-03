@@ -23,8 +23,12 @@ public class UserController{
                              @RequestParam(value="email", required=true) String emailAddress,
                              @RequestParam(value="name", required=true) String name,
                              @RequestParam(value="password", required=true) String password) {
-        User newUser = repository.createUser(userName, getStatus, emailAddress, name, password);
-        return "User " + userName + " created!";
+        User user = repository.createUser(userName, getStatus, emailAddress, name, password);
+        if(user!=null) {
+            return "User " + userName + " created.";
+        } else {
+            return "User " + userName + " could not be created, select a new username and make sure your email has not been used before.";
+        }
     }
 
     @RequestMapping(value="/updateUser", method=RequestMethod.POST)
@@ -39,12 +43,12 @@ public class UserController{
     }
 
     @RequestMapping(value="/users/{id}", method=RequestMethod.GET)
-    public String getUser(@PathVariable("id") int id) {
+    public User getUser(@PathVariable("id") int id) {
         User user = repository.getUser(id);
         if(user == null) {
-            return "NOT FOUND";
+            System.out.println("NOT FOUND");
         }
-        return user.getUserName();
+        return user;
     }
 
     @RequestMapping(value="/find", method=RequestMethod.POST)
@@ -56,7 +60,6 @@ public class UserController{
         if(userList.isEmpty()) {
             System.out.println("NOT FOUND");
         }
-
         return userList;
     }
 

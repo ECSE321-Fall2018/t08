@@ -17,6 +17,22 @@ public class UserRepository {
 
 	@Transactional
 	public User createUser(String userName, boolean isuseractive, String emailaddress, String fullname, String password) {
+
+        User existingUser = em.find(User.class, userName);
+        if(existingUser != null) {
+            return null;
+        }
+
+        User existingUserEmail = em.find(User.class, emailaddress);
+        if(existingUserEmail != null) {
+            return null;
+        }
+
+        if(password.length() < 8) {
+            return null;
+        }
+
+
         User user = new User();
         user.setUserName(userName);
         user.setStatus(isuseractive);
@@ -56,7 +72,7 @@ public class UserRepository {
             user.setEmailAddress(emailaddress);
         }
 
-        if(user.getFullName() != fullname) {
+        if(!(user.getFullName().equalsIgnoreCase(fullname))) {
             user.setFullName(fullname);
         }
         em.getTransaction().commit(); //Indicates to database that changes finished
