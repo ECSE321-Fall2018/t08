@@ -56,7 +56,7 @@ public class UserRepository {
             user.setEmailAddress(emailaddress);
         }
 
-        if(user.getFullName() != fullname) {
+        if(!(user.getFullName().equalsIgnoreCase(fullname))) {
             user.setFullName(fullname);
         }
         em.getTransaction().commit(); //Indicates to database that changes finished
