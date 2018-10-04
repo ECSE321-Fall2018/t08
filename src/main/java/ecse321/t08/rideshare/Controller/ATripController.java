@@ -15,7 +15,7 @@ public class ATripController {
 	  @Autowired
 	  ATripRepository repository;
 
-	  @RequestMapping(value="/createtrip", method=RequestMethod.POST)
+	  @RequestMapping(value="/createTrip", method=RequestMethod.POST)
 	  @ResponseBody
 	  public String createTrip(@RequestParam("status") int status,
 							   @RequestParam("cost") String cost,
@@ -34,6 +34,12 @@ public class ATripController {
 			@PathVariable("password") String password
 		) {
 	  		return repository.getTrip(username, password);
+	  }
+
+	  @RequestMapping(value="/cancelTrip", method=RequestMethod.DELETE)
+	  public String cancelATrip(@RequestParam("tripID") int ATripID, @RequestParam("userID") int userID) {
+	  	repository.cancelATrip(ATripID, userID);
+	  	return "Trip number: " + ATripID + "has been cancelled by user " + userID + "!";
 	  }
 
 
