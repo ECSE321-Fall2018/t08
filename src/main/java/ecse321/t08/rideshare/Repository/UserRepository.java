@@ -34,7 +34,7 @@ public class UserRepository {
 
 
         User user = new User();
-        user.setUserName(userName);
+        user.setUsername(userName);
         user.setStatus(isuseractive);
         user.setEmailAddress(emailaddress);
         user.setFullName(fullname);
@@ -89,7 +89,7 @@ public class UserRepository {
 
         if(userName != null && userName != "") {
             for (int i = 0; i < userlist.size(); i++) {
-                if(!(userlist.get(i).getUserName().toUpperCase().contains(userName.toUpperCase()))) {
+                if(!(userlist.get(i).getUsername().toUpperCase().contains(userName.toUpperCase()))) {
                     userlist.remove(i);
                 }
             }

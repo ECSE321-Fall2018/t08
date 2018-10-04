@@ -53,7 +53,7 @@ public class rideshareUserBasicTests {
 			if(invocation.getArgument(0).equals(USER_ID)) {
 				User user = new User();
 				user.setUserID(USER_ID);
-				user.setUserName(USER_KEY);
+				user.setUsername(USER_KEY);
 				user.setFullName(USER_FULLNAME);
 				user.setEmailAddress(USER_EMAIL);
 				user.setStatus(false);
@@ -68,7 +68,7 @@ public class rideshareUserBasicTests {
 	@Test
 	public void testUserSimpleQueryFound() {
 		System.out.println("Testing User Query Found");
-		assertEquals(userController.getUser(USER_ID).getUserName(), USER_KEY);
+		assertEquals(userController.getUser(USER_ID).getUsername(), USER_KEY);
 	}
 
 
