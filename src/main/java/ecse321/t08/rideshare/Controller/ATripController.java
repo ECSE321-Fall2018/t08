@@ -28,9 +28,12 @@ public class ATripController {
 		  return "Trip created starting at " + startLocation + "!";
 	  }
 
-	  @RequestMapping(value="/trips/{id}", method=RequestMethod.GET)
-	  public ATrip getTrip(@PathVariable("id") int id) {
-	  		return repository.getTrip(id);
+	  @RequestMapping(value="/trips/{username}/{password}", method=RequestMethod.GET)
+	  public List getTrip(
+			@PathVariable("username") String username, 
+			@PathVariable("password") String password
+		) {
+	  		return repository.getTrip(username, password);
 	  }
 
 

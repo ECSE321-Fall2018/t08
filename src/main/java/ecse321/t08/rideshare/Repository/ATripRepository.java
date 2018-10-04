@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ecse321.t08.rideshare.Entity.ATrip;
 
+import java.util.List;
+
 @Repository
 public class ATripRepository {
 	
@@ -28,9 +30,8 @@ public class ATripRepository {
         }
 
     @Transactional
-    public ATrip getTrip(int id) {
-        ATrip trip = entityManager.find(ATrip.class, id);
-
-        return trip;
+    public List getTrip(String username, String password) {
+        // CONFIRM IF THIS GUY IS AN ADMINISTRATOR!
+        return entityManager.createQuery("SELECT * FROM ATrip").getResultList();
     }
 }
