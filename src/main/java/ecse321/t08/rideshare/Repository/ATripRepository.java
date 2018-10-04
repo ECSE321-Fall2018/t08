@@ -31,9 +31,14 @@ public class ATripRepository {
         }
 
     @Transactional
-    public List getTrip(String username, String password) {
+    public List getTrips(String username, String password) {
         // CONFIRM IF THIS GUY IS AN ADMINISTRATOR!
         return entityManager.createQuery("SELECT * FROM ATrip").getResultList();
+    }
+
+    @Transactional
+    public ATrip getTrip(int id) {
+        return entityManager.find(ATrip.class, id);
     }
 
     @Transactional
