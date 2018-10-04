@@ -15,7 +15,7 @@ import javax.persistence.*;
 public class User {
 
    private int userID;
-   private String userName;
+   private String username;
    private boolean isUserActive = false;
    private String emailAddress;
    private String fullName;
@@ -33,7 +33,7 @@ public class User {
       this.isUserActive = user.getStatus();
       this.emailAddress = user.getEmailAddress();
       this.fullName = user.getFullName();
-      this.userName =user.getUserName();
+      this.username =user.getUserName();
       this.userID = user.getUserID();
       this.password = user.getPassword();
    }
@@ -51,12 +51,12 @@ public class User {
    }
 
    public void setUserName(String value) {
-      this.userName = value;
+      this.username = value;
    }
 
    @Column(name="username")
    public String getUserName() {
-      return this.userName;
+      return this.username;
    }
     
    public void setEmailAddress(String value) {
