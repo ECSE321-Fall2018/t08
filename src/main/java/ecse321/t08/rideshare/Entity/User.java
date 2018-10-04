@@ -50,12 +50,12 @@ public class User {
       return this.userID;
    }
 
-   public void setUserName(String value) {
+   public void setUsername(String value) {
       this.username = value;
    }
 
    @Column(name="username")
-   public String getUserName() {
+   public String getUsername() {
       return this.username;
    }
     
