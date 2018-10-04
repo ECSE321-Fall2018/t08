@@ -1,3 +1,4 @@
 target/
 .idea/
 rideshare.iml
+.DS_Store
