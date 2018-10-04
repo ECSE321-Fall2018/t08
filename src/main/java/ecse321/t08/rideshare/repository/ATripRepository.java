@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import java.util.List;
+
 @Repository
 public class ATripRepository {
 	
@@ -27,6 +29,12 @@ public class ATripRepository {
             entityManager.persist(aTrip);
             return aTrip;
         }
+
+    @Transactional
+    public List getTrips(String username, String password) {
+        // CONFIRM IF THIS GUY IS AN ADMINISTRATOR!
+        return entityManager.createQuery("SELECT * FROM ATrip").getResultList();
+    }
 
     @Transactional
     public ATrip getTrip(int id) {

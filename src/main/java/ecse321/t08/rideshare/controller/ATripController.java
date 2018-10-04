@@ -26,7 +26,15 @@ public class ATripController {
 		  return "Trip created starting at " + startLocation + "!";
 	  }
 
-	  @RequestMapping(value="/trips/{id}", method=RequestMethod.GET)
+	  @RequestMapping(value="/trips/{username}/{password}", method=RequestMethod.GET)
+	  public List getTrips(
+			@PathVariable("username") String username, 
+			@PathVariable("password") String password
+		) {
+	  		return repository.getTrips(username, password);
+		}
+		
+		@RequestMapping(value="/trips/{id}", method=RequestMethod.GET)
 	  public ATrip getTrip(@PathVariable("id") int id) {
 	  		return repository.getTrip(id);
 	  }
@@ -36,6 +44,4 @@ public class ATripController {
 	  	repository.cancelATrip(ATripID, userID);
 	  	return "Trip number: " + ATripID + "has been cancelled by user " + userID + "!";
 	  }
-
-
 }
