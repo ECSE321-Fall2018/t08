@@ -33,7 +33,7 @@ public class User {
       this.isUserActive = user.getStatus();
       this.emailAddress = user.getEmailAddress();
       this.fullName = user.getFullName();
-      this.username =user.getUserName();
+      this.username =user.getUsername();
       this.userID = user.getUserID();
       this.password = user.getPassword();
    }
