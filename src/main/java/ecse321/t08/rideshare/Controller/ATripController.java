@@ -42,5 +42,11 @@ public class ATripController {
 	  	return "Trip number: " + ATripID + "has been cancelled by user " + userID + "!";
 	  }
 
+	  @RequestMapping(value="/cancelTrip", method=RequestMethod.DELETE)
+	  public String cancelATrip(@RequestParam("tripID") int ATripID, @RequestParam("userID") int userID) {
+	  	repository.cancelATrip(ATripID, userID);
+	  	return "Trip number: " + ATripID + "has been cancelled by user " + userID + "!";
+	  }
+
 
 }

@@ -31,13 +31,9 @@ public class ATripRepository {
         }
 
     @Transactional
-<<<<<<< HEAD
     public List getTrip(String username, String password) {
         // CONFIRM IF THIS GUY IS AN ADMINISTRATOR!
         return entityManager.createQuery("SELECT * FROM ATrip").getResultList();
-=======
-    public ATrip getTrip(int id) {
-        return entityManager.find(ATrip.class, id);
     }
 
     @Transactional
@@ -49,6 +45,5 @@ public class ATripRepository {
         else if("Passenger" == entityManager.find(User.class, userID).getRole()) {
             //remove values associated with passenger (cost, stop and passenger ID)
         }
->>>>>>> origin/master
     }
 }
