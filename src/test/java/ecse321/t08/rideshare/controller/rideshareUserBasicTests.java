@@ -61,7 +61,7 @@ public class rideshareUserBasicTests {
 	@Test
 	public void testUserSimpleQueryFound() {
 		System.out.println("Testing User Query Found");
-		assertEquals(userController.getUser(USER_ID).getUserName(), USER_KEY);
+		assertEquals(userController.getUser(USER_ID).getUsername(), USER_KEY);
 	}
 
 
