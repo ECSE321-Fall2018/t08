@@ -96,10 +96,10 @@ You should get a folder called `rideshare08`.
 
 How to access the backend stuff in our database repository:
 1. Install Postgres.
-2. In `rideshare08`, run this command: `heroku pg:psql`
+2. In `rideshare08`, run this command: `heroku pg:psql` (don't use Git Bash)
 You should now be able to access our Postgresql databases and tables:
-- Go to to a database: `USE database_name;`
-- Check the data in table: `SELECT columns FROM table_name;`
+- Get all data in table: `SELECT * FROM table_name;`
+- Get some data in table: `SELECT columns FROM table_name;`
 To add, edit, and delete databases and tables, check out this [W3Schools tutorial](https://www.w3schools.com/sql/).
 
 Note: If `heroku pg:psql` doesn't work and you are on Windows, follow these steps:
