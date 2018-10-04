@@ -7,13 +7,13 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 @NamedQueries({
-        @NamedQuery(name = "User.findUsername", query = "SELECT username FROM User username LIKE :usernameparam"),
+        @NamedQuery(name = "User.findUsername", query = "SELECT u.username FROM User u WHERE u.username LIKE :usernameparam"),
         @NamedQuery(name = "User.findAll", query = "SELECT e FROM User e")
 })
 public class User {
 
    private int userID;
-   private String userName;
+   private String username;
    private boolean isUserActive = false;
    private String emailAddress;
    private String fullName;
@@ -31,7 +31,7 @@ public class User {
       this.isUserActive = user.getStatus();
       this.emailAddress = user.getEmailAddress();
       this.fullName = user.getFullName();
-      this.userName =user.getUserName();
+      this.username =user.getUsername();
       this.userID = user.getUserID();
       this.password = user.getPassword();
    }
@@ -48,13 +48,13 @@ public class User {
       return this.userID;
    }
 
-   public void setUserName(String value) {
-      this.userName = value;
+   public void setUsername(String value) {
+      this.username = value;
    }
 
    @Column(name="username")
-   public String getUserName() {
-      return this.userName;
+   public String getUsername() {
+      return this.username;
    }
     
    public void setEmailAddress(String value) {

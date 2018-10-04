@@ -55,7 +55,7 @@ public class rideshareUserAdvancedTests  {
         when(userDao.updateUser(anyString(), anyBoolean(), anyString(), anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(3).equals(USER_FULLNAME_UPDATED)) {
                 User user = new User();
-                user.setUserName(USER_KEY);
+                user.setUsername(USER_KEY);
                 user.setFullName(USER_FULLNAME_UPDATED);
                 user.setEmailAddress(USER_EMAIL);
                 user.setStatus(USER_STATUS);
@@ -69,7 +69,7 @@ public class rideshareUserAdvancedTests  {
             if (invocation.getArgument(0).equals(USER_KEY)) {
                 User user = new User();
                 List<User> userList = new ArrayList<User>();
-                user.setUserName(USER_KEY);
+                user.setUsername(USER_KEY);
                 user.setFullName(USER_FULLNAME);
                 user.setEmailAddress(USER_EMAIL);
                 user.setStatus(USER_STATUS);

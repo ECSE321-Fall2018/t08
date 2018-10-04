@@ -34,7 +34,7 @@ public class UserRepository {
         }
 
         User user = new User();
-        user.setUserName(userName);
+        user.setUsername(userName);
         user.setStatus(isuseractive);
         user.setEmailAddress(emailaddress);
         user.setFullName(fullname);
@@ -85,7 +85,7 @@ public class UserRepository {
 
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
 
-        return userlist.stream().filter(u -> u.getUserName().equalsIgnoreCase(userName))
+        return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(userName))
                 .filter(u -> u.getEmailAddress().equalsIgnoreCase(emailAddress))
                 .filter(u -> u.getFullName().equalsIgnoreCase(name))
                 .collect(Collectors.toList());
