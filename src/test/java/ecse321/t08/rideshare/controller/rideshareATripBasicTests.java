@@ -1,26 +1,20 @@
-package ecse321.t08.rideshare;
+package ecse321.t08.rideshare.controller;
 
-import ecse321.t08.rideshare.Controller.ATripController;
-import ecse321.t08.rideshare.Entity.ATrip;
-import ecse321.t08.rideshare.Repository.ATripRepository;
-import org.mockito.InjectMocks;
-import org.mockito.invocation.InvocationOnMock;
-import org.springframework.boot.test.context.SpringBootTest;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
-
+import ecse321.t08.rideshare.entity.ATrip;
+import ecse321.t08.rideshare.repository.ATripRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.*;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.persistence.EntityManager;
-
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
-
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -29,9 +23,6 @@ public class rideshareATripBasicTests {
 
     @Mock
     private ATripRepository tripDao;
-
-    @Mock
-    private EntityManager entityManager;
 
     @InjectMocks
     private ATripController tripController;
@@ -74,13 +65,13 @@ public class rideshareATripBasicTests {
     @Test
     public void testTripSimpleQueryFound() {
         System.out.println("Testing Trip Query Found");
-        assertEquals(tripController.getTrip(TRIP_ID).getStops(), STOPS);
+        assertEquals(STOPS, tripController.getTrip(TRIP_ID).getStops());
     }
 
 
     @Test
     public void testUserQueryNotFound() {
         System.out.println("Testing Trip Query Not Found");
-        assertEquals(tripController.getTrip(NON_EXISTING_TRIP_ID), null);
+        assertNull(tripController.getTrip(NON_EXISTING_TRIP_ID));
     }
 }

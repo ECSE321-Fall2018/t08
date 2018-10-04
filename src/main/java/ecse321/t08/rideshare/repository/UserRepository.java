@@ -1,12 +1,13 @@
-package ecse321.t08.rideshare.Repository;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+package ecse321.t08.rideshare.repository;
+
+import ecse321.t08.rideshare.entity.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import ecse321.t08.rideshare.Entity.User;
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserRepository {
@@ -32,7 +33,6 @@ public class UserRepository {
             return null;
         }
 
-
         User user = new User();
         user.setUsername(userName);
         user.setStatus(isuseractive);
@@ -45,8 +45,7 @@ public class UserRepository {
 
     @Transactional
     public User getUser(int userId) {
-	    User user = em.find(User.class, userId);
-	    return user;
+        return em.find(User.class, userId);
     }
 
     @Transactional
@@ -55,24 +54,24 @@ public class UserRepository {
                 .setParameter("usernameparam", "'%" +userName + "%'")
                 .getResultList();
 
-        if(userList.isEmpty() || userList.size() > 1) {
+        if (userList.isEmpty() || userList.size() > 1) {
             return null;
         }
         User user = userList.get(0);
-        if(user.getPassword() != password) {
+        if (!(user.getPassword().equals(password))) {
             return null;
         }
 
         em.getTransaction().begin(); //Indicates to database that changes might begin to entity
-        if(user.getStatus() != isuseractive) {
+        if (user.getStatus() != isuseractive) {
             user.setStatus(isuseractive);
         }
 
-        if(!(user.getEmailAddress().equalsIgnoreCase(emailaddress))) {
+        if (!(user.getEmailAddress().equalsIgnoreCase(emailaddress))) {
             user.setEmailAddress(emailaddress);
         }
 
-        if(!(user.getFullName().equalsIgnoreCase(fullname))) {
+        if (!(user.getFullName().equalsIgnoreCase(fullname))) {
             user.setFullName(fullname);
         }
         em.getTransaction().commit(); //Indicates to database that changes finished
@@ -86,33 +85,10 @@ public class UserRepository {
 
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
 
-
-        if(userName != null && userName != "") {
-            for (int i = 0; i < userlist.size(); i++) {
-                if(!(userlist.get(i).getUsername().toUpperCase().contains(userName.toUpperCase()))) {
-                    userlist.remove(i);
-                }
-            }
-        }
-
-        if(emailAddress != null && emailAddress != "") {
-            for (int i = 0; i < userlist.size(); i++) {
-                if(!(userlist.get(i).getEmailAddress().toUpperCase().contains(emailAddress.toUpperCase()))) {
-                    userlist.remove(i);
-                }
-            }
-        }
-
-        if(name != null && name != "") {
-            for (int i = 0; i < userlist.size(); i++) {
-                if(!(userlist.get(i).getFullName().toUpperCase().contains(name.toUpperCase()))) {
-                    userlist.remove(i);
-                }
-            }
-        }
-
-
-        return userlist;
+        return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(userName))
+                .filter(u -> u.getEmailAddress().equalsIgnoreCase(emailAddress))
+                .filter(u -> u.getFullName().equalsIgnoreCase(name))
+                .collect(Collectors.toList());
     }
 
 }

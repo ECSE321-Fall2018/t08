@@ -1,12 +1,12 @@
-package ecse321.t08.rideshare.Repository;
+package ecse321.t08.rideshare.repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import ecse321.t08.rideshare.entity.ATrip;
+import ecse321.t08.rideshare.entity.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import ecse321.t08.rideshare.Entity.ATrip;
-import ecse321.t08.rideshare.Entity.User;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import java.util.List;
 

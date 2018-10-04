@@ -1,12 +1,12 @@
-package ecse321.t08.rideshare.Controller;
+package ecse321.t08.rideshare.controller;
 
 
+import ecse321.t08.rideshare.entity.ATrip;
+import ecse321.t08.rideshare.repository.ATripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import ecse321.t08.rideshare.Entity.ATrip;
-import ecse321.t08.rideshare.Repository.ATripRepository;
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/trip")
@@ -15,7 +15,7 @@ public class ATripController {
 	  @Autowired
 	  ATripRepository repository;
 
-	  @RequestMapping(value="/createTrip", method=RequestMethod.POST)
+	  @RequestMapping(value="/createtrip", method=RequestMethod.POST)
 	  @ResponseBody
 	  public String createTrip(@RequestParam("status") int status,
 							   @RequestParam("cost") String cost,

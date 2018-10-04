@@ -1,8 +1,6 @@
-package ecse321.t08.rideshare.Entity;
+package ecse321.t08.rideshare.entity;
 
 import javax.persistence.*;
-import java.util.Set;
-import java.util.HashSet;
 
 
 @Entity
@@ -20,6 +18,21 @@ public class ATrip {
    private int vehicleId;
    private String passengerId; //Contains all passenger ids, delimiter is ';'
 
+   public ATrip() {
+   }
+
+   public ATrip(int tripID, int tripStatus, String costPerStop, int startDate, int endDate, String startLocation, String stops, int vehicleId, String passengerId) {
+      this.tripID = tripID;
+      this.tripStatus = tripStatus;
+      this.costPerStop = costPerStop;
+      this.startDate = startDate;
+      this.endDate = endDate;
+      this.startLocation = startLocation;
+      this.stops = stops;
+      this.vehicleId = vehicleId;
+      this.passengerId = passengerId;
+   }
+
    @Column(name="passengerid")
    public String getPassengerId() {
       return passengerId;
@@ -29,10 +42,6 @@ public class ATrip {
       this.passengerId = passengerId;
    }
 
-   public void setTripID(int value) {
-      this.tripID = value;
-   }
-
    @Id
    @Column(name="tripid")
    @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,14 +49,18 @@ public class ATrip {
       return this.tripID;
    }
 
-   
-   public void setStartDate(int value) {
-      this.startDate = value;
+   public void setTripID(int value) {
+      this.tripID = value;
    }
+
 
    @Column(name="startdate")
    public int getStartDate() {
       return this.startDate;
+   }
+
+   public void setStartDate(int value) {
+      this.startDate = value;
    }
 
    @Column(name="enddate")
@@ -59,33 +72,31 @@ public class ATrip {
       this.endDate = endDate;
    }
 
-
-   public void setStatus(int value) {
-      this.tripStatus = value;
-   }
-
    @Column(name="status")
    public int getStatus() {
       return this.tripStatus;
    }
 
-
-   public void setStartLocation(String value) {
-      this.startLocation = value;
+   public void setStatus(int value) {
+      this.tripStatus = value;
    }
 
    @Column(name="startlocation")
    public String getStartLocation() {
       return this.startLocation;
    }
-   
-   public void setStops(String value) {
-      this.stops = value;
+
+   public void setStartLocation(String value) {
+      this.startLocation = value;
    }
 
    @Column(name="getstops")
    public String getStops() {
       return this.stops;
+   }
+
+   public void setStops(String value) {
+      this.stops = value;
    }
 
    @Column(name="cost")
