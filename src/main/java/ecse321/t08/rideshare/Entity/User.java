@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 @NamedQueries({
-        @NamedQuery(name = "User.findUsername", query = "SELECT username FROM User username LIKE :usernameparam"),
+        @NamedQuery(name = "User.findUsername", query = "SELECT username FROM WHERE User username LIKE :usernameparam"),
         @NamedQuery(name = "User.findAll", query = "SELECT e FROM User e")
 })
 public class User {
