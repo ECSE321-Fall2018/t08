@@ -1,11 +1,11 @@
-package ecse321.t08.rideshare.Repository;
+package ecse321.t08.rideshare.repository;
+
+import ecse321.t08.rideshare.entity.Vehicle;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import ecse321.t08.rideshare.Entity.Vehicle;
 
 @Repository
 public class VehicleRepository {
@@ -27,8 +27,6 @@ public class VehicleRepository {
 
     @Transactional
     public Vehicle getVehicle(int id) {
-        Vehicle vehicle = entityManager.find(Vehicle.class, id);
-
-        return vehicle;
+        return entityManager.find(Vehicle.class, id);
     }
 }

@@ -1,11 +1,9 @@
-package ecse321.t08.rideshare.Controller;
+package ecse321.t08.rideshare.controller;
 
-import ecse321.t08.rideshare.Entity.ATrip;
+import ecse321.t08.rideshare.entity.Vehicle;
+import ecse321.t08.rideshare.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import ecse321.t08.rideshare.Entity.Vehicle;
-import ecse321.t08.rideshare.Repository.VehicleRepository;
 
 @RestController
 @RequestMapping("api/vehicle")

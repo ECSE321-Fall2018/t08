@@ -1,28 +1,21 @@
-package ecse321.t08.rideshare;
+package ecse321.t08.rideshare.controller;
 
-import org.mockito.InjectMocks;
-import org.mockito.invocation.InvocationOnMock;
-import org.springframework.boot.test.context.SpringBootTest;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
-
-
-import ecse321.t08.rideshare.Controller.UserController;
-import ecse321.t08.rideshare.Entity.User;
-import  ecse321.t08.rideshare.Repository.UserRepository;
-
-
-
+import ecse321.t08.rideshare.entity.User;
+import ecse321.t08.rideshare.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.*;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityManager;
 
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.when;
 
 
@@ -68,13 +61,15 @@ public class rideshareUserBasicTests {
 	@Test
 	public void testUserSimpleQueryFound() {
 		System.out.println("Testing User Query Found");
-		assertEquals(userController.getUser(USER_ID).getUserName(), USER_KEY);
+
+		assertEquals(USER_KEY, userController.getUser(USER_ID).getUserName());
 	}
 
 
 	@Test
 	public void testUserQueryNotFound() {
 		System.out.println("Testing User Query Not Found");
-		assertEquals(userController.getUser(NONEXISTING_USER_ID), null);
+
+		assertNull(userController.getUser(NONEXISTING_USER_ID));
 	}
 }

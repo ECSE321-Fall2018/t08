@@ -1,12 +1,10 @@
-package ecse321.t08.rideshare.Controller;
+package ecse321.t08.rideshare.controller;
 
+import ecse321.t08.rideshare.entity.User;
+import ecse321.t08.rideshare.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import ecse321.t08.rideshare.Entity.User;
-import ecse321.t08.rideshare.Repository.UserRepository;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

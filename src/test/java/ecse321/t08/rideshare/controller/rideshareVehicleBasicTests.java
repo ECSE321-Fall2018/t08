@@ -1,24 +1,21 @@
-package ecse321.t08.rideshare;
+package ecse321.t08.rideshare.controller;
 
-import ecse321.t08.rideshare.Controller.VehicleController;
-import ecse321.t08.rideshare.Entity.Vehicle;
-import ecse321.t08.rideshare.Repository.VehicleRepository;
-import org.mockito.InjectMocks;
-import org.mockito.invocation.InvocationOnMock;
-import org.springframework.boot.test.context.SpringBootTest;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
-
+import ecse321.t08.rideshare.entity.Vehicle;
+import ecse321.t08.rideshare.repository.VehicleRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.*;
+import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.persistence.EntityManager;
 
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.when;
 
 
@@ -68,13 +65,13 @@ public class rideshareVehicleBasicTests {
     @Test
     public void testVehicleSimpleQueryFound() {
         System.out.println("Testing Vehicle Query Found");
-        assertEquals(vehicleController.getVehicle(VEHICLE_ID).getDriverId(), DRIVER_ID);
+        assertEquals(DRIVER_ID, vehicleController.getVehicle(VEHICLE_ID).getDriverId());
     }
 
 
     @Test
     public void testVehicleQueryNotFound() {
         System.out.println("Testing Vehicle Query Not Found");
-        assertEquals(vehicleController.getVehicle(NONEXISTING_VEHICLE_ID), null);
+        assertNull(vehicleController.getVehicle(NONEXISTING_VEHICLE_ID));
     }
 }

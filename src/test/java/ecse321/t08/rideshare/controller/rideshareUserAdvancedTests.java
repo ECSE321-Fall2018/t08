@@ -1,31 +1,25 @@
-package ecse321.t08.rideshare;
+package ecse321.t08.rideshare.controller;
 
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
-import ecse321.t08.rideshare.Controller.UserController;
+import ecse321.t08.rideshare.entity.User;
+import ecse321.t08.rideshare.repository.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ecse321.t08.rideshare.Repository.UserRepository;
-import ecse321.t08.rideshare.Entity.User;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
+
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @Transactional
@@ -52,6 +46,8 @@ public class rideshareUserAdvancedTests  {
 
     @InjectMocks
     UserController userController;
+
+    // it looks like you are testing user controller so move the userDao part under ecse321.t08.rideshare.repository
 
     @Before
     public void setMockOutput() {
@@ -88,26 +84,21 @@ public class rideshareUserAdvancedTests  {
 
 
     @Test
-    public void testAdvancedUserQuery() throws IllegalAccessException {
+    public void testAdvancedUserQuery() {
         System.out.println("Testing Advanced User Query Found");
         List<User> userList = userDao.findUser(USER_KEY, USER_EMAIL, USER_FULLNAME);
-        if(userList == null || userList.size() < 1 || userList.size() > 1 ) {
-            throw new IllegalAccessException("Size must be 1 of test DAO.");
-        }
-        User user = userList.get(0);
 
-        assertEquals(user.getFullName(), USER_FULLNAME);
+        assertNotNull(userList);
+        assertEquals(1, userList.size());
+        assertEquals(USER_FULLNAME, userList.get(0).getFullName());
     }
 
     @Test
-    public void testAdvancedUserQueryNotFound() throws IllegalAccessException {
-        System.out.println("Testing Advanced User  Query Not Found");
+    public void testAdvancedUserQueryNotFound() {
+        System.out.println("Testing Advanced User Query Not Found");
         List<User> userList = userDao.findUser(NONEXISTING_USER_KEY, USER_EMAIL, USER_FULLNAME);
-        if(userList == null || userList.size() < 1 || userList.size() > 1 ) {
-            assertTrue(true);
-        } else {
-            assertTrue(false);
-        }
+
+        assertNull(userList);
     }
 
     @Test
@@ -115,20 +106,23 @@ public class rideshareUserAdvancedTests  {
         System.out.println("Testing Advanced User Update Query Found");
         User user = userController.updateUser(USER_KEY, USER_STATUS, USER_EMAIL, USER_FULLNAME_UPDATED, USER_PASSWORD);
 
-        assertEquals(user.getFullName(), USER_FULLNAME_UPDATED);
+        assertEquals(USER_FULLNAME_UPDATED, user.getFullName());
     }
 
     @Test
     public void testAdvancedUserUpdateQueryNotFound() {
         System.out.println("Testing Advanced User Update Query Not Found");
         User user = userController.updateUser(NONEXISTING_USER_KEY, USER_STATUS, USER_EMAIL, USER_FULLNAME, USER_PASSWORD);
-        assertEquals(user, null);
+
+        assertNull(user);
     }
 
     @Test
     public void testUserCreatePasswordIncorrectLength() {
         System.out.println("Testing Create User With Incorrect Password Length");
         String result = userController.createUser(USER_KEY, USER_STATUS, USER_EMAIL, USER_FULLNAME, "test");
-        assertEquals("User " + USER_KEY + " could not be created, select a new username and make sure your email has not been used before.", result);
+        String expectedResult = "User " + USER_KEY + " could not be created, select a new username and make sure your email has not been used before.";
+
+        assertEquals(expectedResult, result);
     }
 }

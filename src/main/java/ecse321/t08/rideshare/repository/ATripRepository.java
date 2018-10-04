@@ -1,11 +1,11 @@
-package ecse321.t08.rideshare.Repository;
+package ecse321.t08.rideshare.repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import ecse321.t08.rideshare.entity.ATrip;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import ecse321.t08.rideshare.Entity.ATrip;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Repository
 public class ATripRepository {

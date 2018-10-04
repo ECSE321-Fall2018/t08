@@ -1,7 +1,5 @@
-package ecse321.t08.rideshare.Entity;
+package ecse321.t08.rideshare.entity;
 
-import java.util.Set;
-import java.util.HashSet;
 import javax.persistence.*;
 
 
@@ -97,6 +95,5 @@ public class User {
    public String getFullName() {
       return this.fullName;
    }
-
 
    }
