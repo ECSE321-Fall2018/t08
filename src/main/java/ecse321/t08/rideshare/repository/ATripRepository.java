@@ -1,6 +1,7 @@
 package ecse321.t08.rideshare.repository;
 
 import ecse321.t08.rideshare.entity.ATrip;
+import ecse321.t08.rideshare.entity.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +30,17 @@ public class ATripRepository {
 
     @Transactional
     public ATrip getTrip(int id) {
-        ATrip trip = entityManager.find(ATrip.class, id);
+        return entityManager.find(ATrip.class, id);
+    }
 
-        return trip;
+    @Transactional
+    public void cancelATrip(int aTripID, int userID) {
+        ATrip trip = getTrip(aTripID);
+        if ("Driver" == entityManager.find(User.class, userID).getRole()) {
+                entityManager.remove(trip);
+        }
+        else if("Passenger" == entityManager.find(User.class, userID).getRole()) {
+            //remove values associated with passenger (cost, stop and passenger ID)
+        }
     }
 }

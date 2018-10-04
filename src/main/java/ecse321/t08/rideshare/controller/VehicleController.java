@@ -12,22 +12,20 @@ public class VehicleController {
 	@Autowired
     VehicleRepository repository;
 
-
     @RequestMapping(value="/createvehicle", method=RequestMethod.POST)
     @ResponseBody
-    public String createVehicle(@RequestParam(value="driverId", required=true) int driverId,
-                                @RequestParam(value="nbOfSeats", required=true) int nbOfSeats,
-                                @RequestParam(value="colour", required=true) String colour,
-                                @RequestParam(value="model", required=true) String model,
-                                @RequestParam(value="vehicleType", required=true) String vehicleType) {
+    public String createVehicle(@RequestParam("driverId") int driverId,
+                                @RequestParam("nbOfSeats") int nbOfSeats,
+                                @RequestParam("colour") String colour,
+                                @RequestParam("model") String model,
+                                @RequestParam("vehicleType") String vehicleType) {
 
-            Vehicle vehicle = repository.createVehicle(driverId, nbOfSeats, colour, model, vehicleType);
+        repository.createVehicle(driverId, nbOfSeats, colour, model, vehicleType);
         return model + " created!";
     }
 
     @RequestMapping(value="/vehicles/{id}", method=RequestMethod.GET)
     public Vehicle getVehicle(@PathVariable("id") int id) {
-        Vehicle vehicle = repository.getVehicle(id);
-        return vehicle;
+        return repository.getVehicle(id);
     }
 }

@@ -7,11 +7,10 @@ import javax.persistence.*;
 @Entity
 @Table(name = "users")
 @NamedQueries({
-        @NamedQuery(name = "User.findUsername", query = "SELECT c FROM User c WHERE c.username LIKE :userName"),
+        @NamedQuery(name = "User.findUsername", query = "SELECT username FROM User username LIKE :usernameparam"),
         @NamedQuery(name = "User.findAll", query = "SELECT e FROM User e")
 })
 public class User {
-
 
    private int userID;
    private String userName;
@@ -95,5 +94,10 @@ public class User {
    public String getFullName() {
       return this.fullName;
    }
+
+   public void setRole(String value) { this.role = value; }
+
+   @Column (name="role")
+   public String getRole() { return this.role; }
 
    }
