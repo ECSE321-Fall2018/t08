@@ -102,9 +102,9 @@ public class UserRepository {
     public List<User> findUser(String userName, String emailAddress, String name) {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
 
-        return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(userName))
-            .filter(u -> u.getEmailAddress().equalsIgnoreCase(emailAddress))
-            .filter(u -> u.getFullName().equalsIgnoreCase(name))
+        return userlist.stream().filter(u -> u.getUsername().contains(userName))
+            .filter(u -> u.getEmailAddress().toUpperCase().contains(emailAddress.toUpperCase()))
+            .filter(u -> u.getFullName().toUpperCase().contains(name.toUpperCase()))
             .collect(Collectors.toList());
     }
 
