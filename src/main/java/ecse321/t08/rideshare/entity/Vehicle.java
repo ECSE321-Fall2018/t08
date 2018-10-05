@@ -5,8 +5,6 @@ import javax.persistence.*;
 @Entity
 @Table(name="vehicle")
 public class Vehicle {
-
-
 	private int vehicleId;
 	private int nbOfSeats;
 	private String colour;

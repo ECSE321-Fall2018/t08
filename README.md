@@ -92,14 +92,22 @@ How to access our website:
 How to download our database repository:
 1. Install Heroku CLI.
 2. `heroku git:clone -a rideshare08` (not in our `t08` Git repository!)
+
 You should get a folder called `rideshare08`.
 
 How to access the backend stuff in our database repository:
 1. Install Postgres.
 2. In `rideshare08`, run this command: `heroku pg:psql` (don't use Git Bash)
+
 You should now be able to access our Postgresql databases and tables:
 - Get all data in table: `SELECT * FROM table_name;`
+    - `*` means get all
+    - the tables you can access are (case-sensitive):
+        - `users`
+        - `ATrip`
+        - `vehicle`
 - Get some data in table: `SELECT columns FROM table_name;`
+
 To add, edit, and delete databases and tables, check out this [W3Schools tutorial](https://www.w3schools.com/sql/).
 
 Note: If `heroku pg:psql` doesn't work and you are on Windows, follow these steps:
