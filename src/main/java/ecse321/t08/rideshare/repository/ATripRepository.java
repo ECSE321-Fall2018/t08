@@ -15,12 +15,21 @@ import java.util.List;
 @Repository
 public class ATripRepository {
 	
-	@PersistenceContext
+    @PersistenceContext
 	EntityManager em;
 	
 	@Transactional
-        public ATrip createATrip(int status, String cost, int startDate, int endDate, String startLocation, String stops, int vehicleId) {
+        public ATrip createATrip(
+            int status, 
+            String cost, 
+            int startDate,
+            int endDate, 
+            String startLocation, 
+            String stops, 
+            int vehicleId
+        ) {
             ATrip aTrip = new ATrip();
+            
             aTrip.setStatus(status);
             aTrip.setCostPerStop(cost);
             aTrip.setStartDate(startDate);
@@ -34,33 +43,17 @@ public class ATripRepository {
 
     // If you are an admin, you get to see all the trips
     @Transactional
-<<<<<<< HEAD
-    public List getTrips(String username, String password) {
-        // Get details about this user
-        List<User> userList = entityManager.createNamedQuery("User.findUserName")
-        .setParameter("usernameparam", "'%" + username + "%'")
-        .getResultList();
-
-        // Check if user is admin
-        if ("Admin" == userList.get(0).getRole()) {
-            return entityManager.createQuery("SELECT * FROM ATrip;").getResultList();
-        } else {
-            return null;
-        }
-=======
     public List getUnfilteredTripsList(String username, String password) {
         User user = em.find(User.class, username);
-        if(user == null) {
-            return null;
-        }
-        if(!(user.getRole().equalsIgnoreCase("administrator"))) {
-            return null;
-        }
-        if(!(user.getPassword().equals(password))) {
+        // Check if user is admin
+        if (
+            user == null
+            || !(user.getRole().equalsIgnoreCase("administrator"))
+            || !(user.getPassword().equals(password))
+        ) {
             return null;
         }
         return em.createQuery("SELECT * FROM ATrip").getResultList();
->>>>>>> 8f5f77accbcdfbbca9ac879933b76db931b5556b
     }
 
     @Transactional
@@ -68,24 +61,30 @@ public class ATripRepository {
         return em.find(ATrip.class, id);
     }
 
+    // Cancel a trip if you are a user
     @Transactional
     public String cancelATrip(int aTripID, String username, String password) {
         ATrip trip = getTrip(aTripID);
         User user = em.find(User.class, username);
-        if(user == null || trip == null) {
+
+        // Let's make sure user and trip exist, and user password is correct.
+
+        if (user == null || trip == null) {
             return null;
         }
 
-        if(!(user.getPassword().equals(password))) {
+        if (!(user.getPassword().equals(password))) {
             return "Unable to authenticate user to cancel trip.";
         }
 
-
+        // If user is driver, delete entire trip
         if ("Driver".equalsIgnoreCase(user.getRole())) {
-                em.remove(trip);
-                return "Trip " + aTripID + "deleted";
+            em.remove(trip);
+            return "Trip " + aTripID + "deleted";
         }
-        if("Passenger".equalsIgnoreCase(user.getRole())) {
+
+        // Is user is passenger, just remove passenger ID
+        if ("Passenger".equalsIgnoreCase(user.getRole())) {
             ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerId(), ";");
             for(String s: ids) {
                 if(s.equals(String.valueOf(user.getUserID()))) {
@@ -97,6 +96,7 @@ public class ATripRepository {
             em.getTransaction().commit();
             return "Passenger " + username + " removed from trip " + aTripID + ".";
         }
+
         return null;
     }
 }
