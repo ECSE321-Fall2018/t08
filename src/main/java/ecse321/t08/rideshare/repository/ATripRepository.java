@@ -3,6 +3,7 @@ package ecse321.t08.rideshare.repository;
 import ecse321.t08.rideshare.entity.ATrip;
 import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.utility.rideshareHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,9 @@ public class ATripRepository {
 	
     @PersistenceContext
 	EntityManager em;
+
+    @Autowired
+    UserRepository userRep;
 	
 	@Transactional
         public ATrip createATrip(
@@ -44,13 +48,9 @@ public class ATripRepository {
     // If you are an admin, you get to see all the trips
     @Transactional
     public List getUnfilteredTripsList(String username, String password) {
-        User user = em.find(User.class, username);
+        List<User> user = userRep.findUser(username);
         // Check if user is admin
-        if (
-            user == null
-            || !(user.getRole().equalsIgnoreCase("administrator"))
-            || !(user.getPassword().equals(password))
-        ) {
+        if (user.size() == 0 || user.size() > 1 ||!(user.get(0).getRole().equalsIgnoreCase("administrator")) || !(user.get(0).getPassword().equals(password))) {
             return null;
         }
         return em.createQuery("SELECT * FROM ATrip").getResultList();
@@ -65,29 +65,29 @@ public class ATripRepository {
     @Transactional
     public String cancelATrip(int aTripID, String username, String password) {
         ATrip trip = getTrip(aTripID);
-        User user = em.find(User.class, username);
+        List<User> user = userRep.findUser(username);
 
         // Let's make sure user and trip exist, and user password is correct.
 
-        if (user == null || trip == null) {
+        if (user.size() == 0 || user.size() > 0 || trip == null) {
             return null;
         }
 
-        if (!(user.getPassword().equals(password))) {
+        if (!(user.get(0).getPassword().equals(password))) {
             return "Unable to authenticate user to cancel trip.";
         }
 
         // If user is driver, delete entire trip
-        if ("Driver".equalsIgnoreCase(user.getRole())) {
+        if ("Driver".equalsIgnoreCase(user.get(0).getRole())) {
             em.remove(trip);
             return "Trip " + aTripID + "deleted";
         }
 
         // Is user is passenger, just remove passenger ID
-        if ("Passenger".equalsIgnoreCase(user.getRole())) {
+        if ("Passenger".equalsIgnoreCase(user.get(0).getRole())) {
             ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerId(), ";");
             for(String s: ids) {
-                if(s.equals(String.valueOf(user.getUserID()))) {
+                if(s.equals(String.valueOf(user.get(0).getUserID()))) {
                     ids.remove(s);
                 }
             }
