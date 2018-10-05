@@ -23,7 +23,8 @@ public class UserRepository {
         String role, 
         String password
     ) {
-        List<User> existingUser = findUser(userName, emailaddress);
+        List<User> existingUserName = findUser(userName);
+        List<User> existingUserEmail = findUserByEmail(emailaddress);
 
         /*
          * Don't create the user under these conditions:
@@ -32,11 +33,11 @@ public class UserRepository {
          * - the password is less than 8 characters
          */
 
-        if (existingUser.size() != 0) {
+        if (existingUserName.size() != 0) {
             return null;
         }
 
-        if (existingUser.size() != 0) {
+        if (existingUserEmail.size() != 0) {
             return null;
         }
 
@@ -64,7 +65,7 @@ public class UserRepository {
     @Transactional
     public User updateUser(String userName, boolean isuseractive, String emailaddress, String fullname, String role, String password) {
         List<User> userList = em.createNamedQuery("User.findUserName")
-                .setParameter("usernameparam", "'%" +userName + "%'")
+                .setParameter("usernameparam", "'" +userName + "'")
                 .getResultList();
 
         if (userList.isEmpty() || userList.size() > 1) {
@@ -121,6 +122,14 @@ public class UserRepository {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
 
         return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(userName))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<User> findUserByEmail(String emailAddress) {
+        List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
+
+        return userlist.stream().filter(u -> u.getEmailAddress().equalsIgnoreCase(emailAddress))
                 .collect(Collectors.toList());
     }
 
