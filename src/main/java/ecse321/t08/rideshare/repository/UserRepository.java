@@ -63,8 +63,8 @@ public class UserRepository {
     }
 
     @Transactional
-    public User updateUser(String userName, boolean isuseractive, String emailaddress, String fullname, String role, String password) {
-        List<User> userList = em.createNamedQuery("User.findUserName")
+    public User updateUser(String userName, String emailaddress, String fullname, String role, String password) {
+        List<User> userList = em.createNamedQuery("User.findUsername")
                 .setParameter("usernameparam", "'" +userName + "'")
                 .getResultList();
 
@@ -78,9 +78,6 @@ public class UserRepository {
         }
 
         em.getTransaction().begin(); // Indicates to database that changes might begin to entity
-        if (user.getStatus() != isuseractive) {
-            user.setStatus(isuseractive);
-        }
 
         if (!(user.getEmailAddress().equalsIgnoreCase(emailaddress))) {
             user.setEmailAddress(emailaddress);
@@ -102,9 +99,9 @@ public class UserRepository {
     public List<User> findUser(String userName, String emailAddress, String name) {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
 
-        return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(userName))
-            .filter(u -> u.getEmailAddress().equalsIgnoreCase(emailAddress))
-            .filter(u -> u.getFullName().equalsIgnoreCase(name))
+        return userlist.stream().filter(u -> u.getUsername().contains(userName))
+            .filter(u -> u.getEmailAddress().toUpperCase().contains(emailAddress.toUpperCase()))
+            .filter(u -> u.getFullName().toUpperCase().contains(name.toUpperCase()))
             .collect(Collectors.toList());
     }
 
