@@ -2,19 +2,21 @@ package ecse321.t08.rideshare.repository;
 
 import ecse321.t08.rideshare.entity.ATrip;
 import ecse321.t08.rideshare.entity.User;
+import ecse321.t08.rideshare.utility.rideshareHelper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class ATripRepository {
 	
 	@PersistenceContext
-	EntityManager entityManager;
+	EntityManager em;
 	
 	@Transactional
         public ATrip createATrip(int status, String cost, int startDate, int endDate, String startLocation, String stops, int vehicleId) {
@@ -26,29 +28,59 @@ public class ATripRepository {
             aTrip.setStartLocation(startLocation);
             aTrip.setStops(stops);
             aTrip.setVehicleId(vehicleId);
-            entityManager.persist(aTrip);
+            em.persist(aTrip);
             return aTrip;
         }
 
     @Transactional
-    public List getTrips(String username, String password) {
-        // CONFIRM IF THIS GUY IS AN ADMINISTRATOR!
-        return entityManager.createQuery("SELECT * FROM ATrip").getResultList();
+    public List getUnfilteredTripsList(String username, String password) {
+        User user = em.find(User.class, username);
+        if(user == null) {
+            return null;
+        }
+        if(!(user.getRole().equalsIgnoreCase("administrator"))) {
+            return null;
+        }
+        if(!(user.getPassword().equals(password))) {
+            return null;
+        }
+        return em.createQuery("SELECT * FROM ATrip").getResultList();
     }
 
     @Transactional
     public ATrip getTrip(int id) {
-        return entityManager.find(ATrip.class, id);
+        return em.find(ATrip.class, id);
     }
 
     @Transactional
-    public void cancelATrip(int aTripID, int userID) {
+    public String cancelATrip(int aTripID, String username, String password) {
         ATrip trip = getTrip(aTripID);
-        if ("Driver" == entityManager.find(User.class, userID).getRole()) {
-                entityManager.remove(trip);
+        User user = em.find(User.class, username);
+        if(user == null || trip == null) {
+            return null;
         }
-        else if("Passenger" == entityManager.find(User.class, userID).getRole()) {
-            //remove values associated with passenger (cost, stop and passenger ID)
+
+        if(!(user.getPassword().equals(password))) {
+            return "Unable to authenticate user to cancel trip.";
         }
+
+
+        if ("Driver".equalsIgnoreCase(user.getRole())) {
+                em.remove(trip);
+                return "Trip " + aTripID + "deleted";
+        }
+        if("Passenger".equalsIgnoreCase(user.getRole())) {
+            ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerId(), ";");
+            for(String s: ids) {
+                if(s.equals(String.valueOf(user.getUserID()))) {
+                    ids.remove(s);
+                }
+            }
+            em.getTransaction().begin();
+            trip.setPassengerId(rideshareHelper.concatenator(ids, ";"));
+            em.getTransaction().commit();
+            return "Passenger " + username + " removed from trip " + aTripID + ".";
+        }
+        return null;
     }
 }

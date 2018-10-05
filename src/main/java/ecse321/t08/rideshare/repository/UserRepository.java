@@ -17,7 +17,7 @@ public class UserRepository {
 
 
 	@Transactional
-	public User createUser(String userName, boolean isuseractive, String emailaddress, String fullname, String password) {
+	public User createUser(String userName, boolean isuseractive, String emailaddress, String fullname, String role, String password) {
 
         User existingUser = em.find(User.class, userName);
         if(existingUser != null) {
@@ -38,7 +38,9 @@ public class UserRepository {
         user.setStatus(isuseractive);
         user.setEmailAddress(emailaddress);
         user.setFullName(fullname);
+        user.setRole(role);
         user.setPassword(password);
+
         em.persist(user);
         return user;
     }
@@ -49,7 +51,7 @@ public class UserRepository {
     }
 
     @Transactional
-    public User updateUser(String userName, boolean isuseractive, String emailaddress, String fullname, String password) {
+    public User updateUser(String userName, boolean isuseractive, String emailaddress, String fullname, String role, String password) {
         List<User> userList = em.createNamedQuery("User.findUserName")
                 .setParameter("usernameparam", "'%" +userName + "%'")
                 .getResultList();
@@ -73,6 +75,10 @@ public class UserRepository {
 
         if (!(user.getFullName().equalsIgnoreCase(fullname))) {
             user.setFullName(fullname);
+        }
+
+        if(!(user.getRole().equalsIgnoreCase(role))) {
+            user.setRole(role);
         }
         em.getTransaction().commit(); //Indicates to database that changes finished
 

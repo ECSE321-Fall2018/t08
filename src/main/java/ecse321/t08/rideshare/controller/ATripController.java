@@ -28,22 +28,22 @@ public class ATripController {
 		  return "Trip created starting at " + startLocation + "!";
 	  }
 
-	  @RequestMapping(value="/trips/{username}/{password}", method=RequestMethod.GET)
-	  public List getTrips(
-			@PathVariable("username") String username, 
-			@PathVariable("password") String password
-		) {
-	  		return repository.getTrips(username, password);
-		}
+	  @RequestMapping(value="/utripslist", method=RequestMethod.GET)
+	  public List getUnfilteredTripsList(
+			@RequestParam("username") String username,
+			@RequestParam("password") String password) {
+	  		return repository.getUnfilteredTripsList(username, password);
+	  }
 		
-		@RequestMapping(value="/trips/{id}", method=RequestMethod.GET)
+	  @RequestMapping(value="/trips/{id}", method=RequestMethod.GET)
 	  public ATrip getTrip(@PathVariable("id") int id) {
 	  		return repository.getTrip(id);
 	  }
 
 	  @RequestMapping(value="/cancelTrip", method=RequestMethod.DELETE)
-	  public String cancelATrip(@RequestParam("tripID") int ATripID, @RequestParam("userID") int userID) {
-	  	repository.cancelATrip(ATripID, userID);
-	  	return "Trip number: " + ATripID + "has been cancelled by user " + userID + "!";
+	  public String cancelATrip(@RequestParam("tripid") int ATripID,
+								@RequestParam("username") String username,
+	  							@RequestParam("password") String password) {
+	  		return repository.cancelATrip(ATripID, username, password);
 	  }
 }

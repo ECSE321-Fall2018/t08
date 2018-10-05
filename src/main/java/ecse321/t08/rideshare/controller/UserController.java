@@ -20,12 +20,13 @@ public class UserController{
                              @RequestParam("status") boolean getStatus,
                              @RequestParam("email") String emailAddress,
                              @RequestParam("name") String name,
+                             @RequestParam("role") String role,
                              @RequestParam("password") String password) {
-        User user = repository.createUser(userName, getStatus, emailAddress, name, password);
+        User user = repository.createUser(userName, getStatus, emailAddress, name, role, password);
         if(user!=null) {
-            return "User " + userName + " created.";
+            return role + " " + userName + " created.";
         } else {
-            return "User " + userName + " could not be created, select a new username and make sure your email has not been used before.";
+            return role + " " + userName + " could not be created, select a new username and make sure your email has not been used before.";
         }
     }
 
@@ -35,8 +36,9 @@ public class UserController{
                              @RequestParam(value="status", required=false) boolean getStatus,
                              @RequestParam(value="email", required=false) String emailAddress,
                              @RequestParam(value="name", required=false) String name,
+                             @RequestParam(value="role", required=false) String role,
                              @RequestParam("password") String password) {
-        return repository.updateUser(userName, getStatus, emailAddress, name, password);
+        return repository.updateUser(userName, getStatus, emailAddress, name, role, password);
     }
 
     @RequestMapping(value="/users/{id}", method=RequestMethod.GET)
