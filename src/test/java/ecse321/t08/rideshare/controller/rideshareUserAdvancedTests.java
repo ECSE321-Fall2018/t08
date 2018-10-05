@@ -32,6 +32,7 @@ public class rideshareUserAdvancedTests  {
     private static final String USER_FULLNAME = "testuserfullname";
     private static final String USER_FULLNAME_UPDATED = "testuserfullnameupdated";
     private static final String NONEXISTING_USER_KEY = "nonusername";
+    private static final String USER_ROLE = "Passenger";
     private static final String USER_PASSWORD = "password";
     private static final boolean USER_STATUS = false;
 
@@ -52,7 +53,7 @@ public class rideshareUserAdvancedTests  {
     @Before
     public void setMockOutput() {
         System.out.println("Setting Up Test For User Query Found");
-        when(userDao.updateUser(anyString(), anyBoolean(), anyString(), anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
+        when(userDao.updateUser(anyString(), anyBoolean(), anyString(), anyString(), anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(3).equals(USER_FULLNAME_UPDATED)) {
                 User user = new User();
                 user.setUsername(USER_KEY);
@@ -104,7 +105,7 @@ public class rideshareUserAdvancedTests  {
     @Test
     public void testAdvancedUserUpdateQuery() {
         System.out.println("Testing Advanced User Update Query Found");
-        User user = userController.updateUser(USER_KEY, USER_STATUS, USER_EMAIL, USER_FULLNAME_UPDATED, USER_PASSWORD);
+        User user = userController.updateUser(USER_KEY, USER_STATUS, USER_EMAIL, USER_FULLNAME_UPDATED, USER_ROLE, USER_PASSWORD);
 
         assertEquals(USER_FULLNAME_UPDATED, user.getFullName());
     }
@@ -112,7 +113,7 @@ public class rideshareUserAdvancedTests  {
     @Test
     public void testAdvancedUserUpdateQueryNotFound() {
         System.out.println("Testing Advanced User Update Query Not Found");
-        User user = userController.updateUser(NONEXISTING_USER_KEY, USER_STATUS, USER_EMAIL, USER_FULLNAME, USER_PASSWORD);
+        User user = userController.updateUser(NONEXISTING_USER_KEY, USER_STATUS, USER_EMAIL, USER_FULLNAME, USER_ROLE, USER_PASSWORD);
 
         assertNull(user);
     }
@@ -120,8 +121,8 @@ public class rideshareUserAdvancedTests  {
     @Test
     public void testUserCreatePasswordIncorrectLength() {
         System.out.println("Testing Create User With Incorrect Password Length");
-        String result = userController.createUser(USER_KEY, USER_STATUS, USER_EMAIL, USER_FULLNAME, "test");
-        String expectedResult = "User " + USER_KEY + " could not be created, select a new username and make sure your email has not been used before.";
+        String result = userController.createUser(USER_KEY, USER_STATUS, USER_EMAIL, USER_FULLNAME, USER_ROLE, "test");
+        String expectedResult = USER_ROLE+ " " + USER_KEY + " could not be created, select a new username and make sure your email has not been used before.";
 
         assertEquals(expectedResult, result);
     }

@@ -34,6 +34,7 @@ public class User {
       this.username =user.getUsername();
       this.userID = user.getUserID();
       this.password = user.getPassword();
+      this.role = user.getRole();
    }
 
 
