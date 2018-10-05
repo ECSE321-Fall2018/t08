@@ -30,10 +30,20 @@ public class ATripRepository {
             return aTrip;
         }
 
+    // If you are an admin, you get to see all the trips
     @Transactional
     public List getTrips(String username, String password) {
-        // CONFIRM IF THIS GUY IS AN ADMINISTRATOR!
-        return entityManager.createQuery("SELECT * FROM ATrip").getResultList();
+        // Get details about this user
+        List<User> userList = entityManager.createNamedQuery("User.findUserName")
+        .setParameter("usernameparam", "'%" + username + "%'")
+        .getResultList();
+
+        // Check if user is admin
+        if ("Admin" == userList.get(0).getRole()) {
+            return entityManager.createQuery("SELECT * FROM ATrip;").getResultList();
+        } else {
+            return null;
+        }
     }
 
     @Transactional

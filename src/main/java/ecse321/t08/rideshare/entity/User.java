@@ -19,7 +19,7 @@ public class User {
    private String fullName;
    private String password;
 
-   private String role; //Either Driver, Passenger or Administrator
+   private String role; // Either Driver, Passenger or Administrator (case-sensitive!)
 
    //Driver
    private String vehicle_id;
