@@ -64,9 +64,7 @@ public class UserRepository {
 
     @Transactional
     public User updateUser(String userName, String emailaddress, String fullname, String role, String password) {
-        List<User> userList = em.createNamedQuery("User.findUsername")
-                .setParameter("usernameparam", "'" +userName + "'")
-                .getResultList();
+        List<User> userList = findUser(userName);
 
         if (userList.isEmpty() || userList.size() > 1) {
             return null;
