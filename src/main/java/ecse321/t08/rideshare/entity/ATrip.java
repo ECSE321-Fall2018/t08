@@ -52,6 +52,10 @@ public class ATrip {
         this.passengerid = passengerid;
     }
 
+    public void appendPassengerid(String passengerid) {
+        this.passengerid +=  ";" + passengerid; // or is it supposed to be `passengerid + ";"`
+    }
+
     @Id
     @Column(name="tripid")
     @GeneratedValue(strategy = GenerationType.AUTO)

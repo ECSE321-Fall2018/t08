@@ -37,10 +37,20 @@ public class ATripController {
 	  	    return repository.getUnfilteredTripsList(username, password);
 	    }
         
-	    @RequestMapping(value="/trips/{id}", method = RequestMethod.GET)
+	    @RequestMapping(value="/trips/{id}", method=RequestMethod.GET)
 	    public ATrip getTrip(@PathVariable("id") int id) {
 	        return repository.getTrip(id);
-	    }
+		}
+		
+		// User selects trip and we record it on ATrip
+		@RequestMapping(value="/trips/", method = RequestMethod.GET)
+		public String selectTrip(
+			@RequestParam("tripid") int ATripID,
+			@RequestParam("username") String username,
+			@RequestParam("password") String password
+		) {
+			return repository.selectTrip(ATripID, username, password);
+		}
 
         // Cancel trip based on ID, if you are a user
 	    @RequestMapping(value="/cancelTrip", method = RequestMethod.DELETE)
