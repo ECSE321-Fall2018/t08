@@ -52,6 +52,16 @@ public class UserController{
         return repository.updateUser(userName, emailAddress, name, role, password);
     }
 
+    @RequestMapping(value="/authenticate", method = RequestMethod.POST)
+    @ResponseBody
+    public String authenticateUser(
+            @RequestParam("username") String userName,
+            @RequestParam("password") String password
+    ) {
+
+        return repository.authenticateUser(userName, password);
+    }
+
     @RequestMapping(value="/users/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable("id") int id) {
         User user = repository.getUser(id);
