@@ -85,11 +85,11 @@ public class ATripRepository {
         if (trip.getPassengerid().contains(String.valueOf(user.get(0).getUserID()))) {
             return "User has already selected this trip.";
         }
-        {
-            trip.setPassengerid(trip.getPassengerid() + ";" + String.valueOf(user.get(0).getUserID()));
-            em.merge(trip);
-            return ("Passenger " + username + " selected this trip.");
-        }
+        
+        trip.setPassengerid(trip.getPassengerid() + ";" + String.valueOf(user.get(0).getUserID()));
+        em.merge(trip);
+        return ("Passenger " + username + " selected this trip.");
+        
     }
 
 
