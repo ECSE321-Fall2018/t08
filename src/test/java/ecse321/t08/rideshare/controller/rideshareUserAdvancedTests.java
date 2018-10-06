@@ -54,7 +54,6 @@ public class rideshareUserAdvancedTests  {
 
     @Before
     public void setMockOutput() {
-        System.out.println("Setting Up Test For User Query Found");
         when(userDao.updateUser(anyString(), anyString(), anyString(), anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(2).equals(USER_FULLNAME_UPDATED)) {
                 User user = new User();
@@ -79,7 +78,7 @@ public class rideshareUserAdvancedTests  {
                 userList.add(user);
                 return userList;
             } else {
-                return null;
+                return new ArrayList<User>();
             }
         });
         when(userDao.authenticateUser(anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
@@ -94,8 +93,7 @@ public class rideshareUserAdvancedTests  {
 
     @Test
     public void testAdvancedUserQuery() {
-        System.out.println("Testing Advanced User Query Found");
-        List<User> userList = userDao.findUser(USER_KEY, USER_EMAIL, USER_FULLNAME);
+        List<User> userList = userController.findUser(USER_KEY, USER_EMAIL, USER_FULLNAME);
 
         assertNotNull(userList);
         assertEquals(1, userList.size());
@@ -104,15 +102,13 @@ public class rideshareUserAdvancedTests  {
 
     @Test
     public void testAdvancedUserQueryNotFound() {
-        System.out.println("Testing Advanced User Query Not Found");
-        List<User> userList = userDao.findUser(NONEXISTING_USER_KEY, USER_EMAIL, USER_FULLNAME);
+        List<User> userList = userController.findUser(NONEXISTING_USER_KEY, USER_EMAIL, USER_FULLNAME);
 
-        assertNull(userList);
+        assertTrue(userList.isEmpty());
     }
 
     @Test
     public void testAdvancedUserUpdateQuery() {
-        System.out.println("Testing Advanced User Update Query Found");
         User user = userController.updateUser(USER_KEY, USER_EMAIL, USER_FULLNAME_UPDATED, USER_ROLE, USER_PASSWORD);
 
         assertEquals(USER_FULLNAME_UPDATED, user.getFullName());
@@ -120,7 +116,6 @@ public class rideshareUserAdvancedTests  {
 
     @Test
     public void testAdvancedUserUpdateQueryNotFound() {
-        System.out.println("Testing Advanced User Update Query Not Found");
         User user = userController.updateUser(NONEXISTING_USER_KEY, USER_EMAIL, USER_FULLNAME, USER_ROLE, USER_PASSWORD);
 
         assertNull(user);
@@ -128,7 +123,6 @@ public class rideshareUserAdvancedTests  {
 
     @Test
     public void testAuthenticateUser() {
-        System.out.println("Testing Advanced User Authentication");
         int result = userController.authenticateUser(USER_KEY, USER_PASSWORD);
 
         assertEquals(USER_ID, result);
@@ -136,7 +130,6 @@ public class rideshareUserAdvancedTests  {
 
     @Test
     public void testAuthenticateUserFails() {
-        System.out.println("Testing Advanced User Authentication Failure");
         int result = userController.authenticateUser(USER_KEY, USER_NON_PASSWORD);
 
         assertEquals(-1, result);
@@ -144,7 +137,6 @@ public class rideshareUserAdvancedTests  {
 
     @Test
     public void testUserCreatePasswordIncorrectLength() {
-        System.out.println("Testing Create User With Incorrect Password Length");
         String result = userController.createUser(USER_KEY, USER_STATUS, USER_EMAIL, USER_FULLNAME, USER_ROLE, "test");
         String expectedResult = USER_ROLE+ " " + USER_KEY + " could not be created, select a new username and make sure your email has not been used before.";
 

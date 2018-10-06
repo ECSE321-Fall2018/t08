@@ -41,7 +41,6 @@ public class rideshareATripBasicTests {
 
     @Before
     public void setMockTrueOutput() {
-        System.out.println("Setting Up Test For Trip Query Found");
         when(tripDao.getTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             if(invocation.getArgument(0).equals(TRIP_ID)) {
                 ATrip trip = new ATrip();
@@ -64,14 +63,12 @@ public class rideshareATripBasicTests {
 
     @Test
     public void testTripSimpleQueryFound() {
-        System.out.println("Testing Trip Query Found");
         assertEquals(STOPS, tripController.getTrip(TRIP_ID).getStops());
     }
 
 
     @Test
     public void testUserQueryNotFound() {
-        System.out.println("Testing Trip Query Not Found");
         assertNull(tripController.getTrip(NON_EXISTING_TRIP_ID));
     }
 }

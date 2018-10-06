@@ -62,7 +62,7 @@ public class ATripController {
 	    public String cancelATrip(
             @RequestParam("tripid") int ATripID,
 			@RequestParam("username") String username,
-              @RequestParam("password") String password
+			@RequestParam("password") String password
         ) {
 	  	    return repository.cancelATrip(ATripID, username, password);
 	    }

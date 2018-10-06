@@ -44,7 +44,6 @@ public class rideshareVehicleBasicTests {
 
     @Before
     public void setMockTrueOutput() {
-        System.out.println("Setting Up Test For Vehicle Query Found");
         when(vehicleDao.getVehicle(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             if(invocation.getArgument(0).equals(VEHICLE_ID)) {
                 Vehicle vehicle = new Vehicle();
@@ -64,14 +63,12 @@ public class rideshareVehicleBasicTests {
 
     @Test
     public void testVehicleSimpleQueryFound() {
-        System.out.println("Testing Vehicle Query Found");
         assertEquals(DRIVER_ID, vehicleController.getVehicle(VEHICLE_ID).getDriverId());
     }
 
 
     @Test
     public void testVehicleQueryNotFound() {
-        System.out.println("Testing Vehicle Query Not Found");
         assertNull(vehicleController.getVehicle(NONEXISTING_VEHICLE_ID));
     }
 }

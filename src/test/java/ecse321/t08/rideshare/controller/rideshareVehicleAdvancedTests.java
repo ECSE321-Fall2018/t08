@@ -45,7 +45,6 @@ public class rideshareVehicleAdvancedTests  {
 
     @Before
     public void setMockOutput() {
-        System.out.println("Setting Up Test For Advanced Vehicle Tests");
         when(vehicleDao.findVehicleForDriver(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(DRIVER_ID)) {
                 return VEHICLE_ID;
@@ -57,7 +56,6 @@ public class rideshareVehicleAdvancedTests  {
 
     @Test
     public void testFindVehicleForDriver() {
-        System.out.println("Testing Find Vehicle For Driver");
         int result = vehicleController.findVehicleForDriver(DRIVER_ID);
 
         assertEquals(result, VEHICLE_ID);
@@ -65,7 +63,6 @@ public class rideshareVehicleAdvancedTests  {
 
     @Test
     public void testFindVehicleForDriverFails() {
-        System.out.println("Testing Find Vehicle For Driver Fails");
         int result = vehicleController.findVehicleForDriver(NONEXISTING_DRIVER_ID);
 
         assertEquals(-1, result);

@@ -41,7 +41,6 @@ public class rideshareUserBasicTests {
 
 	@Before
 	public void setMockOutput() {
-		System.out.println("Setting Up Test For User Query Found");
 		when(userDao.getUser(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
 			if(invocation.getArgument(0).equals(USER_ID)) {
 				User user = new User();
@@ -60,15 +59,12 @@ public class rideshareUserBasicTests {
 
 	@Test
 	public void testUserSimpleQueryFound() {
-		System.out.println("Testing User Query Found");
 		assertEquals(userController.getUser(USER_ID).getUsername(), USER_KEY);
 	}
 
 
 	@Test
 	public void testUserQueryNotFound() {
-		System.out.println("Testing User Query Not Found");
-
 		assertNull(userController.getUser(NONEXISTING_USER_ID));
 	}
 }
