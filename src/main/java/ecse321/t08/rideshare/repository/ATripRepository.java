@@ -68,6 +68,7 @@ public class ATripRepository {
     public String selectTrip(int aTripID, String username, String password) {
         ATrip trip = getTrip(aTripID);
         List<User> user = userRep.findUser(username);
+        String stringid = String.valueOf(user.get(0).getUserID());
 
         // Make sure user and trip exist
         if (user.size() != 1 || trip == null) {
@@ -77,11 +78,17 @@ public class ATripRepository {
         else if (!(user.get(0).getPassword().equals(password))) {
             return "Unable to authenticate user to select trip.";
         }
-
+        // user has to be passenger
         else if (!("Passenger".equalsIgnoreCase(user.get(0).getRole()))) {
             return "Only passengers can select trips.";
-        } else {
-            trip.appendPassengerid(username);
+        }
+        // user can't have selected this trip before
+        else if (trip.getPassengerid().contains(stringid)) {
+            return "User has already selected this trip.";
+        }
+        // If all the checks above satisfy, then we can finally select trip
+        else {
+            trip.appendPassengerid(stringid);
 
             return ("Passenger " + username + " selected this trip.");
         }
