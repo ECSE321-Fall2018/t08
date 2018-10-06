@@ -74,9 +74,7 @@ public class UserRepository {
         if (!(user.getPassword().equals(password))) {
             return null;
         }
-
-        em.getTransaction().begin(); // Indicates to database that changes might begin to entity
-
+        
         if (!(user.getEmailAddress().equalsIgnoreCase(emailaddress))) {
             user.setEmailAddress(emailaddress);
         }
@@ -88,8 +86,7 @@ public class UserRepository {
         if (!(user.getRole().equalsIgnoreCase(role))) {
             user.setRole(role);
         }
-        em.getTransaction().commit(); //Indicates to database that changes finished
-
+        em.merge(user);
         return user;
     }
 
