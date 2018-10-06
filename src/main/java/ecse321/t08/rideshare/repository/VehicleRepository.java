@@ -1,6 +1,8 @@
 package ecse321.t08.rideshare.repository;
 
+import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.entity.Vehicle;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,9 +16,21 @@ public class VehicleRepository {
 
 	@PersistenceContext
 	EntityManager em;
+
+	@Autowired
+    UserRepository userRep;
 	
 	@Transactional
-	public Vehicle createVehicle(int driverId, int nbOfSeats, String colour, String model, String vehicleType) {
+	public Vehicle createVehicle(String driverUserName, String driverPassword, int nbOfSeats, String colour, String model, String vehicleType) {
+        int driverId = userRep.authenticateUser(driverUserName, driverPassword);
+        if(driverId == -1) {
+            return null;
+        }
+        User user = userRep.getUser(driverId);
+        if(!(user.getRole().equalsIgnoreCase("Driver"))) {
+            return null;
+        }
+
         Vehicle aVehicle = new Vehicle();
         aVehicle.setDriverId(driverId);
         aVehicle.setNbOfSeats(nbOfSeats);

@@ -14,14 +14,20 @@ public class VehicleController {
     @RequestMapping(value="/createvehicle", method = RequestMethod.POST)
     @ResponseBody
     public String createVehicle(
-        @RequestParam("driverId") int driverId,
+        @RequestParam("driveruser") String username,
+        @RequestParam("driverpass") String password,
         @RequestParam("nbOfSeats") int nbOfSeats,
         @RequestParam("colour") String colour,
         @RequestParam("model") String model,
         @RequestParam("vehicleType") String vehicleType
     ) {
-        repository.createVehicle(driverId, nbOfSeats, colour, model, vehicleType);
-        return model + " created!";
+        Vehicle result = repository.createVehicle(username, password, nbOfSeats, colour, model, vehicleType);
+        if(result != null) {
+            return model + " created!";
+        } else {
+            return "Vehicle could not be created. Please verify credentials.";
+        }
+
     }
 
     @RequestMapping(value="/vehicles/{id}", method = RequestMethod.GET)

@@ -23,10 +23,15 @@ public class ATripController {
 		@RequestParam("startLocation") String startLocation,
 		@RequestParam("stops") String stops,
         @RequestParam("vehicleid") int vehicleId,
-		@RequestParam("driverid") int driverId
+		@RequestParam("driveruser") String driverUsername,
+		@RequestParam("driverpass") String driverPassword
     ) {
-	    repository.createATrip(status, cost, startDate, endDate, startLocation, stops, vehicleId, driverId);
-	    return "Trip created starting at " + startLocation + "!";
+	    ATrip result = repository.createATrip(status, cost, startDate, endDate, startLocation, stops, vehicleId, driverUsername, driverPassword);
+	    if (result == null) {
+	    	return "Unable to create trip.";
+		} else {
+			return "Trip created starting at " + startLocation + "!";
+		}
     }
         // Get list of trips if you are admin
 	    @RequestMapping(value="/utripslist", method = RequestMethod.GET)

@@ -31,10 +31,19 @@ public class ATripRepository {
             String startLocation, 
             String stops, 
             int vehicleId,
-            int driverId
+            String driverUserName,
+            String driverPassword
         ) {
             ATrip aTrip = new ATrip();
-            
+            int driverId = userRep.authenticateUser(driverUserName, driverPassword);
+            if(driverId == -1) {
+                return null;
+            }
+            User user = userRep.getUser(driverId);
+            if(!(user.getRole().equalsIgnoreCase("Driver"))) {
+                return null;
+            }
+
             aTrip.setStatus(status);
             aTrip.setCostPerStop(cost);
             aTrip.setStartDate(startDate);
@@ -42,7 +51,6 @@ public class ATripRepository {
             aTrip.setStartLocation(startLocation);
             aTrip.setStops(stops);
             aTrip.setVehicleid(vehicleId);
-            aTrip.setDriverid(driverId);
             em.persist(aTrip);
             return aTrip;
         }
