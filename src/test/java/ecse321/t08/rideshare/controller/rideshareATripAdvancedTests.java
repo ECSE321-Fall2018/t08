@@ -6,12 +6,14 @@ import ecse321.t08.rideshare.repository.ATripRepository;
 import ecse321.t08.rideshare.utility.rideshareHelper;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.internal.InexactComparisonCriteria;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
@@ -30,6 +32,8 @@ public class rideshareATripAdvancedTests {
     ATripController aTripController;
 
     private static final int TRIP_ID = -1;
+    private static final int TRIP_ID2 = -5;
+    private static final int TRIP_ID3 = -10;
     private static final int TRIP_STATUS = 1;
     private static final String COST_PER_STOP = "5.00;8.00";
     private static final int START_DATE = 934238908;
@@ -38,7 +42,9 @@ public class rideshareATripAdvancedTests {
     private static final String STOPS = "Ottawa;Toronto";
     private static final int VEHICLE_ID = -2;
     private static final String PASSENGER_ID = "1;2;3;4";
-    private static final int DRIVER_ID = 4;
+    private static final String NONEXISTING_PASSENGER_ID = "5;6;7;8";
+    private static final int DRIVER_ID = 1;
+    private static final int NONEXSITING_DRIVER_ID = 5;
     private static final String DRIVER_USERNAME = "drivertest";
     private static final String DRIVER_PASSWORD = "driverpass";
     private static final String ADMIN_USERNAME = "admintest";
@@ -105,6 +111,59 @@ public class rideshareATripAdvancedTests {
             } else {
                 return -1;
             }
+        });
+        when(repository.userTrip(anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
+            User user = new User();
+            if (invocation.getArgument(0).equals(PASSENGER_USERNAME) && invocation.getArgument(1).equals(PASSENGER_PASSWORD)) {
+                user.setRole("Passenger");
+            } else if (invocation.getArgument(0).equals(DRIVER_USERNAME) && invocation.getArgument(1).equals(DRIVER_PASSWORD)) {
+                user.setRole("Driver");
+            } else {
+                return new ArrayList<Integer>();
+            }
+
+            ATrip trip = new ATrip();
+            ATrip trip2 = new ATrip();
+            ATrip trip3 = new ATrip();
+
+            user.setUsername(PASSENGER_ID);
+            user.setPassword(PASSENGER_PASSWORD);
+            user.setUserID(1);
+            trip.setPassengerid(PASSENGER_ID);
+            trip.setTripid(TRIP_ID);
+            trip.setDriverid(DRIVER_ID);
+            trip2.setTripid(TRIP_ID2);
+            trip2.setPassengerid(PASSENGER_ID);
+            trip2.setDriverid(DRIVER_ID);
+            trip3.setTripid(TRIP_ID3);
+            trip3.setPassengerid(NONEXISTING_PASSENGER_ID);
+            trip3.setDriverid(NONEXSITING_DRIVER_ID);
+            List<ATrip> tripsList = new ArrayList<ATrip>();
+            tripsList.add(trip);
+            tripsList.add(trip2);
+            tripsList.add(trip3);
+            if(user.getRole().equalsIgnoreCase("Driver")) {
+                List<ATrip> flist = tripsList.stream().filter(u -> (u.getDriverid() == 1))
+                        .collect(Collectors.toList());
+                List<Integer> result = new ArrayList<Integer>();
+                for(ATrip i : flist) {
+                    result.add(i.getTripid());
+                }
+                return result;
+            }
+            if(user.getRole().equalsIgnoreCase("Passenger")) {
+                List<Integer> result = new ArrayList<Integer>();
+                for(ATrip el : tripsList) {
+                    List<String> idlist  = rideshareHelper.tokenizer(el.getPassengerid(), ";");
+                    for(String id: idlist) {
+                        if(id.equalsIgnoreCase(String.valueOf(user.getUserID()))) {
+                            result.add(el.getTripid());
+                        }
+                    }
+                }
+                return result;
+            }
+            return new ArrayList<Integer>();
         });
     }
 
@@ -237,6 +296,38 @@ public class rideshareATripAdvancedTests {
     public void driverOnTripUnsuccessful() {
        int result = aTripController.driverOnTrip(NON_EXISTING_TRIP_ID);
         assertEquals(-1, result);
+    }
+
+    @Test
+    public void userTripDriver() {
+        List<Integer> result = aTripController.usertrip(DRIVER_USERNAME, DRIVER_PASSWORD);
+        assertEquals((int)result.get(0), TRIP_ID);
+        assertEquals((int)result.get(1), TRIP_ID2);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void userTripDriverFailure() {
+        List<Integer> result = aTripController.usertrip(DRIVER_USERNAME, DRIVER_PASSWORD);
+        result.get(2);
+    }
+
+    @Test
+    public void userTripPassenger() {
+        List<Integer> result = aTripController.usertrip(PASSENGER_USERNAME, PASSENGER_PASSWORD);
+        assertEquals((int)result.get(0), TRIP_ID);
+        assertEquals((int)result.get(1), TRIP_ID2);
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void userTripPassengerFailure() {
+        List<Integer> result = aTripController.usertrip(PASSENGER_USERNAME, PASSENGER_PASSWORD);
+        result.get(2);
+    }
+
+    @Test
+    public void userTripFailure() {
+        List<Integer> result = aTripController.usertrip(ADMIN_USERNAME, ADMIN_PASSWORD);
+        assertTrue(result.isEmpty());
     }
 
 }

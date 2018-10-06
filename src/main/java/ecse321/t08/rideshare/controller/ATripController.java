@@ -88,4 +88,11 @@ public class ATripController {
 			return repository.findDriverOnTrip(ATripID);
 		}
 
+		@RequestMapping(value="/usertrip", method = RequestMethod.POST)
+		public List<Integer> usertrip(@RequestParam("username") String username,
+									  @RequestParam("password") String password) {
+			return repository.userTrip(username, password);
+		}
+
+
 }

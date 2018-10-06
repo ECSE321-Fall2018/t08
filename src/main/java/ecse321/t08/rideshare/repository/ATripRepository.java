@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 public class ATripRepository {
@@ -200,5 +201,41 @@ public class ATripRepository {
             return -1;
         }
         return trip.getDriverid();
+    }
+
+    @Transactional
+    public List<Integer> userTrip(String username, String password) {
+        List<User> user = userRep.findUser(username);
+
+        if(user.size() != 1) {
+            return new ArrayList<Integer>();
+        }
+        if (!(user.get(0).getPassword().equals(password))) {
+            return new ArrayList<Integer>();
+        }
+
+        List<ATrip> list = em.createQuery("SELECT * FROM ATrip").getResultList();
+        if(user.get(0).getRole().equalsIgnoreCase("Driver")) {
+            List<ATrip> flist = list.stream().filter(u -> (u.getDriverid() == user.get(0).getUserID()))
+                    .collect(Collectors.toList());
+            List<Integer> result = new ArrayList<Integer>();
+            for(ATrip i : flist) {
+                result.add(i.getTripid());
+            }
+            return result;
+        }
+        if(user.get(0).getRole().equalsIgnoreCase("Passenger")) {
+            List<Integer> result = new ArrayList<Integer>();
+            for(ATrip el : list) {
+                List<String> idlist  = rideshareHelper.tokenizer(el.getPassengerid(), ";");
+                for(String id: idlist) {
+                    if(id.equalsIgnoreCase(String.valueOf(user.get(0).getUserID()))) {
+                        result.add(el.getTripid());
+                    }
+                }
+            }
+            return result;
+        }
+        return new ArrayList<Integer>();
     }
 }
