@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -28,6 +30,7 @@ public class rideshareUserAdvancedTests  {
     private static final String findUser = "User.findUsername";
 
     private static final String USER_KEY = "username";
+    private static final String USER_KEY2 = "username2";
     private static final int USER_ID = -11;
     private static final String USER_EMAIL = "testemail@testemail.com";
     private static final String USER_FULLNAME = "testuserfullname";
@@ -101,6 +104,23 @@ public class rideshareUserAdvancedTests  {
                 return new ArrayList<User>();
             }
         });
+        when(userDao.getFilteredUserList(anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(ADMIN_USERNAME) && invocation.getArgument(1).equals(ADMIN_PASSWORD)) {
+                User user = new User();
+                List<User> userList = new ArrayList<User>();
+                user.setUsername(USER_KEY);
+                user.setTripnumber(2);
+                User user2 = new User();
+                user2.setUsername(USER_KEY2);
+                user2.setTripnumber(1);
+                userList.add(user);
+                userList.add(user2);
+                Collections.sort(userList, Comparator.comparing(User::getTripnumber));
+                return userList;
+            } else {
+                return new ArrayList<User>();
+            }
+        });
     }
 
 
@@ -165,6 +185,19 @@ public class rideshareUserAdvancedTests  {
     @Test
     public void getUnfilteredUserListUnsuccessful() {
         List<User> result = userController.getUnfilteredUserList(ADMIN_USERNAME, USER_PASSWORD);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void getFilteredUserList() {
+        List<User> result = userController.getFilteredUserList(ADMIN_USERNAME, ADMIN_PASSWORD);
+        assertEquals(result.get(0).getUsername(), USER_KEY2);
+        assertEquals(result.get(1).getUsername(), USER_KEY);
+    }
+
+    @Test
+    public void getUnFilteredUserListUnsuccessful() {
+        List<User> result = userController.getFilteredUserList(ADMIN_USERNAME, USER_PASSWORD);
         assertTrue(result.isEmpty());
     }
 }

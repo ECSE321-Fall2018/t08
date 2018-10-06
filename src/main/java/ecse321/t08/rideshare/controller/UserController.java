@@ -103,5 +103,13 @@ public class UserController{
         return repository.getUnfilteredUserList(username, password);
     }
 
+    @RequestMapping(value="/fuserlist", method = RequestMethod.POST)
+    public List getFilteredUserList(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password
+    ) {
+        return repository.getFilteredUserList(username, password);
+    }
+
 
 }
