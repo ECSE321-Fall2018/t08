@@ -52,6 +52,7 @@ public class UserRepository {
         user.setFullName(fullname);
         user.setRole(role);
         user.setPassword(password);
+        user.setTripnumber(0);
 
         em.persist(user);
         return user;

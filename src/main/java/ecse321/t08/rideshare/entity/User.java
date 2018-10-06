@@ -14,11 +14,8 @@ public class User {
     private String emailAddress;
     private String fullName;
     private String password;
-
+    private int tripnumber;
     private String role; // Either Driver, Passenger or Administrator (case-sensitive!)
-
-    // Driver
-    private String vehicle_id;
 
     public User() {}
 
@@ -30,6 +27,7 @@ public class User {
         this.userID = user.getUserID();
         this.password = user.getPassword();
         this.role = user.getRole();
+        this.tripnumber=user.getTripnumber();
     }
 
 
@@ -98,5 +96,14 @@ public class User {
     @Column (name="role")
     public String getRole() {
         return this.role;
+    }
+
+    @Column(name="tripnumber")
+    public int getTripnumber() {
+        return tripnumber;
+    }
+
+    public void setTripnumber(int tripnumber) {
+        this.tripnumber = tripnumber;
     }
 }

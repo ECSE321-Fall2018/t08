@@ -43,6 +43,8 @@ public class ATripRepository {
             if(!(user.getRole().equalsIgnoreCase("Driver"))) {
                 return null;
             }
+            user.setTripnumber(user.getTripnumber()+1);
+            em.merge(user);
 
             aTrip.setStatus(status);
             aTrip.setCostPerStop(cost);
@@ -98,6 +100,8 @@ public class ATripRepository {
         } else {
             trip.setPassengerid(trip.getPassengerid() + ";" + String.valueOf(user.get(0).getUserID()));
         }
+        user.get(0).setTripnumber(user.get(0).getTripnumber()+1);
+        em.merge(user);
         em.merge(trip);
         return ("Passenger " + username + " selected this trip.");
         
@@ -120,6 +124,15 @@ public class ATripRepository {
         }
         // If user is driver, delete entire trip
         else if ("Driver".equalsIgnoreCase(user.get(0).getRole())) {
+            user.get(0).setTripnumber(user.get(0).getTripnumber()-1);
+            ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
+            for(String s: ids) {
+                User passenger = userRep.getUser(Integer.parseInt(s));
+                passenger.setTripnumber(passenger.getTripnumber() - 1);
+                em.merge(passenger);
+            }
+
+            em.merge(user.get(0));
             em.remove(trip);
             return "Trip " + aTripID + "deleted";
         }
@@ -129,11 +142,12 @@ public class ATripRepository {
             for(String s: ids) {
                 if(s.equals(String.valueOf(user.get(0).getUserID()))) {
                     ids.remove(s);
+                    user.get(0).setTripnumber(user.get(0).getTripnumber() - 1);
+                    em.merge(user);
                 }
             }
-            em.getTransaction().begin();
             trip.setPassengerid(rideshareHelper.concatenator(ids, ";"));
-            em.getTransaction().commit();
+            em.merge(trip);
             return "Passenger " + username + " removed from trip " + aTripID + ".";
         }
 
