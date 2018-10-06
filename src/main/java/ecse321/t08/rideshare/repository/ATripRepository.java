@@ -74,14 +74,19 @@ public class ATripRepository {
             return "User or trip does not exist.";
         }
         // password is correct
-        else if (!(user.get(0).getPassword().equals(password))) {
+        if (!(user.get(0).getPassword().equals(password))) {
             return "Unable to authenticate user to select trip.";
         }
 
-        else if (!("Passenger".equalsIgnoreCase(user.get(0).getRole()))) {
+        if (!("Passenger".equalsIgnoreCase(user.get(0).getRole()))) {
             return "Only passengers can select trips.";
-        } else {
-            trip.setPassengerid() = trip.getPassengerid() + ";" + user.get(0).getUserID();
+        }
+
+        if (trip.getPassengerid().contains(String.valueOf(user.get(0).getUserID()))) {
+            return "User has already selected this trip.";
+        }
+        {
+            trip.setPassengerid(trip.getPassengerid() + ";" + String.valueOf(user.get(0).getUserID()));
             em.merge(trip);
             return ("Passenger " + username + " selected this trip.");
         }
