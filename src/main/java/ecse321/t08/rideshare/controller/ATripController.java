@@ -43,7 +43,7 @@ public class ATripController {
 		}
 		
 		// User selects trip and we record it on ATrip
-		@RequestMapping(value="/trips/", method = RequestMethod.GET)
+		@RequestMapping(value="/trips", method = RequestMethod.GET)
 		public String selectTrip(
 			@RequestParam("tripid") int ATripID,
 			@RequestParam("username") String username,
