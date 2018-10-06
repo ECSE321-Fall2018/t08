@@ -78,5 +78,14 @@ public class ATripController {
 			return repository.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
 		}
 
+		@RequestMapping(value="/passengerontrip", method = RequestMethod.POST)
+		public List<String> passengerOnTrip(@RequestParam("tripid") int ATripID) {
+			return repository.findPassengerOnTrip(ATripID);
+		}
+
+		@RequestMapping(value="/driverontrip", method = RequestMethod.POST)
+		public int driverOnTrip(@RequestParam("tripid") int ATripID) {
+			return repository.findDriverOnTrip(ATripID);
+		}
 
 }

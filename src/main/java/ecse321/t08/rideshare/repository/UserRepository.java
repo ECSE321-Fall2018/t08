@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -148,7 +149,7 @@ public class UserRepository {
         List<User> user = findUser(username);
         // Check if user is admin
         if (user.size() == 0 || user.size() > 1 ||!(user.get(0).getRole().equalsIgnoreCase("administrator")) || !(user.get(0).getPassword().equals(password))) {
-            return null;
+            return new ArrayList<User>();
         }
         return em.createNamedQuery("User.findAll").getResultList();
     }
@@ -158,7 +159,7 @@ public class UserRepository {
         List<User> user = findUser(username);
         // Check if user is admin
         if (user.size() == 0 || user.size() > 1 ||!(user.get(0).getRole().equalsIgnoreCase("administrator")) || !(user.get(0).getPassword().equals(password))) {
-            return null;
+            return new ArrayList<User>();
         }
         List<User> userli = em.createNamedQuery("User.findAll").getResultList();
         Collections.sort(userli, Comparator.comparing(User::getTripnumber));

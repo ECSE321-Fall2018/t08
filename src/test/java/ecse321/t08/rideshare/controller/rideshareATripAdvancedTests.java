@@ -3,6 +3,7 @@ package ecse321.t08.rideshare.controller;
 import ecse321.t08.rideshare.entity.ATrip;
 import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.repository.ATripRepository;
+import ecse321.t08.rideshare.utility.rideshareHelper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -88,6 +89,21 @@ public class rideshareATripAdvancedTests {
                 return "Trip status changed successfully";
             } else {
                 return "Only a driver can change the status of a trip.";
+            }
+        });
+        when(repository.findPassengerOnTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(TRIP_ID)) {
+                List<String> list = (rideshareHelper.tokenizer(PASSENGER_ID, ";"));
+                return list;
+            } else {
+                return new ArrayList<User>();
+            }
+        });
+        when(repository.findDriverOnTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(TRIP_ID)) {
+                return DRIVER_ID;
+            } else {
+                return -1;
             }
         });
     }
@@ -193,6 +209,34 @@ public class rideshareATripAdvancedTests {
     public void changeTripStatusUnsuccessful() {
         String result = aTripController.changeTripStatus(TRIP_ID, PASSENGER_USERNAME, PASSENGER_PASSWORD, TRIP_STATUS);
         assertEquals("Only a driver can change the status of a trip.", result);
+    }
+
+    @Test
+    public void passengerOnTrip() {
+        List<String> result = aTripController.passengerOnTrip(TRIP_ID);
+        int iter = 1;
+        for(String s : result) {
+            assertEquals(String.valueOf(iter), result.get(iter-1));
+            iter++;
+        }
+    }
+
+    @Test
+    public void passengerOnTripUnsuccessful() {
+        List<String> result = aTripController.passengerOnTrip(NON_EXISTING_TRIP_ID);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void driverOnTrip() {
+        int result = aTripController.driverOnTrip(TRIP_ID);
+        assertEquals(DRIVER_ID, result);
+    }
+
+    @Test
+    public void driverOnTripUnsuccessful() {
+       int result = aTripController.driverOnTrip(NON_EXISTING_TRIP_ID);
+        assertEquals(-1, result);
     }
 
 }

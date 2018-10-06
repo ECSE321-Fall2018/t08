@@ -63,7 +63,7 @@ public class ATripRepository {
         List<User> user = userRep.findUser(username);
         // Check if user is admin
         if (user.size() == 0 || user.size() > 1 ||!(user.get(0).getRole().equalsIgnoreCase("administrator")) || !(user.get(0).getPassword().equals(password))) {
-            return null;
+            return new ArrayList<User>();
         }
         return em.createQuery("SELECT * FROM ATrip").getResultList();
     }
@@ -180,5 +180,25 @@ public class ATripRepository {
         trip.setStatus(status);
         em.merge(trip);
         return "Trip status changed successfully";
+    }
+
+    @Transactional
+    public List<String> findPassengerOnTrip(int tripid) {
+        ATrip trip = getTrip(tripid);
+
+        if (trip == null) {
+            return new ArrayList<String>();
+        }
+        return rideshareHelper.tokenizer(trip.getPassengerid(), ";");
+    }
+
+    @Transactional
+    public int findDriverOnTrip(int tripid) {
+        ATrip trip = getTrip(tripid);
+
+        if (trip == null) {
+            return -1;
+        }
+        return trip.getDriverid();
     }
 }
