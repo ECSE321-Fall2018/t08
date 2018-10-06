@@ -95,5 +95,13 @@ public class UserController{
         return userList;
     }
 
+    @RequestMapping(value="/userlist", method = RequestMethod.POST)
+    public List getUnfilteredUserList(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password
+    ) {
+        return repository.getUnfilteredUserList(username, password);
+    }
+
 
 }

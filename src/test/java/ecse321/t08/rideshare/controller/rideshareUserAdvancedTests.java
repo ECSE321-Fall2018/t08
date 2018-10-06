@@ -36,6 +36,8 @@ public class rideshareUserAdvancedTests  {
     private static final String USER_ROLE = "Passenger";
     private static final String USER_PASSWORD = "password";
     private static final String USER_NON_PASSWORD = "passcode";
+    private static final String ADMIN_USERNAME = "admintest";
+    private static final String ADMIN_PASSWORD = "adminpass";
     private static final boolean USER_STATUS = false;
 
     @Mock
@@ -86,6 +88,17 @@ public class rideshareUserAdvancedTests  {
                 return USER_ID;
             } else {
                 return -1;
+            }
+        });
+        when(userDao.getUnfilteredUserList(anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(ADMIN_USERNAME) && invocation.getArgument(1).equals(ADMIN_PASSWORD)) {
+                User user = new User();
+                List<User> userList = new ArrayList<User>();
+                user.setUsername(USER_KEY);
+                userList.add(user);
+                return userList;
+            } else {
+                return new ArrayList<User>();
             }
         });
     }
@@ -141,5 +154,17 @@ public class rideshareUserAdvancedTests  {
         String expectedResult = USER_ROLE+ " " + USER_KEY + " could not be created, select a new username and make sure your email has not been used before.";
 
         assertEquals(expectedResult, result);
+    }
+
+    @Test
+    public void getUnfilteredUserList() {
+        List<User> result = userController.getUnfilteredUserList(ADMIN_USERNAME, ADMIN_PASSWORD);
+        assertEquals(result.get(0).getUsername(), USER_KEY);
+    }
+
+    @Test
+    public void getUnfilteredUserListUnsuccessful() {
+        List<User> result = userController.getUnfilteredUserList(ADMIN_USERNAME, USER_PASSWORD);
+        assertTrue(result.isEmpty());
     }
 }
