@@ -124,17 +124,19 @@ public class ATripRepository {
         }
         // If user is driver, delete entire trip
         else if ("Driver".equalsIgnoreCase(user.get(0).getRole())) {
-            user.get(0).setTripnumber(user.get(0).getTripnumber()-1);
-            ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
-            for(String s: ids) {
-                User passenger = userRep.getUser(Integer.parseInt(s));
-                passenger.setTripnumber(passenger.getTripnumber() - 1);
-                em.merge(passenger);
-            }
+            if(user.get(0).getUserID() == trip.getDriverid()) {
+                user.get(0).setTripnumber(user.get(0).getTripnumber() - 1);
+                ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
+                for (String s : ids) {
+                    User passenger = userRep.getUser(Integer.parseInt(s));
+                    passenger.setTripnumber(passenger.getTripnumber() - 1);
+                    em.merge(passenger);
+                }
 
-            em.merge(user.get(0));
-            em.remove(trip);
-            return "Trip " + aTripID + "deleted";
+                em.merge(user.get(0));
+                em.remove(trip);
+                return "Trip " + aTripID + "deleted";
+            }
         }
         // Is user is passenger, just remove passenger ID
         else if ("Passenger".equalsIgnoreCase(user.get(0).getRole())) {
@@ -152,5 +154,31 @@ public class ATripRepository {
         }
 
         return "Unknown error.";
+    }
+
+    @Transactional
+    public String changeTripStatus(int aTripID, String username, String password, int status) {
+        ATrip trip = getTrip(aTripID);
+        List<User> user = userRep.findUser(username);
+
+        // Let's make sure user and trip exist, and user password is correct.
+
+        if (user.size() != 1 || trip == null) {
+            return "User or trip does not exist.";
+        }
+        if (!(user.get(0).getPassword().equals(password))) {
+            return "Unable to authenticate user to change trip status.";
+        }
+        // Check if user is driver
+        if (!("Driver".equalsIgnoreCase(user.get(0).getRole()))) {
+            return "Only a driver can change the status of a trip.";
+        }
+        if(trip.getDriverid()!=user.get(0).getUserID()) {
+            return "Driver can only change status of their own trip.";
+        }
+
+        trip.setStatus(status);
+        em.merge(trip);
+        return "Trip status changed successfully";
     }
 }

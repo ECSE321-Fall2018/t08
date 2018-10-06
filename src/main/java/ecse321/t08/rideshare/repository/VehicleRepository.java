@@ -54,7 +54,8 @@ public class VehicleRepository {
 
         if(vehList.size() > 1 || vehList.size() < 1) {
             return -1;
-        } else
+        } else {
             return vehList.get(0).getVehicleId();
+        }
     }
 }

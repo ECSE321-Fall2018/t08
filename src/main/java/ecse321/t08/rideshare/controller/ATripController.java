@@ -34,7 +34,7 @@ public class ATripController {
 		}
     }
         // Get list of trips if you are admin
-	    @RequestMapping(value="/utripslist", method = RequestMethod.GET)
+	    @RequestMapping(value="/utripslist", method = RequestMethod.POST)
 	    public List getUnfilteredTripsList(
 		    @RequestParam("username") String username,
             @RequestParam("password") String password
@@ -48,7 +48,7 @@ public class ATripController {
 		}
 		
 		// User selects trip and we record it on ATrip
-		@RequestMapping(value="/selecttrip", method = RequestMethod.GET)
+		@RequestMapping(value="/selecttrip", method = RequestMethod.POST)
 		public String selectTrip(
 			@RequestParam("tripid") int ATripID,
 			@RequestParam("username") String username,
@@ -58,7 +58,7 @@ public class ATripController {
 		}
 
         // Cancel trip based on ID, if you are a user
-	    @RequestMapping(value="/cancelTrip", method = RequestMethod.DELETE)
+	    @RequestMapping(value="/cancelTrip", method = RequestMethod.POST)
 	    public String cancelATrip(
             @RequestParam("tripid") int ATripID,
 			@RequestParam("username") String username,
@@ -66,4 +66,17 @@ public class ATripController {
         ) {
 	  	    return repository.cancelATrip(ATripID, username, password);
 	    }
+
+
+		@RequestMapping(value="/status", method = RequestMethod.POST)
+		public String changeTripStatus(
+			@RequestParam("tripid") int ATripID,
+			@RequestParam("username") String username,
+			@RequestParam("password") String password,
+			@RequestParam("tripstatus") int status
+		) {
+			return repository.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
+		}
+
+
 }

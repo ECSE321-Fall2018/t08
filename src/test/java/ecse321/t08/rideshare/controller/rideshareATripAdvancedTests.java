@@ -83,6 +83,13 @@ public class rideshareATripAdvancedTests {
                 return "Unknown error.";
             }
         });
+        when(repository.changeTripStatus(anyInt(), anyString(), anyString(), anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(TRIP_ID) && invocation.getArgument(1).equals(DRIVER_USERNAME) && invocation.getArgument(2).equals(DRIVER_PASSWORD)) {
+                return "Trip status changed successfully";
+            } else {
+                return "Only a driver can change the status of a trip.";
+            }
+        });
     }
 
     @Test
@@ -174,6 +181,18 @@ public class rideshareATripAdvancedTests {
     public void cancelTripUnsuccessful() {
         String result = aTripController.cancelATrip(TRIP_ID, ADMIN_USERNAME, ADMIN_PASSWORD);
         assertEquals("Unknown error.", result);
+    }
+
+    @Test
+    public void changeTripStatus() {
+        String result = aTripController.changeTripStatus(TRIP_ID, DRIVER_USERNAME, DRIVER_PASSWORD, TRIP_STATUS);
+        assertEquals("Trip status changed successfully", result);
+    }
+
+    @Test
+    public void changeTripStatusUnsuccessful() {
+        String result = aTripController.changeTripStatus(TRIP_ID, PASSENGER_USERNAME, PASSENGER_PASSWORD, TRIP_STATUS);
+        assertEquals("Only a driver can change the status of a trip.", result);
     }
 
 }
