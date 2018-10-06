@@ -9,11 +9,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/user")
-public class UserController{
+public class UserController {
     @Autowired
     UserRepository repository;
     
-    @RequestMapping(value="/createUser", method = RequestMethod.POST)
+    @RequestMapping(value="/createUser", method=RequestMethod.POST)
     @ResponseBody
     public String createUser(
         @RequestParam("username") String userName,
