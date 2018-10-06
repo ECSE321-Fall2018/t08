@@ -105,7 +105,6 @@ public class UserRepository {
         }
     }
 
-
     @Transactional
     public List<User> findUser(String userName, String emailAddress, String name) {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
@@ -121,8 +120,8 @@ public class UserRepository {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
 
         return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(userName))
-                .filter(u -> u.getEmailAddress().equalsIgnoreCase(emailAddress))
-                .collect(Collectors.toList());
+            .filter(u -> u.getEmailAddress().equalsIgnoreCase(emailAddress))
+            .collect(Collectors.toList());
     }
 
     @Transactional
@@ -130,7 +129,7 @@ public class UserRepository {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
 
         return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(userName))
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 
     @Transactional
@@ -138,17 +137,22 @@ public class UserRepository {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
 
         return userlist.stream().filter(u -> u.getEmailAddress().equalsIgnoreCase(emailAddress))
-                .collect(Collectors.toList());
+            .collect(Collectors.toList());
     }
 
     @Transactional
     public List getUnfilteredUserList(String username, String password) {
         List<User> user = findUser(username);
         // Check if user is admin
-        if (user.size() == 0 || user.size() > 1 ||!(user.get(0).getRole().equalsIgnoreCase("administrator")) || !(user.get(0).getPassword().equals(password))) {
+        if (
+            user.size() == 0
+            ||
+            user.size() > 1
+            ||!(user.get(0).getRole().equalsIgnoreCase("administrator"))
+            || !(user.get(0).getPassword().equals(password))
+        ) {
             return null;
         }
         return em.createNamedQuery("User.findAll").getResultList();
     }
-
 }

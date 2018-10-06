@@ -41,7 +41,7 @@ public class ATrip {
         this.vehicleid = vehicleid;
         this.passengerid = passengerid;
         this.driverid = driverid;
-   }
+    }
 
     @Column(name="passengerid")
     public String getPassengerid() {
@@ -52,10 +52,9 @@ public class ATrip {
         this.passengerid = passengerid;
     }
 
-
     @Id
     @Column(name="tripid")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     public int getTripid() {
         return this.tripid;
     }
@@ -63,7 +62,6 @@ public class ATrip {
     public void setTripid(int value) {
         this.tripid = value;
     }
-
 
     @Column(name="startdate")
     public int getStartDate() {
@@ -130,7 +128,7 @@ public class ATrip {
 
     @Column(name="driverid")
     public int getDriverid() {
-        return vehicleid;
+        return driverid;
     }
 
     public void setDriverid(int vehicleid) {

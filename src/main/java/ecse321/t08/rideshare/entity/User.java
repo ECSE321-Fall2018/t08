@@ -3,9 +3,9 @@ package ecse321.t08.rideshare.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name="users")
 @NamedQueries({
-    @NamedQuery(name = "User.findAll", query = "SELECT e FROM User e")
+    @NamedQuery(name="User.findAll", query="SELECT e FROM User e")
 })
 public class User {
     private int userID;
@@ -30,14 +30,13 @@ public class User {
         this.tripnumber=user.getTripnumber();
     }
 
-
     public void setUserID(int value) {
         this.userID = value;
     }
 
     @Id
     @Column(name = "userid")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.AUTO)
     public int getUserID() {
         return this.userID;
     }
@@ -60,7 +59,6 @@ public class User {
         return this.emailAddress;
     }
    
-   
     public void setPassword(String value) {
         this.password = value;
     }
@@ -69,7 +67,6 @@ public class User {
     public String getPassword() {
         return this.password;
     }
-
 
     public void setStatus(boolean value) {
         this.isUserActive = value;

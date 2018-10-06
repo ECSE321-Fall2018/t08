@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="vehicles")
 @NamedQueries({
-		@NamedQuery(name = "Vehicle.findAll", query = "SELECT e FROM Vehicle e")
+	@NamedQuery(name="Vehicle.findAll", query="SELECT e FROM Vehicle e")
 })
 public class Vehicle {
 	private int vehicleId;
@@ -17,7 +17,7 @@ public class Vehicle {
 
 	@Id
 	@Column(name="vehicleid")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	public int getVehicleId() {
 		return vehicleId;
 	}
@@ -63,11 +63,11 @@ public class Vehicle {
 	}
 
 	@Column(name="vehicleType")
-	public String getVehicleType(){
+	public String getVehicleType() {
 		return this.vehicleType;
 	}
 
-	public void setVehicleType(String value){
+	public void setVehicleType(String value) {
 		this.vehicleType = value;
 	}
 }

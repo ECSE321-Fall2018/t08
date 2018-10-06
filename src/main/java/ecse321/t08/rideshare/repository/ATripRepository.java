@@ -15,7 +15,6 @@ import java.util.List;
 
 @Repository
 public class ATripRepository {
-	
     @PersistenceContext
 	EntityManager em;
 
@@ -23,46 +22,52 @@ public class ATripRepository {
     UserRepository userRep;
 	
 	@Transactional
-        public ATrip createATrip(
-            int status, 
-            String cost, 
-            int startDate,
-            int endDate, 
-            String startLocation, 
-            String stops, 
-            int vehicleId,
-            String driverUserName,
-            String driverPassword
-        ) {
-            ATrip aTrip = new ATrip();
-            int driverId = userRep.authenticateUser(driverUserName, driverPassword);
-            if(driverId == -1) {
-                return null;
-            }
-            User user = userRep.getUser(driverId);
-            if(!(user.getRole().equalsIgnoreCase("Driver"))) {
-                return null;
-            }
-            user.setTripnumber(user.getTripnumber()+1);
-            em.merge(user);
-
-            aTrip.setStatus(status);
-            aTrip.setCostPerStop(cost);
-            aTrip.setStartDate(startDate);
-            aTrip.setEndDate(endDate);
-            aTrip.setStartLocation(startLocation);
-            aTrip.setStops(stops);
-            aTrip.setVehicleid(vehicleId);
-            em.persist(aTrip);
-            return aTrip;
+    public ATrip createATrip(
+        int status, 
+        String cost, 
+        int startDate,
+        int endDate, 
+        String startLocation, 
+        String stops, 
+        int vehicleId,
+        String driverUserName,
+        String driverPassword
+    ) {
+        ATrip aTrip = new ATrip();
+        
+        int driverId = userRep.authenticateUser(driverUserName, driverPassword);
+        if (driverId == -1) {
+            return null;
         }
+
+        User user = userRep.getUser(driverId);
+        if (!(user.getRole().equalsIgnoreCase("Driver"))) {
+            return null;
+        }
+        user.setTripnumber(user.getTripnumber() + 1);
+        em.merge(user);
+
+        aTrip.setStatus(status);
+        aTrip.setCostPerStop(cost);
+        aTrip.setStartDate(startDate);
+        aTrip.setEndDate(endDate);
+        aTrip.setStartLocation(startLocation);
+        aTrip.setStops(stops);
+        aTrip.setVehicleid(vehicleId);
+        em.persist(aTrip);
+        return aTrip;
+    }
 
     // If you are an admin, you get to see all the trips
     @Transactional
     public List getUnfilteredTripsList(String username, String password) {
         List<User> user = userRep.findUser(username);
         // Check if user is admin
-        if (user.size() == 0 || user.size() > 1 ||!(user.get(0).getRole().equalsIgnoreCase("administrator")) || !(user.get(0).getPassword().equals(password))) {
+        if (
+            user.size() == 0 || user.size() > 1
+            || !(user.get(0).getRole().equalsIgnoreCase("administrator"))
+            || !(user.get(0).getPassword().equals(password))
+        ) {
             return null;
         }
         return em.createQuery("SELECT * FROM ATrip").getResultList();
@@ -104,10 +109,7 @@ public class ATripRepository {
         em.merge(user);
         em.merge(trip);
         return ("Passenger " + username + " selected this trip.");
-        
     }
-
-
 
     // Cancel a trip if you are a user
     @Transactional

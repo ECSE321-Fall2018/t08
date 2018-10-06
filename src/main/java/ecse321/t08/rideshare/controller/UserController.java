@@ -9,11 +9,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/user")
-public class UserController{
+public class UserController {
     @Autowired
     UserRepository repository;
     
-    @RequestMapping(value="/createUser", method = RequestMethod.POST)
+    @RequestMapping(value="/createUser", method=RequestMethod.POST)
     @ResponseBody
     public String createUser(
         @RequestParam("username") String userName,
@@ -31,7 +31,7 @@ public class UserController{
         }
     }
 
-    @RequestMapping(value="/updateUser", method = RequestMethod.POST)
+    @RequestMapping(value="/updateUser", method=RequestMethod.POST)
     @ResponseBody
     public User updateUser(
         @RequestParam("username") String userName,
@@ -40,29 +40,28 @@ public class UserController{
         @RequestParam(value="role", required=false) String role,
         @RequestParam("password") String password
     ) {
-        if(emailAddress == null) {
+        if (emailAddress == null) {
             emailAddress = "";
         }
-        if(name == null) {
+        if (name == null) {
             name = "";
         }
-        if(role == null) {
+        if (role == null) {
             role = "";
         }
         return repository.updateUser(userName, emailAddress, name, role, password);
     }
 
-    @RequestMapping(value="/authenticate", method = RequestMethod.POST)
+    @RequestMapping(value="/authenticate", method=RequestMethod.POST)
     @ResponseBody
     public int authenticateUser(
-            @RequestParam("username") String userName,
-            @RequestParam("password") String password
+        @RequestParam("username") String userName,
+        @RequestParam("password") String password
     ) {
-
         return repository.authenticateUser(userName, password);
     }
 
-    @RequestMapping(value="/users/{id}", method = RequestMethod.GET)
+    @RequestMapping(value="/users/{id}", method=RequestMethod.GET)
     public User getUser(@PathVariable("id") int id) {
         User user = repository.getUser(id);
         if (user == null) {
@@ -71,34 +70,34 @@ public class UserController{
         return user;
     }
 
-    @RequestMapping(value="/find", method = RequestMethod.POST)
+    @RequestMapping(value="/find", method=RequestMethod.POST)
     @ResponseBody
     public List<User> findUser(
         @RequestParam(value="username", required=false) String userName,
         @RequestParam(value="name", required=false) String name,
         @RequestParam(value="email", required=false) String emailAddress
     ) {
-        if(userName == null) {
+        if (userName == null) {
             userName = "";
         }
-        if(name == null) {
+        if (name == null) {
             name = "";
         }
-        if(emailAddress == null) {
+        if (emailAddress == null) {
             emailAddress = "";
         }
 
         List<User> userList = repository.findUser(userName, emailAddress, name);
         if (userList.isEmpty()) {
-            System.out.println("NOT FOUND");
+            System.out.println("User not found.");
         }
         return userList;
     }
 
-    @RequestMapping(value="/userlist", method = RequestMethod.POST)
+    @RequestMapping(value="/userlist", method=RequestMethod.POST)
     public List getUnfilteredUserList(
-            @RequestParam("username") String username,
-            @RequestParam("password") String password
+        @RequestParam("username") String username,
+        @RequestParam("password") String password
     ) {
         return repository.getUnfilteredUserList(username, password);
     }
