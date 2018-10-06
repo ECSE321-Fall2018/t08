@@ -3,7 +3,10 @@ package ecse321.t08.rideshare.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name="vehicle")
+@Table(name="vehicles")
+@NamedQueries({
+		@NamedQuery(name = "Vehicle.findAll", query = "SELECT e FROM Vehicle e")
+})
 public class Vehicle {
 	private int vehicleId;
 	private int nbOfSeats;

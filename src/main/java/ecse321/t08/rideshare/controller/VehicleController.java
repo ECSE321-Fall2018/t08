@@ -28,4 +28,12 @@ public class VehicleController {
     public Vehicle getVehicle(@PathVariable("id") int id) {
         return repository.getVehicle(id);
     }
+
+    @RequestMapping(value="/finddriver", method = RequestMethod.POST)
+    @ResponseBody
+    public int findVehicleForDriver(
+            @RequestParam(value="driverid", required=false) int driverid
+    ) {
+        return repository.findVehicleForDriver(driverid);
+    }
 }

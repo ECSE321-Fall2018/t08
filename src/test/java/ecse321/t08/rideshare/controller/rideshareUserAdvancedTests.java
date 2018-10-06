@@ -28,6 +28,7 @@ public class rideshareUserAdvancedTests  {
     private static final String findUser = "User.findUsername";
 
     private static final String USER_KEY = "username";
+    private static final int USER_ID = -11;
     private static final String USER_EMAIL = "testemail@testemail.com";
     private static final String USER_FULLNAME = "testuserfullname";
     private static final String USER_FULLNAME_UPDATED = "testuserfullnameupdated";
@@ -83,9 +84,9 @@ public class rideshareUserAdvancedTests  {
         });
         when(userDao.authenticateUser(anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(USER_KEY) && invocation.getArgument(1).equals(USER_PASSWORD)) {
-                return "USER AUTHENTICATED";
+                return USER_ID;
             } else {
-                return "USER NOT AUTHENTICATED";
+                return -1;
             }
         });
     }
@@ -128,17 +129,17 @@ public class rideshareUserAdvancedTests  {
     @Test
     public void testAuthenticateUser() {
         System.out.println("Testing Advanced User Authentication");
-        String result = userController.authenticateUser(USER_KEY, USER_PASSWORD);
+        int result = userController.authenticateUser(USER_KEY, USER_PASSWORD);
 
-        assertEquals("USER AUTHENTICATED", result);
+        assertEquals(USER_ID, result);
     }
 
     @Test
     public void testAuthenticateUserFails() {
         System.out.println("Testing Advanced User Authentication Failure");
-        String result = userController.authenticateUser(USER_KEY, USER_NON_PASSWORD);
+        int result = userController.authenticateUser(USER_KEY, USER_NON_PASSWORD);
 
-        assertEquals("USER NOT AUTHENTICATED", result);
+        assertEquals(-1, result);
     }
 
     @Test

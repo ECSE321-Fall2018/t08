@@ -54,7 +54,7 @@ public class UserController{
 
     @RequestMapping(value="/authenticate", method = RequestMethod.POST)
     @ResponseBody
-    public String authenticateUser(
+    public int authenticateUser(
             @RequestParam("username") String userName,
             @RequestParam("password") String password
     ) {

@@ -91,16 +91,16 @@ public class UserRepository {
     }
 
     @Transactional
-    public String authenticateUser(String username, String password) {
+    public int authenticateUser(String username, String password) {
 	    List<User> userlist = findUser(username);
 	    if(userlist.size() < 1 || userlist.size() > 1) {
-	        return "USER NOT AUTHENTICATED";
+	        return -1;
         }
         User user = userlist.get(0);
 	    if(user.getPassword().equals(password)) {
-	        return "USER AUTHENTICATED";
+	        return user.getUserID();
         } else {
-	        return "USER NOT AUTHENTICATED";
+	        return -1;
         }
     }
 
