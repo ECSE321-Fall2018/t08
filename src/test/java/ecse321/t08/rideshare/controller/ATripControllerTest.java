@@ -47,7 +47,6 @@ public class ATripControllerTest {
 
     @Test
     public void createTrip() {
-        // Given
         ATrip myTrip = new ATrip(
                 TRIP_ID,
                 TRIP_STATUS,
