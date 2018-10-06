@@ -81,11 +81,13 @@ public class ATripRepository {
         else if (!("Passenger".equalsIgnoreCase(user.get(0).getRole()))) {
             return "Only passengers can select trips.";
         } else {
-            trip.appendPassengerid(username);
-
+            trip.setPassengerid() = trip.getPassengerid() + ";" + user.get(0).getUserID();
+            em.merge(trip);
             return ("Passenger " + username + " selected this trip.");
         }
     }
+
+
 
     // Cancel a trip if you are a user
     @Transactional
