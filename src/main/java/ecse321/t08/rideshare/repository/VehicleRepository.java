@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 
 @Repository
 public class VehicleRepository {
-
 	@PersistenceContext
 	EntityManager em;
 
@@ -49,8 +48,8 @@ public class VehicleRepository {
     @Transactional
     public int findVehicleForDriver(int driverid) {
         List<Vehicle> vehList = em.createNamedQuery("Vehicle.findAll").getResultList();
-        vehList =  vehList.stream().filter(u -> u.getDriverId() == driverid)
-                .collect(Collectors.toList());
+        vehList = vehList.stream().filter(u -> u.getDriverId() == driverid)
+            .collect(Collectors.toList());
 
         if(vehList.size() > 1 || vehList.size() < 1) {
             return -1;
