@@ -63,6 +63,30 @@ public class ATripRepository {
         return em.find(ATrip.class, id);
     }
 
+    // User selects trip and we record it on ATrip
+    @Transactional
+    public String selectTrip(int aTripID, String username, String password) {
+        ATrip trip = getTrip(aTripID);
+        List<User> user = userRep.findUser(username);
+
+        // Make sure user and trip exist
+        if (user.size() != 1 || trip == null) {
+            return "User or trip does not exist.";
+        }
+        // password is correct
+        else if (!(user.get(0).getPassword().equals(password))) {
+            return "Unable to authenticate user to select trip.";
+        }
+
+        else if (!("Passenger".equalsIgnoreCase(user.get(0).getRole()))) {
+            return "Only passengers can select trips.";
+        } else {
+            trip.appendPassengerid(username);
+
+            return ("Passenger " + username + " selected this trip.");
+        }
+    }
+
     // Cancel a trip if you are a user
     @Transactional
     public String cancelATrip(int aTripID, String username, String password) {
@@ -71,22 +95,18 @@ public class ATripRepository {
 
         // Let's make sure user and trip exist, and user password is correct.
 
-        if (user.size() == 0 || user.size() > 0 || trip == null) {
-            return null;
-        }
-
-        if (!(user.get(0).getPassword().equals(password))) {
+        if (user.size() != 1 || trip == null) {
+            return "User or trip does not exist.";
+        } else if (!(user.get(0).getPassword().equals(password))) {
             return "Unable to authenticate user to cancel trip.";
         }
-
         // If user is driver, delete entire trip
-        if ("Driver".equalsIgnoreCase(user.get(0).getRole())) {
+        else if ("Driver".equalsIgnoreCase(user.get(0).getRole())) {
             em.remove(trip);
             return "Trip " + aTripID + "deleted";
         }
-
         // Is user is passenger, just remove passenger ID
-        if ("Passenger".equalsIgnoreCase(user.get(0).getRole())) {
+        else if ("Passenger".equalsIgnoreCase(user.get(0).getRole())) {
             ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
             for(String s: ids) {
                 if(s.equals(String.valueOf(user.get(0).getUserID()))) {
@@ -99,6 +119,6 @@ public class ATripRepository {
             return "Passenger " + username + " removed from trip " + aTripID + ".";
         }
 
-        return null;
+        return "Unknown error.";
     }
 }
