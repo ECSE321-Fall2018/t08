@@ -45,15 +45,15 @@ public class rideshareATripBasicTests {
         when(tripDao.getTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             if(invocation.getArgument(0).equals(TRIP_ID)) {
                 ATrip trip = new ATrip();
-                trip.setTripID(TRIP_ID);
+                trip.setTripid(TRIP_ID);
                 trip.setStatus(TRIP_STATUS);
                 trip.setCostPerStop(COST_PER_STOP);
                 trip.setStartDate(START_DATE);
                 trip.setEndDate(END_DATE);
                 trip.setStartLocation(START_LOCATION);
                 trip.setStops(STOPS);
-                trip.setVehicleId(VEHICLE_ID);
-                trip.setPassengerId(PASSENGER_ID);
+                trip.setVehicleid(VEHICLE_ID);
+                trip.setPassengerid(PASSENGER_ID);
                 return trip;
             } else {
                 return null;

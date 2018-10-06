@@ -30,7 +30,8 @@ public class ATripRepository {
             int endDate, 
             String startLocation, 
             String stops, 
-            int vehicleId
+            int vehicleId,
+            int driverId
         ) {
             ATrip aTrip = new ATrip();
             
@@ -40,7 +41,8 @@ public class ATripRepository {
             aTrip.setEndDate(endDate);
             aTrip.setStartLocation(startLocation);
             aTrip.setStops(stops);
-            aTrip.setVehicleId(vehicleId);
+            aTrip.setVehicleid(vehicleId);
+            aTrip.setDriverid(driverId);
             em.persist(aTrip);
             return aTrip;
         }
@@ -85,14 +87,14 @@ public class ATripRepository {
 
         // Is user is passenger, just remove passenger ID
         if ("Passenger".equalsIgnoreCase(user.get(0).getRole())) {
-            ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerId(), ";");
+            ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
             for(String s: ids) {
                 if(s.equals(String.valueOf(user.get(0).getUserID()))) {
                     ids.remove(s);
                 }
             }
             em.getTransaction().begin();
-            trip.setPassengerId(rideshareHelper.concatenator(ids, ";"));
+            trip.setPassengerid(rideshareHelper.concatenator(ids, ";"));
             em.getTransaction().commit();
             return "Passenger " + username + " removed from trip " + aTripID + ".";
         }

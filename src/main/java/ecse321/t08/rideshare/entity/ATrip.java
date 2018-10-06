@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="ATrip")
 public class ATrip {
-    private int tripID;
+    private int tripid;
     private int tripStatus; // 0 for ongoing, 1 for planned, 2 for completed
 
     private String costPerStop; // Contains all costs per stop, in order, separated by delimiter ';'
@@ -13,51 +13,54 @@ public class ATrip {
     private int endDate;
     private String startLocation;
     private String stops; // Contains all stops, separated by delimiter ';'
-    private int vehicleId;
-    private String passengerId; // Contains all passenger ids, separated by delimiter ';'
+    private int vehicleid;
+    private String passengerid; // Contains all passenger ids, separated by delimiter ';'
+    private int driverid;
 
     public ATrip() {}
 
     public ATrip(
-        int tripID, 
+        int tripid, 
         int tripStatus, 
         String costPerStop, 
         int startDate, 
         int endDate, 
         String startLocation, 
         String stops, 
-        int vehicleId, 
-        String passengerId
+        int vehicleid, 
+        String passengerid,
+        int driverid
     ) {
-        this.tripID = tripID;
+        this.tripid = tripid;
         this.tripStatus = tripStatus;
         this.costPerStop = costPerStop;
         this.startDate = startDate;
         this.endDate = endDate;
         this.startLocation = startLocation;
         this.stops = stops;
-        this.vehicleId = vehicleId;
-        this.passengerId = passengerId;
+        this.vehicleid = vehicleid;
+        this.passengerid = passengerid;
+        this.driverid = driverid;
    }
 
     @Column(name="passengerid")
-    public String getPassengerId() {
-        return passengerId;
+    public String getPassengerid() {
+        return passengerid;
     }
 
-    public void setPassengerId(String passengerId) {
-        this.passengerId = passengerId;
+    public void setPassengerid(String passengerid) {
+        this.passengerid = passengerid;
     }
 
     @Id
     @Column(name="tripid")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public int getTripID() {
-        return this.tripID;
+    public int getTripid() {
+        return this.tripid;
     }
 
-    public void setTripID(int value) {
-        this.tripID = value;
+    public void setTripid(int value) {
+        this.tripid = value;
     }
 
 
@@ -116,11 +119,20 @@ public class ATrip {
     }
 
     @Column(name="vehicleid")
-    public int getVehicleId() {
-        return vehicleId;
+    public int getVehicleid() {
+        return vehicleid;
     }
 
-    public void setVehicleId(int vehicleId) {
-        this.vehicleId = vehicleId;
+    public void setVehicleid(int vehicleid) {
+        this.vehicleid = vehicleid;
+    }
+
+    @Column(name="driverid")
+    public int getDriverid() {
+        return vehicleid;
+    }
+
+    public void setDriverid(int vehicleid) {
+        this.vehicleid = vehicleid;
     }
 }

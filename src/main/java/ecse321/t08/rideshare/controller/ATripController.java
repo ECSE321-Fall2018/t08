@@ -22,9 +22,10 @@ public class ATripController {
 		@RequestParam("endDate") int endDate,
 		@RequestParam("startLocation") String startLocation,
 		@RequestParam("stops") String stops,
-        @RequestParam("vehicleId") int vehicleId
+        @RequestParam("vehicleid") int vehicleId,
+		@RequestParam("driverid") int driverId
     ) {
-	    repository.createATrip(status, cost, startDate, endDate, startLocation, stops, vehicleId);
+	    repository.createATrip(status, cost, startDate, endDate, startLocation, stops, vehicleId, driverId);
 	    return "Trip created starting at " + startLocation + "!";
     }
         // Get list of trips if you are admin

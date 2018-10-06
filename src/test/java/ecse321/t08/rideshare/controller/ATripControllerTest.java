@@ -31,6 +31,7 @@ public class ATripControllerTest {
     private static final String STOPS = "Ottawa;Toronto";
     private static final int VEHICLE_ID = -2;
     private static final String PASSENGER_ID = "1;2;3;4";
+    private static final int DRIVER_ID = 4;
     private static final int NON_EXISTING_TRIP_ID = -3;
 
     private ATrip aTrip;
@@ -56,8 +57,9 @@ public class ATripControllerTest {
                 START_LOCATION,
                 STOPS,
                 VEHICLE_ID,
-                PASSENGER_ID);
-        when(repository.createATrip(anyInt(), anyString(), anyInt(), anyInt(), eq(START_LOCATION), anyString(), anyInt()))
+                PASSENGER_ID,
+                DRIVER_ID);
+        when(repository.createATrip(anyInt(), anyString(), anyInt(), anyInt(), eq(START_LOCATION), anyString(), anyInt(), anyInt()))
                 .thenReturn(myTrip);
         String answer = "Trip created starting at " + START_LOCATION + "!";
 
@@ -69,10 +71,11 @@ public class ATripControllerTest {
                 END_DATE,
                 START_LOCATION,
                 STOPS,
-                VEHICLE_ID);
+                VEHICLE_ID,
+                DRIVER_ID);
 
         // Then
-        verify(repository).createATrip(anyInt(), anyString(), anyInt(), anyInt(), eq(START_LOCATION), anyString(), anyInt());
+        verify(repository).createATrip(anyInt(), anyString(), anyInt(), anyInt(), eq(START_LOCATION), anyString(), anyInt(), anyInt());
         assertEquals(answer, result);
     }
 
