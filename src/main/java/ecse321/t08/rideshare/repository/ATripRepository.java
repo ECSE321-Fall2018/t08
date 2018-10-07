@@ -134,12 +134,14 @@ public class ATripRepository {
         if ("Driver".equalsIgnoreCase(user.get(0).getRole())) {
             if (user.get(0).getUserID() == trip.getDriverid()) {
                 user.get(0).setTripnumber(user.get(0).getTripnumber() - 1);
-                ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
-                for (String s : ids) {
-                    User passenger = userRep.getUser(Integer.parseInt(s));
-                    if(passenger != null) {
-                        passenger.setTripnumber(passenger.getTripnumber() - 1);
-                        em.merge(passenger);
+                if(trip.getPassengerid() != null && !(trip.getPassengerid().equals(""))) {
+                    ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
+                    for (String s : ids) {
+                        User passenger = userRep.getUser(Integer.parseInt(s));
+                        if (passenger != null) {
+                            passenger.setTripnumber(passenger.getTripnumber() - 1);
+                            em.merge(passenger);
+                        }
                     }
                 }
                 em.merge(user.get(0));
@@ -149,19 +151,21 @@ public class ATripRepository {
         }
         // Is user is passenger, just remove passenger ID
         if ("Passenger".equalsIgnoreCase(user.get(0).getRole())) {
-            List<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
-            List<String> newIds = new ArrayList<String>(ids);
-            for (String s : ids) {
-                if (s.equals(String.valueOf(user.get(0).getUserID()))) {
-                    newIds.remove(s);
-                    user.get(0).setTripnumber(user.get(0).getTripnumber() - 1);
-                    em.merge(user);
+            if(trip.getPassengerid() != null && !(trip.getPassengerid().equals(""))) {
+                List<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
+                List<String> newIds = new ArrayList<String>(ids);
+                for (String s : ids) {
+                    if (s.equals(String.valueOf(user.get(0).getUserID()))) {
+                        newIds.remove(s);
+                        user.get(0).setTripnumber(user.get(0).getTripnumber() - 1);
+                        em.merge(user);
+                    }
                 }
+                ids = newIds;
+                trip.setPassengerid(rideshareHelper.concatenator(ids, ";"));
+                em.merge(trip);
+                return "Passenger " + username + " removed from trip " + aTripID + ".";
             }
-            ids = newIds;
-            trip.setPassengerid(rideshareHelper.concatenator(ids, ";"));
-            em.merge(trip);
-            return "Passenger " + username + " removed from trip " + aTripID + ".";
         }
 
         return "Unknown error.";
@@ -197,7 +201,7 @@ public class ATripRepository {
     public List<String> findPassengerOnTrip(int tripid) {
         ATrip trip = getTrip(tripid);
 
-        if (trip == null) {
+        if (trip == null || trip.getPassengerid() == null || trip.getPassengerid().equals("")) {
             return new ArrayList<String>();
         }
         return rideshareHelper.tokenizer(trip.getPassengerid(), ";");
@@ -235,10 +239,12 @@ public class ATripRepository {
         if (user.get(0).getRole().equalsIgnoreCase("Passenger")) {
             List<Integer> result = new ArrayList<Integer>();
             for (ATrip trip : trips) {
-                List<String> idlist = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
-                for (String id : idlist) {
-                    if (id.equalsIgnoreCase(String.valueOf(user.get(0).getUserID()))) {
-                        result.add(trip.getTripid());
+                if(trip.getPassengerid()!= null && !(trip.getPassengerid().equals(""))) {
+                    List<String> idlist = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
+                    for (String id : idlist) {
+                        if (id.equalsIgnoreCase(String.valueOf(user.get(0).getUserID()))) {
+                            result.add(trip.getTripid());
+                        }
                     }
                 }
             }
