@@ -17,7 +17,7 @@ public class VehicleRepository {
     EntityManager em;
 
     @Autowired
-    UserRepository userRep;
+    UserRepository userRepo;
 
     @Transactional
     public Vehicle createVehicle(
@@ -28,11 +28,11 @@ public class VehicleRepository {
         String model, 
         String vehicleType
     ) {
-        int driverId = userRep.authenticateUser(driverUserName, driverPassword);
+        int driverId = userRepo.authenticateUser(driverUserName, driverPassword);
         if (driverId == -1) {
             return null;
         }
-        User user = userRep.getUser(driverId);
+        User user = userRepo.getUser(driverId);
         if (!(user.getRole().equalsIgnoreCase("Driver"))) {
             return null;
         }

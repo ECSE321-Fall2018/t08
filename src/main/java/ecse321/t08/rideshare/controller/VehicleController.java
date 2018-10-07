@@ -22,10 +22,11 @@ public class VehicleController {
         @RequestParam("vehicleType") String vehicleType
     ) {
         Vehicle result = repository.createVehicle(username, password, nbOfSeats, colour, model, vehicleType);
+        
         if (result != null) {
             return model + " created!";
         } else {
-            return "Vehicle could not be created. Please verify credentials.";
+            return "Vehicle could not be created. Please verify your credentials.";
         }
     }
 

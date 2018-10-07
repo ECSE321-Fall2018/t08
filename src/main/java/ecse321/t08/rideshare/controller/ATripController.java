@@ -11,7 +11,7 @@ import java.util.List;
 @RequestMapping("api/trip")
 public class ATripController {
     @Autowired
-    ATripRepository repository;
+    ATripRepository aTripRepo;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
@@ -26,7 +26,7 @@ public class ATripController {
         @RequestParam("driveruser") String driverUsername,
         @RequestParam("driverpass") String driverPassword
     ) {
-        ATrip result = repository.createATrip(
+        ATrip result = aTripRepo.createATrip(
             status, 
             cost, 
             startDate, 
@@ -50,12 +50,12 @@ public class ATripController {
         @RequestParam("username") String username,
         @RequestParam("password") String password
     ) {
-        return repository.getUnfilteredTripsList(username, password);
+        return aTripRepo.getUnfilteredTripsList(username, password);
     }
 
     @RequestMapping(value = "/trips/{id}", method = RequestMethod.GET)
     public ATrip getTrip(@PathVariable("id") int id) {
-        return repository.getTrip(id);
+        return aTripRepo.getTrip(id);
     }
 
     // User selects trip and we record it on ATrip
@@ -65,7 +65,7 @@ public class ATripController {
         @RequestParam("username") String username,
         @RequestParam("password") String password
     ) {
-        return repository.selectTrip(ATripID, username, password);
+        return aTripRepo.selectTrip(ATripID, username, password);
     }
 
     // Cancel trip based on ID, if you are a user
@@ -75,7 +75,7 @@ public class ATripController {
         @RequestParam("username") String username,
         @RequestParam("password") String password
     ) {
-        return repository.cancelATrip(ATripID, username, password);
+        return aTripRepo.cancelATrip(ATripID, username, password);
     }
 
     @RequestMapping(value = "/status", method = RequestMethod.POST)
@@ -85,17 +85,17 @@ public class ATripController {
         @RequestParam("password") String password,
         @RequestParam("tripstatus") int status
     ) {
-        return repository.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
+        return aTripRepo.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
     }
 
     @RequestMapping(value = "/passengersontrip", method = RequestMethod.POST)
     public List<String> passengersOnTrip(@RequestParam("tripid") int ATripID) {
-        return repository.findPassengersOnTrip(ATripID);
+        return aTripRepo.findPassengersOnTrip(ATripID);
     }
 
     @RequestMapping(value = "/driverontrip", method = RequestMethod.POST)
     public int driverOnTrip(@RequestParam("tripid") int ATripID) {
-        return repository.findDriverOnTrip(ATripID);
+        return aTripRepo.findDriverOnTrip(ATripID);
     }
 
     @RequestMapping(value = "/usertrips", method = RequestMethod.POST)
@@ -103,7 +103,7 @@ public class ATripController {
         @RequestParam("username") String username,
         @RequestParam("password") String password
     ) {
-        return repository.userTrips(username, password);
+        return aTripRepo.userTrips(username, password);
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.POST)
@@ -134,6 +134,6 @@ public class ATripController {
         if (maxCost == null) {
             maxCost = -1.0;
         }
-        return repository.findTrip(startLocation, stops, startDate, endDate, vehicleType, maxCost);
+        return aTripRepo.findTrip(startLocation, stops, startDate, endDate, vehicleType, maxCost);
     }
 }

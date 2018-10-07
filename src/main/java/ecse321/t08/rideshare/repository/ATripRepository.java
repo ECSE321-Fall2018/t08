@@ -20,10 +20,10 @@ public class ATripRepository {
     EntityManager em;
 
     @Autowired
-    UserRepository userRep;
+    UserRepository userRepo;
 
     @Autowired
-    VehicleRepository vehicleRep;
+    VehicleRepository vehicleRepo;
 
     @Transactional
     public ATrip createATrip(
@@ -38,12 +38,12 @@ public class ATripRepository {
         String driverPassword
     ) {
         // Check for username, password, user is driver
-        int driverId = userRep.authorizeUser(driverUserName, driverPassword, "Driver");
+        int driverId = userRepo.authorizeUser(driverUserName, driverPassword, "Driver");
         if (driverId == -1) {
             return null;
         }
         
-        User user = userRep.getUser(driverId);
+        User user = userRepo.getUser(driverId);
         user.setTripNumber(user.getTripNumber() + 1);
         em.merge(user);
         
@@ -66,9 +66,9 @@ public class ATripRepository {
     // If you are an admin, you get to see all the trips
     @Transactional
     public List getUnfilteredTripsList(String username, String password) {
-        List<User> user = userRep.findUser(username);
+        List<User> user = userRepo.findUser(username);
         // Check if user is admin
-        if (userRep.authorizeUser(username, password, "Administrator") == -1) {
+        if (userRepo.authorizeUser(username, password, "Administrator") == -1) {
             return new ArrayList<User>();
         } else {
             return em.createQuery("SELECT * FROM ATrip").getResultList();
@@ -84,7 +84,7 @@ public class ATripRepository {
     @Transactional
     public String selectTrip(int aTripID, String username, String password) {
         ATrip trip = getTrip(aTripID);
-        List<User> user = userRep.findUser(username);
+        List<User> user = userRepo.findUser(username);
         
         if (user.size() != 1 || trip == null) {
             return "User or trip does not exist.";
@@ -119,7 +119,7 @@ public class ATripRepository {
     @Transactional
     public String cancelATrip(int aTripID, String username, String password) {
         ATrip trip = getTrip(aTripID);
-        List<User> user = userRep.findUser(username);
+        List<User> user = userRepo.findUser(username);
 
         // Let's make sure user and trip exist, and user password is correct.
 
@@ -134,7 +134,7 @@ public class ATripRepository {
                 user.get(0).setTripNumber(user.get(0).getTripNumber() - 1);
                 ArrayList<String> ids = Helper.tokenizer(trip.getPassengerId(), ";");
                 for (String s : ids) {
-                    User passenger = userRep.getUser(Integer.parseInt(s));
+                    User passenger = userRepo.getUser(Integer.parseInt(s));
                     passenger.setTripNumber(passenger.getTripNumber() - 1);
                     em.merge(passenger);
                 }
@@ -167,7 +167,7 @@ public class ATripRepository {
     @Transactional
     public String changeTripStatus(int aTripID, String username, String password, int status) {
         ATrip trip = getTrip(aTripID);
-        List<User> user = userRep.findUser(username);
+        List<User> user = userRepo.findUser(username);
 
         if (user.size() != 1 || trip == null) {
             return "User or trip does not exist.";
@@ -212,11 +212,11 @@ public class ATripRepository {
 
     @Transactional
     public List<Integer> userTrips(String username, String password) {
-        List<User> user = userRep.findUser(username);
+        List<User> user = userRepo.findUser(username);
         List<ATrip> list = em.createQuery("SELECT * FROM ATrip").getResultList();
         int userId = user.get(0).getUserId();
 
-        if (userRep.authorizeUser(username, password, "Driver") != -1) {
+        if (userRepo.authorizeUser(username, password, "Driver") != -1) {
             // Display trips that driver is in charge of
 
             List<ATrip> filteredList = list.stream()
@@ -230,7 +230,7 @@ public class ATripRepository {
 
             return result;
         }
-        else if (userRep.authorizeUser(username, password, "Passenger") != -1) {
+        else if (userRepo.authorizeUser(username, password, "Passenger") != -1) {
             // Display trips that passenger is a part of
 
             List<Integer> result = new ArrayList<Integer>();
@@ -309,7 +309,7 @@ public class ATripRepository {
             // only get trips with a vehicle of this type
             List<ATrip> newList = new ArrayList<ATrip>();
             for (ATrip trip : trips) {
-                Vehicle vehicle = vehicleRep.getVehicle(trip.getVehicleId());
+                Vehicle vehicle = vehicleRepo.getVehicle(trip.getVehicleId());
                 if (vehicle != null) {
                     if (vehicle.getVehicleType().equalsIgnoreCase(vehicleType)) {
                         newList.add(trip);
