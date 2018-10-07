@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/vehicle")
 public class VehicleController {
     @Autowired
-    VehicleRepository repository;
+    VehicleRepository vehicleRepo;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
@@ -21,7 +21,7 @@ public class VehicleController {
         @RequestParam("model") String model,
         @RequestParam("vehicleType") String vehicleType
     ) {
-        Vehicle result = repository.createVehicle(username, password, nbOfSeats, colour, model, vehicleType);
+        Vehicle result = vehicleRepo.createVehicle(username, password, nbOfSeats, colour, model, vehicleType);
         
         if (result != null) {
             return model + " created!";
@@ -32,12 +32,12 @@ public class VehicleController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Vehicle getVehicle(@PathVariable("id") int id) {
-        return repository.getVehicle(id);
+        return vehicleRepo.getVehicle(id);
     }
 
     @RequestMapping(value = "/finddriver", method = RequestMethod.POST)
     @ResponseBody
     public int findVehicleForDriver(@RequestParam("driverid") Integer driverid) {
-        return repository.findVehicleForDriver(driverid);
+        return vehicleRepo.findVehicleForDriver(driverid);
     }
 }
