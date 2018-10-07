@@ -104,7 +104,7 @@ public class ATripRepository {
         user.get(0).setTripnumber(user.get(0).getTripnumber()+1);
         em.merge(user);
         em.merge(trip);
-        return ("Passenger " + username + " selected this trip.");
+        return "Passenger " + username + " selected this trip.";
         
     }
 
@@ -180,7 +180,7 @@ public class ATripRepository {
 
         trip.setStatus(status);
         em.merge(trip);
-        return "Trip status changed successfully";
+        return "Trip status changed successfully.";
     }
 
     @Transactional
