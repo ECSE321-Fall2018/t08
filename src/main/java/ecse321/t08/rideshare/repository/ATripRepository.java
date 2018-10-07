@@ -193,7 +193,7 @@ public class ATripRepository {
     }
 
     @Transactional
-    public List<String> findPassengerOnTrip(int tripid) {
+    public List<String> findPassengersOnTrip(int tripid) {
         ATrip trip = getTrip(tripid);
 
         if (trip == null) {
@@ -213,7 +213,7 @@ public class ATripRepository {
     }
 
     @Transactional
-    public List<Integer> userTrip(String username, String password) {
+    public List<Integer> userTrips(String username, String password) {
         List<User> user = userRep.findUser(username);
 
         if (user.size() != 1) {
@@ -226,7 +226,7 @@ public class ATripRepository {
         List<ATrip> list = em.createQuery("SELECT * FROM ATrip").getResultList();
         if (user.get(0).getRole().equalsIgnoreCase("Driver")) {
             List<ATrip> flist = list.stream().filter(u -> (u.getDriverid() == user.get(0).getUserID()))
-                    .collect(Collectors.toList());
+                .collect(Collectors.toList());
             List<Integer> result = new ArrayList<Integer>();
             for (ATrip i : flist) {
                 result.add(i.getTripid());

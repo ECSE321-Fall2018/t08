@@ -13,7 +13,7 @@ public class UserController {
     @Autowired
     UserRepository repository;
 
-    @RequestMapping(value = "/createUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public String createUser(
         @RequestParam("username") String userName,
@@ -31,7 +31,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public User updateUser(
         @RequestParam("username") String userName,
@@ -61,7 +61,7 @@ public class UserController {
         return repository.authenticateUser(userName, password);
     }
 
-    @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable("id") int id) {
         User user = repository.getUser(id);
         if (user == null) {
@@ -70,7 +70,7 @@ public class UserController {
         return user;
     }
 
-    @RequestMapping(value = "/find", method = RequestMethod.POST)
+    @RequestMapping(value = "/finduser", method = RequestMethod.POST)
     @ResponseBody
     public List<User> findUser(
         @RequestParam(value = "username", required = false) String userName,

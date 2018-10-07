@@ -11,7 +11,7 @@ public class VehicleController {
     @Autowired
     VehicleRepository repository;
 
-    @RequestMapping(value = "/createvehicle", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public String createVehicle(
         @RequestParam("driveruser") String username,
@@ -29,7 +29,7 @@ public class VehicleController {
         }
     }
 
-    @RequestMapping(value = "/vehicles/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Vehicle getVehicle(@PathVariable("id") int id) {
         return repository.getVehicle(id);
     }

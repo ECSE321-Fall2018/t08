@@ -13,7 +13,7 @@ public class ATripController {
     @Autowired
     ATripRepository repository;
 
-    @RequestMapping(value = "/createtrip", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public String createTrip(
         @RequestParam("status") Integer status,
@@ -59,7 +59,7 @@ public class ATripController {
     }
 
     // User selects trip and we record it on ATrip
-    @RequestMapping(value = "/selecttrip", method = RequestMethod.POST)
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
     public String selectTrip(
         @RequestParam("tripid") int ATripID,
         @RequestParam("username") String username,
@@ -69,7 +69,7 @@ public class ATripController {
     }
 
     // Cancel trip based on ID, if you are a user
-    @RequestMapping(value = "/cancelTrip", method = RequestMethod.POST)
+    @RequestMapping(value = "/cancel", method = RequestMethod.POST)
     public String cancelATrip(
         @RequestParam("tripid") int ATripID,
         @RequestParam("username") String username,
@@ -89,9 +89,9 @@ public class ATripController {
         return repository.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
     }
 
-    @RequestMapping(value = "/passengerontrip", method = RequestMethod.POST)
-    public List<String> passengerOnTrip(@RequestParam("tripid") Integer ATripID) {
-        return repository.findPassengerOnTrip(ATripID);
+    @RequestMapping(value = "/passengersontrip", method = RequestMethod.POST)
+    public List<String> passengersOnTrip(@RequestParam("tripid") Integer ATripID) {
+        return repository.findPassengersOnTrip(ATripID);
     }
 
     @RequestMapping(value = "/driverontrip", method = RequestMethod.POST)
@@ -99,10 +99,12 @@ public class ATripController {
         return repository.findDriverOnTrip(ATripID);
     }
 
-    @RequestMapping(value = "/usertrip", method = RequestMethod.POST)
-    public List<Integer> usertrip(@RequestParam("username") String username,
-    @RequestParam("password") String password) {
-        return repository.userTrip(username, password);
+    @RequestMapping(value = "/usertrips", method = RequestMethod.POST)
+    public List<Integer> userTrips(
+        @RequestParam("username") String username,
+        @RequestParam("password") String password
+    ) {
+        return repository.userTrips(username, password);
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.POST)

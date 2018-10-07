@@ -118,7 +118,7 @@ public class rideshareATripAdvancedTests {
                 return "Only a driver can change the status of a trip.";
             }
         });
-        when(repository.findPassengerOnTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+        when(repository.findPassengersOnTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(TRIP_ID)) {
                 List<String> list = (rideshareHelper.tokenizer(PASSENGER_ID, ";"));
                 return list;
@@ -133,7 +133,7 @@ public class rideshareATripAdvancedTests {
                 return -1;
             }
         });
-        when(repository.userTrip(anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
+        when(repository.userTrips(anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
             User user = new User();
             if (
                 invocation.getArgument(0).equals(PASSENGER_USERNAME)
@@ -394,8 +394,8 @@ public class rideshareATripAdvancedTests {
     }
 
     @Test
-    public void passengerOnTrip() {
-        List<String> result = aTripController.passengerOnTrip(TRIP_ID);
+    public void passengersOnTrip() {
+        List<String> result = aTripController.passengersOnTrip(TRIP_ID);
         int iter = 1;
         for (String s : result) {
             assertEquals(String.valueOf(iter), result.get(iter - 1));
@@ -404,8 +404,8 @@ public class rideshareATripAdvancedTests {
     }
 
     @Test
-    public void passengerOnTripUnsuccessful() {
-        List<String> result = aTripController.passengerOnTrip(NON_EXISTING_TRIP_ID);
+    public void passengersOnTripUnsuccessful() {
+        List<String> result = aTripController.passengersOnTrip(NON_EXISTING_TRIP_ID);
         assertTrue(result.isEmpty());
     }
 
@@ -422,34 +422,34 @@ public class rideshareATripAdvancedTests {
     }
 
     @Test
-    public void userTripDriver() {
-        List<Integer> result = aTripController.usertrip(DRIVER_USERNAME, DRIVER_PASSWORD);
+    public void userTripsDriver() {
+        List<Integer> result = aTripController.userTrips(DRIVER_USERNAME, DRIVER_PASSWORD);
         assertEquals((int) result.get(0), TRIP_ID);
         assertEquals((int) result.get(1), TRIP_ID2);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void userTripDriverFailure() {
-        List<Integer> result = aTripController.usertrip(DRIVER_USERNAME, DRIVER_PASSWORD);
+    public void userTripsDriverFailure() {
+        List<Integer> result = aTripController.userTrips(DRIVER_USERNAME, DRIVER_PASSWORD);
         result.get(2);
     }
 
     @Test
-    public void userTripPassenger() {
-        List<Integer> result = aTripController.usertrip(PASSENGER_USERNAME, PASSENGER_PASSWORD);
+    public void userTripsPassenger() {
+        List<Integer> result = aTripController.userTrips(PASSENGER_USERNAME, PASSENGER_PASSWORD);
         assertEquals((int) result.get(0), TRIP_ID);
         assertEquals((int) result.get(1), TRIP_ID2);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void userTripPassengerFailure() {
-        List<Integer> result = aTripController.usertrip(PASSENGER_USERNAME, PASSENGER_PASSWORD);
+    public void userTripsPassengerFailure() {
+        List<Integer> result = aTripController.userTrips(PASSENGER_USERNAME, PASSENGER_PASSWORD);
         result.get(2);
     }
 
     @Test
-    public void userTripFailure() {
-        List<Integer> result = aTripController.usertrip(ADMIN_USERNAME, ADMIN_PASSWORD);
+    public void userTripsFailure() {
+        List<Integer> result = aTripController.userTrips(ADMIN_USERNAME, ADMIN_PASSWORD);
         assertTrue(result.isEmpty());
     }
 
