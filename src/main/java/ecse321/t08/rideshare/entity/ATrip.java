@@ -131,10 +131,10 @@ public class ATrip {
 
     @Column(name = "driverid")
     public int getDriverid() {
-        return vehicleid;
+        return driverid;
     }
 
-    public void setDriverid(int vehicleid) {
-        this.vehicleid = vehicleid;
+    public void setDriverid(int driverid) {
+        this.driverid = driverid;
     }
 }
