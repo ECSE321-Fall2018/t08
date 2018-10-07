@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
-public class rideshareHelperTests {
+public class HelperTests {
     @Test
     public void tokenizer() {
         // Given
@@ -16,7 +16,7 @@ public class rideshareHelperTests {
         String[] testStringArray = {"My", "very", "long", "string"};
         ArrayList<String> testStringAnswer = new ArrayList<>(Arrays.asList(testStringArray));
         // When
-        ArrayList<String> result = rideshareHelper.tokenizer(testString, separator);
+        ArrayList<String> result = Helper.tokenizer(testString, separator);
         // Then
         assertEquals(result, testStringAnswer);
     }
@@ -29,7 +29,7 @@ public class rideshareHelperTests {
         String separator = "_+";
         String answer = "little_+much_+testing_+yay";
         // When
-        String result = rideshareHelper.concatenator(stringArrayList, separator);
+        String result = Helper.concatenator(stringArrayList, separator);
         // Then
         assertEquals(answer, result);
     }

@@ -89,12 +89,12 @@ public class ATripController {
     }
 
     @RequestMapping(value = "/passengersontrip", method = RequestMethod.POST)
-    public List<String> passengersOnTrip(@RequestParam("tripid") Integer ATripID) {
+    public List<String> passengersOnTrip(@RequestParam("tripid") int ATripID) {
         return repository.findPassengersOnTrip(ATripID);
     }
 
     @RequestMapping(value = "/driverontrip", method = RequestMethod.POST)
-    public int driverOnTrip(@RequestParam("tripid") Integer ATripID) {
+    public int driverOnTrip(@RequestParam("tripid") int ATripID) {
         return repository.findDriverOnTrip(ATripID);
     }
 

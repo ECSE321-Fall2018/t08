@@ -44,7 +44,7 @@ public class ATrip {
     }
 
     @Column(name = "passengerid")
-    public String getPassengerid() {
+    public String getPassengerId() {
         return passengerid;
     }
 

@@ -4,7 +4,7 @@ import ecse321.t08.rideshare.entity.ATrip;
 import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.entity.Vehicle;
 import ecse321.t08.rideshare.repository.ATripRepository;
-import ecse321.t08.rideshare.utility.rideshareHelper;
+import ecse321.t08.rideshare.utility.Helper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -120,7 +120,7 @@ public class rideshareATripAdvancedTests {
         });
         when(repository.findPassengersOnTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(TRIP_ID)) {
-                List<String> list = (rideshareHelper.tokenizer(PASSENGER_ID, ";"));
+                List<String> list = (Helper.tokenizer(PASSENGER_ID, ";"));
                 return list;
             } else {
                 return new ArrayList<User>();
@@ -181,7 +181,7 @@ public class rideshareATripAdvancedTests {
             if (user.getRole().equalsIgnoreCase("Passenger")) {
                 List<Integer> result = new ArrayList<Integer>();
                 for (ATrip el : tripsList) {
-                    List<String> idlist = rideshareHelper.tokenizer(el.getPassengerid(), ";");
+                    List<String> idlist = Helper.tokenizer(el.getPassengerId(), ";");
                     for (String id : idlist) {
                         if (id.equalsIgnoreCase(String.valueOf(user.getUserId()))) {
                             result.add(el.getTripId());
@@ -215,7 +215,7 @@ public class rideshareATripAdvancedTests {
                 List<ATrip> newList = new ArrayList<ATrip>(trips);
 
                 for (ATrip trip : trips) {
-                    List<String> stops = rideshareHelper.tokenizer(trip.getStops(), ";");
+                    List<String> stops = Helper.tokenizer(trip.getStops(), ";");
                     boolean found = false;
                     for (String end : stops) {
                         if (end.toUpperCase().contains(TEST_STOP.toUpperCase())) {
@@ -235,7 +235,7 @@ public class rideshareATripAdvancedTests {
             } else if (invocation.getArgument(1).equals(TEST_FAKE_STOP)) {
                 List<ATrip> newList = new ArrayList<ATrip>(trips);
                 for (ATrip trip : trips) {
-                    List<String> stops = rideshareHelper.tokenizer(trip.getStops(), ";");
+                    List<String> stops = Helper.tokenizer(trip.getStops(), ";");
                     boolean found = false;
                     for (String end : stops) {
                         if (end.toUpperCase().contains(TEST_FAKE_STOP.toUpperCase())) {

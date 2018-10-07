@@ -3,7 +3,7 @@ package ecse321.t08.rideshare.repository;
 import ecse321.t08.rideshare.entity.ATrip;
 import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.entity.Vehicle;
-import ecse321.t08.rideshare.utility.rideshareHelper;
+import ecse321.t08.rideshare.utility.Helper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,10 +99,10 @@ public class ATripRepository {
         
         String userid = String.valueOf(user.get(0).getUserId());
 
-        if (trip.getPassengerid().equalsIgnoreCase(userid)) {
+        if (trip.getPassengerId().equalsIgnoreCase(userid)) {
             return "User has already selected this trip.";
         }
-        else if (trip.getPassengerid() == null || trip.getPassengerid() == "") {
+        else if (trip.getPassengerId() == null || trip.getPassengerId() == "") {
             trip.setPassengerId(userid);
         } else {
             trip.appendPassengerId(userid);
@@ -132,7 +132,7 @@ public class ATripRepository {
         else if ("Driver".equalsIgnoreCase(user.get(0).getRole())) {
             if (user.get(0).getUserId() == trip.getDriverId()) {
                 user.get(0).setTripNumber(user.get(0).getTripNumber() - 1);
-                ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
+                ArrayList<String> ids = Helper.tokenizer(trip.getPassengerId(), ";");
                 for (String s : ids) {
                     User passenger = userRep.getUser(Integer.parseInt(s));
                     passenger.setTripNumber(passenger.getTripNumber() - 1);
@@ -146,7 +146,7 @@ public class ATripRepository {
         }
         // Is user is passenger, just remove passenger ID
         else if ("Passenger".equalsIgnoreCase(user.get(0).getRole())) {
-            List<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
+            List<String> ids = Helper.tokenizer(trip.getPassengerId(), ";");
             List<String> newIds = new ArrayList<String>(ids);
             for (String s : ids) {
                 if (s.equals(String.valueOf(user.get(0).getUserId()))) {
@@ -156,7 +156,7 @@ public class ATripRepository {
                 }
             }
             ids = newIds;
-            trip.setPassengerId(rideshareHelper.concatenator(ids, ";"));
+            trip.setPassengerId(Helper.concatenator(ids, ";"));
             em.merge(trip);
             return "Passenger " + username + " removed from trip " + aTripID + ".";
         }
@@ -169,25 +169,23 @@ public class ATripRepository {
         ATrip trip = getTrip(aTripID);
         List<User> user = userRep.findUser(username);
 
-        // Let's make sure user and trip exist, and user password is correct.
-
         if (user.size() != 1 || trip == null) {
             return "User or trip does not exist.";
         }
-        if (!(user.get(0).getPassword().equals(password))) {
+        else if (!(user.get(0).getPassword().equals(password))) {
             return "Unable to authenticate user to change trip status.";
         }
-        // Check if user is driver
-        if (!("Driver".equalsIgnoreCase(user.get(0).getRole()))) {
+        else if (!("Driver".equalsIgnoreCase(user.get(0).getRole()))) {
             return "Only a driver can change the status of a trip.";
         }
-        if (trip.getDriverId() != user.get(0).getUserId()) {
-            return "Driver can only change status of their own trip.";
+        else if (trip.getDriverId() != user.get(0).getUserId()) {
+            return "Drivers can only change status of their own trip.";
         }
 
         trip.setStatus(status);
         em.merge(trip);
-        return "Trip status changed successfully";
+
+        return "Trip status changed successfully!";
     }
 
     @Transactional
@@ -196,8 +194,9 @@ public class ATripRepository {
 
         if (trip == null) {
             return new ArrayList<String>();
+        } else {
+            return Helper.tokenizer(trip.getPassengerId(), ";");
         }
-        return rideshareHelper.tokenizer(trip.getPassengerid(), ";");
     }
 
     @Transactional
@@ -234,7 +233,7 @@ public class ATripRepository {
         if (user.get(0).getRole().equalsIgnoreCase("Passenger")) {
             List<Integer> result = new ArrayList<Integer>();
             for (ATrip el : list) {
-                List<String> idlist = rideshareHelper.tokenizer(el.getPassengerid(), ";");
+                List<String> idlist = Helper.tokenizer(el.getPassengerId(), ";");
                 for (String id : idlist) {
                     if (id.equalsIgnoreCase(String.valueOf(user.get(0).getUserId()))) {
                         result.add(el.getTripId());
@@ -265,7 +264,7 @@ public class ATripRepository {
         if (!(stop.equals(""))) {
             List<ATrip> newList = new ArrayList<ATrip>(trips);
             for (ATrip trip : trips) {
-                List<String> stops = rideshareHelper.tokenizer(trip.getStops(), ";");
+                List<String> stops = Helper.tokenizer(trip.getStops(), ";");
                 boolean found = false;
                 for (String end : stops) {
                     if (end.toUpperCase().contains(stop.toUpperCase())) {
@@ -316,7 +315,7 @@ public class ATripRepository {
         if (mincost != -1.0) {
             List<ATrip> newList = new ArrayList<ATrip>(trips);
             for (ATrip trip : trips) {
-                List<String> costs = rideshareHelper.tokenizer(trip.getCostPerStop(), ";");
+                List<String> costs = Helper.tokenizer(trip.getCostPerStop(), ";");
                 boolean found = false;
                 for (String cost : costs) {
                     if (Double.parseDouble(cost) >= mincost) {
@@ -333,7 +332,7 @@ public class ATripRepository {
         if (maxcost != -1.0) {
             List<ATrip> newList = new ArrayList<ATrip>(trips);
             for (ATrip trip : trips) {
-                List<String> costs = rideshareHelper.tokenizer(trip.getCostPerStop(), ";");
+                List<String> costs = Helper.tokenizer(trip.getCostPerStop(), ";");
                 boolean found = false;
                 for (String cost : costs) {
                     if (Double.parseDouble(cost) <= maxcost) {
