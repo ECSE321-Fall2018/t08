@@ -22,7 +22,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 public class rideshareVehicleBasicTests {
-
     @Mock
     private VehicleRepository vehicleDao;
 
@@ -39,7 +38,6 @@ public class rideshareVehicleBasicTests {
     private static final String VEHICLE_TYPE = "Minivan";
     private static final int VEHICLE_ID = -1;
     private static final int NONEXISTING_VEHICLE_ID = -2;
-
 
     @Before
     public void setMockTrueOutput() {
@@ -59,12 +57,10 @@ public class rideshareVehicleBasicTests {
         });
     }
 
-
     @Test
     public void testVehicleSimpleQueryFound() {
         assertEquals(DRIVER_ID, vehicleController.getVehicle(VEHICLE_ID).getDriverId());
     }
-
 
     @Test
     public void testVehicleQueryNotFound() {

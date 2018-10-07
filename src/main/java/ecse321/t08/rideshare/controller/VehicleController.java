@@ -14,12 +14,12 @@ public class VehicleController {
     @RequestMapping(value = "/createvehicle", method = RequestMethod.POST)
     @ResponseBody
     public String createVehicle(
-            @RequestParam("driveruser") String username,
-            @RequestParam("driverpass") String password,
-            @RequestParam("nbOfSeats") Integer nbOfSeats,
-            @RequestParam("colour") String colour,
-            @RequestParam("model") String model,
-            @RequestParam("vehicleType") String vehicleType
+        @RequestParam("driveruser") String username,
+        @RequestParam("driverpass") String password,
+        @RequestParam("nbOfSeats") Integer nbOfSeats,
+        @RequestParam("colour") String colour,
+        @RequestParam("model") String model,
+        @RequestParam("vehicleType") String vehicleType
     ) {
         Vehicle result = repository.createVehicle(username, password, nbOfSeats, colour, model, vehicleType);
         if (result != null) {
@@ -27,7 +27,6 @@ public class VehicleController {
         } else {
             return "Vehicle could not be created. Please verify credentials.";
         }
-
     }
 
     @RequestMapping(value = "/vehicles/{id}", method = RequestMethod.GET)
@@ -37,9 +36,7 @@ public class VehicleController {
 
     @RequestMapping(value = "/finddriver", method = RequestMethod.POST)
     @ResponseBody
-    public int findVehicleForDriver(
-            @RequestParam("driverid") Integer driverid
-    ) {
+    public int findVehicleForDriver(@RequestParam("driverid") Integer driverid) {
         return repository.findVehicleForDriver(driverid);
     }
 }

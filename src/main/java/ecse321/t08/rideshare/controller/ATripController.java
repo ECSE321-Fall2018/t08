@@ -16,17 +16,27 @@ public class ATripController {
     @RequestMapping(value = "/createtrip", method = RequestMethod.POST)
     @ResponseBody
     public String createTrip(
-            @RequestParam("status") Integer status,
-            @RequestParam("cost") String cost,
-            @RequestParam("startDate") Integer startDate,
-            @RequestParam("endDate") Integer endDate,
-            @RequestParam("startLocation") String startLocation,
-            @RequestParam("stops") String stops,
-            @RequestParam("vehicleid") Integer vehicleId,
-            @RequestParam("driveruser") String driverUsername,
-            @RequestParam("driverpass") String driverPassword
+        @RequestParam("status") Integer status,
+        @RequestParam("cost") String cost,
+        @RequestParam("startDate") Integer startDate,
+        @RequestParam("endDate") Integer endDate,
+        @RequestParam("startLocation") String startLocation,
+        @RequestParam("stops") String stops,
+        @RequestParam("vehicleid") Integer vehicleId,
+        @RequestParam("driveruser") String driverUsername,
+        @RequestParam("driverpass") String driverPassword
     ) {
-        ATrip result = repository.createATrip(status, cost, startDate, endDate, startLocation, stops, vehicleId, driverUsername, driverPassword);
+        ATrip result = repository.createATrip(
+            status, 
+            cost, 
+            startDate, 
+            endDate, 
+            startLocation, 
+            stops, 
+            vehicleId, 
+            driverUsername, 
+            driverPassword
+        );
         if (result == null) {
             return "Unable to create trip.";
         } else {
@@ -37,8 +47,8 @@ public class ATripController {
     // Get list of trips if you are admin
     @RequestMapping(value = "/utripslist", method = RequestMethod.POST)
     public List getUnfilteredTripsList(
-            @RequestParam("username") String username,
-            @RequestParam("password") String password
+        @RequestParam("username") String username,
+        @RequestParam("password") String password
     ) {
         return repository.getUnfilteredTripsList(username, password);
     }
@@ -51,9 +61,9 @@ public class ATripController {
     // User selects trip and we record it on ATrip
     @RequestMapping(value = "/selecttrip", method = RequestMethod.POST)
     public String selectTrip(
-            @RequestParam("tripid") int ATripID,
-            @RequestParam("username") String username,
-            @RequestParam("password") String password
+        @RequestParam("tripid") int ATripID,
+        @RequestParam("username") String username,
+        @RequestParam("password") String password
     ) {
         return repository.selectTrip(ATripID, username, password);
     }
@@ -61,9 +71,9 @@ public class ATripController {
     // Cancel trip based on ID, if you are a user
     @RequestMapping(value = "/cancelTrip", method = RequestMethod.POST)
     public String cancelATrip(
-            @RequestParam("tripid") int ATripID,
-            @RequestParam("username") String username,
-            @RequestParam("password") String password
+        @RequestParam("tripid") int ATripID,
+        @RequestParam("username") String username,
+        @RequestParam("password") String password
     ) {
         return repository.cancelATrip(ATripID, username, password);
     }
@@ -71,10 +81,10 @@ public class ATripController {
 
     @RequestMapping(value = "/status", method = RequestMethod.POST)
     public String changeTripStatus(
-            @RequestParam("tripid") Integer ATripID,
-            @RequestParam("username") String username,
-            @RequestParam("password") String password,
-            @RequestParam("tripstatus") Integer status
+        @RequestParam("tripid") Integer ATripID,
+        @RequestParam("username") String username,
+        @RequestParam("password") String password,
+        @RequestParam("tripstatus") Integer status
     ) {
         return repository.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
     }
@@ -91,20 +101,20 @@ public class ATripController {
 
     @RequestMapping(value = "/usertrip", method = RequestMethod.POST)
     public List<Integer> usertrip(@RequestParam("username") String username,
-                                  @RequestParam("password") String password) {
+    @RequestParam("password") String password) {
         return repository.userTrip(username, password);
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.POST)
     @ResponseBody
     public List<Integer> findTrip(
-            @RequestParam(value = "startloc", required = false) String startLocation,
-            @RequestParam(value = "stop", required = false) String stop,
-            @RequestParam(value = "startdate", required = false, defaultValue = "-1") Integer startdate,
-            @RequestParam(value = "enddate", required = false, defaultValue = "-1") Integer enddate,
-            @RequestParam(value = "vehtype", required = false) String vehtype,
-            @RequestParam(value = "mincost", required = false, defaultValue = "-1.0") Double mincost,
-            @RequestParam(value = "maxcost", required = false, defaultValue = "-1.0") Double maxcost
+        @RequestParam(value = "startloc", required = false) String startLocation,
+        @RequestParam(value = "stop", required = false) String stop,
+        @RequestParam(value = "startdate", required = false, defaultValue = "-1") Integer startdate,
+        @RequestParam(value = "enddate", required = false, defaultValue = "-1") Integer enddate,
+        @RequestParam(value = "vehtype", required = false) String vehtype,
+        @RequestParam(value = "mincost", required = false, defaultValue = "-1.0") Double mincost,
+        @RequestParam(value = "maxcost", required = false, defaultValue = "-1.0") Double maxcost
     ) {
         if (startLocation == null) {
             startLocation = "";
@@ -130,5 +140,13 @@ public class ATripController {
         return repository.findtrip(startLocation, stop, startdate, enddate, vehtype, mincost, maxcost);
     }
 
-
+	@RequestMapping(value="/status", method = RequestMethod.POST)
+	public String changeTripStatus(
+		@RequestParam("tripid") int ATripID,
+		@RequestParam("username") String username,
+		@RequestParam("password") String password,
+		@RequestParam("tripstatus") int status
+	) {
+		return repository.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
+	}
 }
