@@ -75,7 +75,7 @@ public class UserController {
     public User getUser(@PathVariable("id") int id) {
         User user = repository.getUser(id);
         if (user == null) {
-            System.out.println("NOT FOUND");
+            System.out.println("User not found.");
         }
         return user;
     }

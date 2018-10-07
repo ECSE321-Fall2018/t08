@@ -145,15 +145,11 @@ public class UserRepository {
     public List getUnfilteredUserList(String username, String password) {
         List<User> user = findUser(username);
         // Check if user is admin
-        if (
-            user.size() == 0 
-            || user.size() > 1 
-            || !(user.get(0).getRole().equalsIgnoreCase("administrator")) 
-            || !(user.get(0).getPassword().equals(password))
-        ) {
+        if (authorizeUser(username, password, "Administrator") == -1) {
             return new ArrayList<User>();
+        } else {
+            return em.createNamedQuery("User.findAll").getResultList();
         }
-        return em.createNamedQuery("User.findAll").getResultList();
     }
 
     @Transactional
