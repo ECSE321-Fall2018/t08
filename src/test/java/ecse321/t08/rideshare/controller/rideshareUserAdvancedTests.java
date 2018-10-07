@@ -195,12 +195,13 @@ public class rideshareUserAdvancedTests {
     @Test
     public void testUserCreatePasswordIncorrectLength() {
         String result = userController.createUser(
-            USER_KEY, 
-            USER_STATUS, 
+            USER_KEY,
             USER_EMAIL, 
             USER_FULLNAME, 
-            USER_ROLE, "test"
+            USER_ROLE,
+            "test"
         );
+
         String expectedResult = USER_ROLE + " " + USER_KEY + " could not be created, select a new username and make sure your email has not been used before.";
 
         assertEquals(expectedResult, result);

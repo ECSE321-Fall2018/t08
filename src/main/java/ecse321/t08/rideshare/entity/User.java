@@ -13,24 +13,29 @@ public class User {
     private int userid;
 
     private String username;
-    private boolean isUserActive = false;
     private String emailAddress;
     private String fullName;
-    private String password;
-    private int tripnumber;
     private String role; // Either Driver, Passenger or Administrator (case-sensitive!)
+    private String password;
+    private boolean isUserActive = false;
+    private int tripnumber;
 
     public User() {}
 
-    public User(User user) {
-        this.isUserActive = user.getStatus();
-        this.emailAddress = user.getEmailAddress();
-        this.fullName = user.getFullName();
-        this.username = user.getUsername();
-        this.userid = user.getUserId();
-        this.password = user.getPassword();
-        this.role = user.getRole();
-        this.tripnumber = user.getTripNumber();
+    public User(
+        String username,
+        String emailAddress,
+        String fullName,
+        String role,
+        String password,
+        int tripnumber
+    ) {
+        this.username = username;
+        this.emailAddress = emailAddress;
+        this.fullName = fullName;
+        this.role = role;
+        this.password = password;
+        this.tripnumber = tripnumber;
     }
 
     public void setUserId(int value) {

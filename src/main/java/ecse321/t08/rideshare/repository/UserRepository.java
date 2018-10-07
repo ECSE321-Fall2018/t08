@@ -19,15 +19,14 @@ public class UserRepository {
 
     @Transactional
     public User createUser(
-        String userName,
-        boolean isuseractive,
-        String emailaddress,
-        String fullname,
+        String username,
+        String emailAddress,
+        String fullName,
         String role,
         String password
     ) {
-        List<User> existingUserName = findUser(userName);
-        List<User> existingUserEmail = findUserByEmail(emailaddress);
+        List<User> existingUsername = findUser(username);
+        List<User> existingUserEmail = findUserByEmail(emailAddress);
 
         /*
          * Don't create the user under these conditions:
@@ -36,27 +35,15 @@ public class UserRepository {
          * - the password is less than 8 characters
          */
 
-        if (existingUserName.size() != 0) {
+        if (
+            existingUsername.size() != 0
+            || existingUserEmail.size() != 0
+            || password.length() < 8
+        ) {
             return null;
         }
 
-        if (existingUserEmail.size() != 0) {
-            return null;
-        }
-
-        if (password.length() < 8) {
-            return null;
-        }
-
-        User user = new User();
-        user.setUsername(userName);
-        user.setStatus(isuseractive);
-        user.setEmailAddress(emailaddress);
-        user.setFullName(fullname);
-        user.setRole(role);
-        user.setPassword(password);
-        user.setTripNumber(0);
-
+        User user = new User(username, emailAddress, fullName, role, password, 0);
         em.persist(user);
         return user;
     }
@@ -68,13 +55,13 @@ public class UserRepository {
 
     @Transactional
     public User updateUser(
-        String userName, 
+        String username, 
         String emailaddress, 
-        String fullname, 
+        String fullName, 
         String role, 
         String password
     ) {
-        List<User> userList = findUser(userName);
+        List<User> userList = findUser(username);
 
         if (userList.isEmpty() || userList.size() > 1) {
             return null;
@@ -89,8 +76,8 @@ public class UserRepository {
             user.setEmailAddress(emailaddress);
         }
 
-        if (!(user.getFullName().equalsIgnoreCase(fullname))) {
-            user.setFullName(fullname);
+        if (!(user.getFullName().equalsIgnoreCase(fullName))) {
+            user.setFullName(fullName);
         }
 
         if (!(user.getRole().equalsIgnoreCase(role))) {
@@ -126,29 +113,29 @@ public class UserRepository {
     }
 
     @Transactional
-    public List<User> findUser(String userName, String emailAddress, String name) {
+    public List<User> findUser(String username, String emailAddress, String name) {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
 
-        return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(userName))
+        return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(username))
             .filter(u -> u.getEmailAddress().toUpperCase().equalsIgnoreCase(emailAddress.toUpperCase()))
             .filter(u -> u.getFullName().toUpperCase().equalsIgnoreCase(name.toUpperCase()))
             .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<User> findUser(String userName, String emailAddress) {
+    public List<User> findUser(String username, String emailAddress) {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
 
-        return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(userName))
+        return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(username))
             .filter(u -> u.getEmailAddress().equalsIgnoreCase(emailAddress))
             .collect(Collectors.toList());
     }
 
     @Transactional
-    public List<User> findUser(String userName) {
+    public List<User> findUser(String username) {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
 
-        return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(userName))
+        return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(username))
             .collect(Collectors.toList());
     }
 

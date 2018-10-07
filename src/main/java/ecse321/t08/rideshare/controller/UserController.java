@@ -16,18 +16,17 @@ public class UserController {
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public String createUser(
-        @RequestParam("username") String userName,
-        @RequestParam("status") boolean getStatus,
+        @RequestParam("username") String username,
         @RequestParam("email") String emailAddress,
-        @RequestParam("name") String name,
+        @RequestParam("name") String fullName,
         @RequestParam("role") String role,
         @RequestParam("password") String password
     ) {
-        User user = repository.createUser(userName, getStatus, emailAddress, name, role, password);
+        User user = repository.createUser(username, emailAddress, fullName, role, password);
         if (user != null) {
-            return role + " " + userName + " created.";
+            return role + " " + username + " created.";
         } else {
-            return role + " " + userName + " could not be created, select a new username and make sure your email has not been used before.";
+            return role + " " + username + " could not be created, either the username or email is taken.";
         }
     }
 
