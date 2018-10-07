@@ -78,13 +78,12 @@ public class ATripController {
         return repository.cancelATrip(ATripID, username, password);
     }
 
-
     @RequestMapping(value = "/status", method = RequestMethod.POST)
     public String changeTripStatus(
-        @RequestParam("tripid") Integer ATripID,
+        @RequestParam("tripid") int ATripID,
         @RequestParam("username") String username,
         @RequestParam("password") String password,
-        @RequestParam("tripstatus") Integer status
+        @RequestParam("tripstatus") int status
     ) {
         return repository.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
     }
@@ -141,14 +140,4 @@ public class ATripController {
         }
         return repository.findtrip(startLocation, stop, startdate, enddate, vehtype, mincost, maxcost);
     }
-
-	@RequestMapping(value = "/status", method = RequestMethod.POST)
-	public String changeTripStatus(
-		@RequestParam("tripid") int ATripID,
-		@RequestParam("username") String username,
-		@RequestParam("password") String password,
-		@RequestParam("tripstatus") int status
-	) {
-		return repository.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
-	}
 }
