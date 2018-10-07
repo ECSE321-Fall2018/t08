@@ -49,8 +49,8 @@ public class rideshareATripBasicTests {
                 trip.setEndDate(END_DATE);
                 trip.setStartLocation(START_LOCATION);
                 trip.setStops(STOPS);
-                trip.setVehicleid(VEHICLE_ID);
-                trip.setPassengerid(PASSENGER_ID);
+                trip.setVehicleId(VEHICLE_ID);
+                trip.setPassengerId(PASSENGER_ID);
                 return trip;
             } else {
                 return null;

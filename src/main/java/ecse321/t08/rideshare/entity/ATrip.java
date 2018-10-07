@@ -48,8 +48,12 @@ public class ATrip {
         return passengerid;
     }
 
-    public void setPassengerid(String passengerid) {
+    public void setPassengerId(String passengerid) {
         this.passengerid = passengerid;
+    }
+
+    public void appendPassengerId(String passengerid) {
+        this.passengerid += ";" + passengerid;
     }
 
     @Column(name = "tripid")
@@ -116,20 +120,20 @@ public class ATrip {
     }
 
     @Column(name = "vehicleid")
-    public int getVehicleid() {
+    public int getVehicleId() {
         return vehicleid;
     }
 
-    public void setVehicleid(int vehicleid) {
+    public void setVehicleId(int vehicleid) {
         this.vehicleid = vehicleid;
     }
 
     @Column(name = "driverid")
-    public int getDriverid() {
+    public int getDriverId() {
         return driverid;
     }
 
-    public void setDriverid(int driverid) {
+    public void setDriverId(int driverid) {
         this.driverid = driverid;
     }
 }

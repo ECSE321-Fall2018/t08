@@ -156,21 +156,21 @@ public class rideshareATripAdvancedTests {
             user.setUsername(PASSENGER_ID);
             user.setPassword(PASSENGER_PASSWORD);
             user.setUserId(1);
-            trip.setPassengerid(PASSENGER_ID);
+            trip.setPassengerId(PASSENGER_ID);
             trip.setTripId(TRIP_ID);
-            trip.setDriverid(DRIVER_ID);
+            trip.setDriverId(DRIVER_ID);
             trip2.setTripId(TRIP_ID2);
-            trip2.setPassengerid(PASSENGER_ID);
-            trip2.setDriverid(DRIVER_ID);
+            trip2.setPassengerId(PASSENGER_ID);
+            trip2.setDriverId(DRIVER_ID);
             trip3.setTripId(TRIP_ID3);
-            trip3.setPassengerid(NONEXISTING_PASSENGER_ID);
-            trip3.setDriverid(NONEXSITING_DRIVER_ID);
+            trip3.setPassengerId(NONEXISTING_PASSENGER_ID);
+            trip3.setDriverId(NONEXSITING_DRIVER_ID);
             List<ATrip> tripsList = new ArrayList<ATrip>();
             tripsList.add(trip);
             tripsList.add(trip2);
             tripsList.add(trip3);
             if (user.getRole().equalsIgnoreCase("Driver")) {
-                List<ATrip> flist = tripsList.stream().filter(u -> (u.getDriverid() == 1))
+                List<ATrip> flist = tripsList.stream().filter(u -> (u.getDriverId() == 1))
                     .collect(Collectors.toList());
                 List<Integer> result = new ArrayList<Integer>();
                 for (ATrip i : flist) {
@@ -208,7 +208,7 @@ public class rideshareATripAdvancedTests {
             trip1.setStartDate(START_DATE);
             trip1.setEndDate(END_DATE);
             trip1.setCostPerStop(COST_PER_STOP);
-            trip1.setVehicleid(1);
+            trip1.setVehicleId(1);
             trips.add(trip1);
 
             if (invocation.getArgument(1).equals(TEST_STOP)) {

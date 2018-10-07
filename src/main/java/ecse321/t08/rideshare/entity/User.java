@@ -104,4 +104,9 @@ public class User {
     public void setTripNumber(int tripnumber) {
         this.tripnumber = tripnumber;
     }
+
+    public void incrementTripNumber() {
+        this.tripnumber++;
+    }
+
 }

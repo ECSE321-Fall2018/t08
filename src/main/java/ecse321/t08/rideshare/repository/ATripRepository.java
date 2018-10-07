@@ -103,11 +103,11 @@ public class ATripRepository {
             return "User has already selected this trip.";
         }
         else if (trip.getPassengerid() == null || trip.getPassengerid() == "") {
-            trip.setPassengerid(userid);
+            trip.setPassengerId(userid);
         } else {
-            trip.setPassengerid(trip.getPassengerid() + ";" + userid);
+            trip.appendPassengerId(userid);
         }
-        user.get(0).setTripNumber(user.get(0).getTripNumber() + 1);
+        user.get(0).incrementTripNumber();
         em.merge(user);
         em.merge(trip);
 
@@ -130,7 +130,7 @@ public class ATripRepository {
         }
         // If user is driver, delete entire trip
         else if ("Driver".equalsIgnoreCase(user.get(0).getRole())) {
-            if (user.get(0).getUserId() == trip.getDriverid()) {
+            if (user.get(0).getUserId() == trip.getDriverId()) {
                 user.get(0).setTripNumber(user.get(0).getTripNumber() - 1);
                 ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
                 for (String s : ids) {
@@ -156,7 +156,7 @@ public class ATripRepository {
                 }
             }
             ids = newIds;
-            trip.setPassengerid(rideshareHelper.concatenator(ids, ";"));
+            trip.setPassengerId(rideshareHelper.concatenator(ids, ";"));
             em.merge(trip);
             return "Passenger " + username + " removed from trip " + aTripID + ".";
         }
@@ -181,7 +181,7 @@ public class ATripRepository {
         if (!("Driver".equalsIgnoreCase(user.get(0).getRole()))) {
             return "Only a driver can change the status of a trip.";
         }
-        if (trip.getDriverid() != user.get(0).getUserId()) {
+        if (trip.getDriverId() != user.get(0).getUserId()) {
             return "Driver can only change status of their own trip.";
         }
 
@@ -207,7 +207,7 @@ public class ATripRepository {
         if (trip == null) {
             return -1;
         }
-        return trip.getDriverid();
+        return trip.getDriverId();
     }
 
     @Transactional
@@ -223,7 +223,7 @@ public class ATripRepository {
 
         List<ATrip> list = em.createQuery("SELECT * FROM ATrip").getResultList();
         if (user.get(0).getRole().equalsIgnoreCase("Driver")) {
-            List<ATrip> flist = list.stream().filter(u -> (u.getDriverid() == user.get(0).getUserId()))
+            List<ATrip> flist = list.stream().filter(u -> (u.getDriverId() == user.get(0).getUserId()))
                 .collect(Collectors.toList());
             List<Integer> result = new ArrayList<Integer>();
             for (ATrip i : flist) {
@@ -303,7 +303,7 @@ public class ATripRepository {
         if (!(vehtype.equals(""))) {
             List<ATrip> newList = new ArrayList<ATrip>(trips);
             for (ATrip trip : trips) {
-                Vehicle veh = vehRep.getVehicle(trip.getVehicleid());
+                Vehicle veh = vehRep.getVehicle(trip.getVehicleId());
                 if (veh != null) {
                     if (!(veh.getVehicleType().toUpperCase().contains(vehtype.toUpperCase()))) {
                         newList.remove(trip);
