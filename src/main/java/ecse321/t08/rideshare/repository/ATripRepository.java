@@ -68,15 +68,11 @@ public class ATripRepository {
     public List getUnfilteredTripsList(String username, String password) {
         List<User> user = userRep.findUser(username);
         // Check if user is admin
-        if (
-            user.size() == 0 
-            || user.size() > 1 
-            || !(user.get(0).getRole().equalsIgnoreCase("administrator")) 
-            || !(user.get(0).getPassword().equals(password))
-        ) {
+        if (userRep.authorizeUser(username, password, "Administrator") == -1) {
             return new ArrayList<User>();
+        } else {
+            return em.createQuery("SELECT * FROM ATrip").getResultList();
         }
-        return em.createQuery("SELECT * FROM ATrip").getResultList();
     }
 
     @Transactional
