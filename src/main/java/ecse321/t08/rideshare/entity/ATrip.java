@@ -5,6 +5,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ATrip")
 public class ATrip {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int tripid;
     private int tripStatus; // 0 for ongoing, 1 for planned, 2 for completed
 
@@ -20,7 +22,6 @@ public class ATrip {
     public ATrip() {}
 
     public ATrip(
-        int tripid,
         int tripStatus,
         String costPerStop,
         int startDate,
@@ -52,9 +53,7 @@ public class ATrip {
         this.passengerid = passengerid;
     }
 
-    @Id
     @Column(name = "tripid")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getTripid() {
         return this.tripid;
     }

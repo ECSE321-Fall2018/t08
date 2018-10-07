@@ -37,7 +37,6 @@ public class ATripRepository {
         String driverUserName,
         String driverPassword
     ) {
-        ATrip aTrip = new ATrip();
         // Check for username, password, user is driver
         int driverId = userRep.authorizeUser(driverUserName, driverPassword, "Driver");
         if (driverId == -1) {
@@ -47,16 +46,20 @@ public class ATripRepository {
         User user = userRep.getUser(driverId);
         user.setTripNumber(user.getTripnumber() + 1);
         em.merge(user);
-
-        aTrip.setStatus(status);
-        aTrip.setCostPerStop(cost);
-        aTrip.setStartDate(startDate);
-        aTrip.setEndDate(endDate);
-        aTrip.setStartLocation(startLocation);
-        aTrip.setStops(stops);
-        aTrip.setVehicleid(vehicleId);
-        em.persist(aTrip);
         
+        ATrip aTrip = new ATrip(
+            status,
+            cost,
+            startDate,
+            endDate,
+            startLocation,
+            stops,
+            vehicleId,
+            "",
+            driverId
+        );
+        em.persist(aTrip);
+
         return aTrip;
     }
 
