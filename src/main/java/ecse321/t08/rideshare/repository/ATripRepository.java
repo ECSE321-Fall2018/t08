@@ -259,6 +259,7 @@ public class ATripRepository {
         if (!(startLocation.equals(""))) {
             trips = trips.stream()
                 .filter(u -> u.getStartLocation().toUpperCase().contains(startLocation.toUpperCase()))
+                .filter(u -> u.getStatus() == 1)
                 .collect(Collectors.toList());
         }
         if (!(stop.equals(""))) {
