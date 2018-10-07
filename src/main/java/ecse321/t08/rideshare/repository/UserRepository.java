@@ -143,7 +143,6 @@ public class UserRepository {
 
     @Transactional
     public List getUnfilteredUserList(String username, String password) {
-        List<User> user = findUser(username);
         // Check if user is admin
         if (authorizeUser(username, password, "Administrator") == -1) {
             return new ArrayList<User>();
@@ -154,21 +153,11 @@ public class UserRepository {
 
     @Transactional
     public List getFilteredUserList(String username, String password) {
-        List<User> user = findUser(username);
-        // Check if user is admin
-        if (
-            user.size() == 0 
-            || user.size() > 1 
-            || !(user.get(0).getRole().equalsIgnoreCase("administrator")) 
-            || !(user.get(0).getPassword().equals(password))
-        ) {
-            return new ArrayList<User>();
+        List<User> userList = getUnfilteredUserList(username, password);
+        Collections.sort(userList, Comparator.comparing(User::getTripNumber));
+        if (userList.size() > 99) {
+            return userList.subList(0, 99);
         }
-        List<User> userli = em.createNamedQuery("User.findAll").getResultList();
-        Collections.sort(userli, Comparator.comparing(User::getTripNumber));
-        if (userli.size() > 99) {
-            return userli.subList(0, 99);
-        }
-        return userli;
+        return userList;
     }
 }

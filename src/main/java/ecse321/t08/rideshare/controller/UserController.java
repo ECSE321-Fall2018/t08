@@ -112,6 +112,7 @@ public class UserController {
         return repository.getUnfilteredUserList(username, password);
     }
 
+    // Return the first 100 results of getUnfilteredUserList, sorted by user's number of trips
     @RequestMapping(value = "/fuserlist", method = RequestMethod.POST)
     public List getFilteredUserList(
         @RequestParam("username") String username,
