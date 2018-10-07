@@ -37,7 +37,7 @@ public class VehicleController {
 
     @RequestMapping(value = "/finddriver", method = RequestMethod.POST)
     @ResponseBody
-    public int findVehicleForDriver(@RequestParam("driverid") Integer driverid) {
-        return vehicleRepo.findVehicleForDriver(driverid);
+    public int findVehicleForDriver(@RequestParam("driverid") int driverId) {
+        return vehicleRepo.findVehicleForDriver(driverId);
     }
 }
