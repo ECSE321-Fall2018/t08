@@ -49,8 +49,12 @@ public class VehicleRepository {
     }
 
     @Transactional
-    public int findVehicleForDriver(int driverid) {
+    public int findVehicleForDriver(String username, String password) {
         List<Vehicle> vehList = em.createNamedQuery("Vehicle.findAll").getResultList();
+        int driverid = userRep.authorizeUser(username, password, "Driver");
+        if(driverid == -1) {
+            return -1;
+        }
         vehList = vehList.stream().filter(u -> u.getDriverId() == driverid)
             
         .collect(Collectors.toList());

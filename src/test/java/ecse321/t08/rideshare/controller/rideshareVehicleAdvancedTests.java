@@ -16,6 +16,7 @@ import javax.persistence.Query;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -25,8 +26,9 @@ public class rideshareVehicleAdvancedTests {
     private static final String findUser = "User.findUsername";
 
     private static final int VEHICLE_ID = -3;
-    private static final int DRIVER_ID = -2;
-    private static final int NONEXISTING_DRIVER_ID = -4;
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
+    private static final String NONEXISTING_PASSWORD= "badpassword";
 
     @Mock
     EntityManager entityManager;
@@ -44,8 +46,8 @@ public class rideshareVehicleAdvancedTests {
 
     @Before
     public void setMockOutput() {
-        when(vehicleDao.findVehicleForDriver(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(DRIVER_ID)) {
+        when(vehicleDao.findVehicleForDriver(anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
+            if (invocation.getArgument(0).equals(USERNAME) && invocation.getArgument(1).equals(PASSWORD)) {
                 return VEHICLE_ID;
             } else {
                 return -1;
@@ -55,14 +57,14 @@ public class rideshareVehicleAdvancedTests {
 
     @Test
     public void testFindVehicleForDriver() {
-        int result = vehicleController.findVehicleForDriver(DRIVER_ID);
+        int result = vehicleController.findVehicleForDriver(USERNAME, PASSWORD);
 
         assertEquals(result, VEHICLE_ID);
     }
 
     @Test
     public void testFindVehicleForDriverFails() {
-        int result = vehicleController.findVehicleForDriver(NONEXISTING_DRIVER_ID);
+        int result = vehicleController.findVehicleForDriver(USERNAME, NONEXISTING_PASSWORD);
 
         assertEquals(-1, result);
     }
