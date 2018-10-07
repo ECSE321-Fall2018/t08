@@ -5,6 +5,13 @@ To check the details on why our TravisCI build succeeded or failed:
 
 [![Build Status](https://travis-ci.com/ECSE321-Fall2018/t08.svg?token=atEt1SppUvzajjRzBkhC&branch=master)](https://travis-ci.com/ECSE321-Fall2018/t08)
 
+## Wiki
+See our wiki here: https://github.com/ECSE321-Fall2018/t08/wiki
+Note that there are four pages, use the right menu bar to navigate through them.
+
+## Heroku
+Link to heroku website: https://rideshare08.herokuapp.com/
+
 ## How Everything Works
 If you're clueless about what's going on, here's a summary.
 
