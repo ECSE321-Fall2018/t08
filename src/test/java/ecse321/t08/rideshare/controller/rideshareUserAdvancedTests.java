@@ -58,7 +58,8 @@ public class rideshareUserAdvancedTests {
 
     @Before
     public void setMockOutput() {
-        when(userDao.updateUser(anyString(), anyString(), anyString(), anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
+        when(userDao.updateUser(anyString(), anyString(), anyString(), anyString(), anyString()))
+        .thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(2).equals(USER_FULLNAME_UPDATED)) {
                 User user = new User();
                 user.setUsername(USER_KEY);
@@ -70,7 +71,8 @@ public class rideshareUserAdvancedTests {
                 return null;
             }
         });
-        when(userDao.findUser(anyString(), anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
+        when(userDao.findUser(anyString(), anyString(), anyString()))
+        .thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(USER_KEY)) {
                 User user = new User();
                 List<User> userList = new ArrayList<User>();
@@ -85,15 +87,23 @@ public class rideshareUserAdvancedTests {
                 return new ArrayList<User>();
             }
         });
-        when(userDao.authenticateUser(anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(USER_KEY) && invocation.getArgument(1).equals(USER_PASSWORD)) {
+        when(userDao.authenticateUser(anyString(), anyString()))
+        .thenAnswer((InvocationOnMock invocation) -> {
+            if (
+                invocation.getArgument(0).equals(USER_KEY)
+                && invocation.getArgument(1).equals(USER_PASSWORD)
+            ) {
                 return USER_ID;
             } else {
                 return -1;
             }
         });
-        when(userDao.getUnfilteredUserList(anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(ADMIN_USERNAME) && invocation.getArgument(1).equals(ADMIN_PASSWORD)) {
+        when(userDao.getUnfilteredUserList(anyString(), anyString()))
+        .thenAnswer((InvocationOnMock invocation) -> {
+            if (
+                invocation.getArgument(0).equals(ADMIN_USERNAME)
+                && invocation.getArgument(1).equals(ADMIN_PASSWORD)
+            ) {
                 User user = new User();
                 List<User> userList = new ArrayList<User>();
                 user.setUsername(USER_KEY);
@@ -103,8 +113,12 @@ public class rideshareUserAdvancedTests {
                 return new ArrayList<User>();
             }
         });
-        when(userDao.getFilteredUserList(anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(ADMIN_USERNAME) && invocation.getArgument(1).equals(ADMIN_PASSWORD)) {
+        when(userDao.getFilteredUserList(anyString(), anyString()))
+        .thenAnswer((InvocationOnMock invocation) -> {
+            if (
+                invocation.getArgument(0).equals(ADMIN_USERNAME)
+                && invocation.getArgument(1).equals(ADMIN_PASSWORD)
+            ) {
                 User user = new User();
                 List<User> userList = new ArrayList<User>();
                 user.setUsername(USER_KEY);
@@ -121,7 +135,6 @@ public class rideshareUserAdvancedTests {
             }
         });
     }
-
 
     @Test
     public void testAdvancedUserQuery() {
@@ -141,14 +154,26 @@ public class rideshareUserAdvancedTests {
 
     @Test
     public void testAdvancedUserUpdateQuery() {
-        User user = userController.updateUser(USER_KEY, USER_EMAIL, USER_FULLNAME_UPDATED, USER_ROLE, USER_PASSWORD);
+        User user = userController.updateUser(
+            USER_KEY, 
+            USER_EMAIL, 
+            USER_FULLNAME_UPDATED, 
+            USER_ROLE, 
+            USER_PASSWORD
+        );
 
         assertEquals(USER_FULLNAME_UPDATED, user.getFullName());
     }
 
     @Test
     public void testAdvancedUserUpdateQueryNotFound() {
-        User user = userController.updateUser(NONEXISTING_USER_KEY, USER_EMAIL, USER_FULLNAME, USER_ROLE, USER_PASSWORD);
+        User user = userController.updateUser(
+            NONEXISTING_USER_KEY, 
+            USER_EMAIL, 
+            USER_FULLNAME, 
+            USER_ROLE, 
+            USER_PASSWORD
+        );
 
         assertNull(user);
     }
@@ -169,7 +194,13 @@ public class rideshareUserAdvancedTests {
 
     @Test
     public void testUserCreatePasswordIncorrectLength() {
-        String result = userController.createUser(USER_KEY, USER_STATUS, USER_EMAIL, USER_FULLNAME, USER_ROLE, "test");
+        String result = userController.createUser(
+            USER_KEY, 
+            USER_STATUS, 
+            USER_EMAIL, 
+            USER_FULLNAME, 
+            USER_ROLE, "test"
+        );
         String expectedResult = USER_ROLE + " " + USER_KEY + " could not be created, select a new username and make sure your email has not been used before.";
 
         assertEquals(expectedResult, result);

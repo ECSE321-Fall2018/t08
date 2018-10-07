@@ -19,12 +19,12 @@ public class UserRepository {
 
     @Transactional
     public User createUser(
-            String userName,
-            boolean isuseractive,
-            String emailaddress,
-            String fullname,
-            String role,
-            String password
+        String userName,
+        boolean isuseractive,
+        String emailaddress,
+        String fullname,
+        String role,
+        String password
     ) {
         List<User> existingUserName = findUser(userName);
         List<User> existingUserEmail = findUserByEmail(emailaddress);
@@ -67,7 +67,13 @@ public class UserRepository {
     }
 
     @Transactional
-    public User updateUser(String userName, String emailaddress, String fullname, String role, String password) {
+    public User updateUser(
+        String userName, 
+        String emailaddress, 
+        String fullname, 
+        String role, 
+        String password
+    ) {
         List<User> userList = findUser(userName);
 
         if (userList.isEmpty() || userList.size() > 1) {
@@ -113,9 +119,9 @@ public class UserRepository {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
 
         return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(userName))
-                .filter(u -> u.getEmailAddress().toUpperCase().equalsIgnoreCase(emailAddress.toUpperCase()))
-                .filter(u -> u.getFullName().toUpperCase().equalsIgnoreCase(name.toUpperCase()))
-                .collect(Collectors.toList());
+            .filter(u -> u.getEmailAddress().toUpperCase().equalsIgnoreCase(emailAddress.toUpperCase()))
+            .filter(u -> u.getFullName().toUpperCase().equalsIgnoreCase(name.toUpperCase()))
+            .collect(Collectors.toList());
     }
 
     @Transactional
@@ -147,7 +153,12 @@ public class UserRepository {
     public List getUnfilteredUserList(String username, String password) {
         List<User> user = findUser(username);
         // Check if user is admin
-        if (user.size() == 0 || user.size() > 1 || !(user.get(0).getRole().equalsIgnoreCase("administrator")) || !(user.get(0).getPassword().equals(password))) {
+        if (
+            user.size() == 0 
+            || user.size() > 1 
+            || !(user.get(0).getRole().equalsIgnoreCase("administrator")) 
+            || !(user.get(0).getPassword().equals(password))
+        ) {
             return new ArrayList<User>();
         }
         return em.createNamedQuery("User.findAll").getResultList();
@@ -157,7 +168,12 @@ public class UserRepository {
     public List getFilteredUserList(String username, String password) {
         List<User> user = findUser(username);
         // Check if user is admin
-        if (user.size() == 0 || user.size() > 1 || !(user.get(0).getRole().equalsIgnoreCase("administrator")) || !(user.get(0).getPassword().equals(password))) {
+        if (
+            user.size() == 0 
+            || user.size() > 1 
+            || !(user.get(0).getRole().equalsIgnoreCase("administrator")) 
+            || !(user.get(0).getPassword().equals(password))
+        ) {
             return new ArrayList<User>();
         }
         List<User> userli = em.createNamedQuery("User.findAll").getResultList();

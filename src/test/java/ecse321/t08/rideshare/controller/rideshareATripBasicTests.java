@@ -20,7 +20,6 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 public class rideshareATripBasicTests {
-
     @Mock
     private ATripRepository tripDao;
 
@@ -37,7 +36,6 @@ public class rideshareATripBasicTests {
     private static final int VEHICLE_ID = -2;
     private static final String PASSENGER_ID = "1;2;3;4";
     private static final int NON_EXISTING_TRIP_ID = -3;
-
 
     @Before
     public void setMockTrueOutput() {
@@ -65,7 +63,6 @@ public class rideshareATripBasicTests {
     public void testTripSimpleQueryFound() {
         assertEquals(STOPS, tripController.getTrip(TRIP_ID).getStops());
     }
-
 
     @Test
     public void testUserQueryNotFound() {

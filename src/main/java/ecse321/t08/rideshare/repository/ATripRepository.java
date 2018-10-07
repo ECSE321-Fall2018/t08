@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @Repository
 public class ATripRepository {
-
     @PersistenceContext
     EntityManager em;
 
@@ -28,15 +27,15 @@ public class ATripRepository {
 
     @Transactional
     public ATrip createATrip(
-            int status,
-            String cost,
-            int startDate,
-            int endDate,
-            String startLocation,
-            String stops,
-            int vehicleId,
-            String driverUserName,
-            String driverPassword
+        int status,
+        String cost,
+        int startDate,
+        int endDate,
+        String startLocation,
+        String stops,
+        int vehicleId,
+        String driverUserName,
+        String driverPassword
     ) {
         ATrip aTrip = new ATrip();
         int driverId = userRep.authenticateUser(driverUserName, driverPassword);
@@ -66,7 +65,13 @@ public class ATripRepository {
     public List getUnfilteredTripsList(String username, String password) {
         List<User> user = userRep.findUser(username);
         // Check if user is admin
-        if (user.size() == 0 || user.size() > 1 || !(user.get(0).getRole().equalsIgnoreCase("administrator")) || !(user.get(0).getPassword().equals(password))) {
+        if (
+            user.size() == 0 
+            || user.size() > 1 
+            || !(user.get(0).getRole().equalsIgnoreCase("administrator")) 
+            || !(user.get(0).getPassword().equals(password))
+        
+                ) {
             return new ArrayList<User>();
         }
         return em.createQuery("SELECT * FROM ATrip").getResultList();
@@ -244,11 +249,20 @@ public class ATripRepository {
     }
 
     @Transactional
-    public List<Integer> findtrip(String startLocation, String stop, int startdate, int enddate, String vehtype, Double mincost, Double maxcost) {
+    public List<Integer> findtrip(
+        String startLocation, 
+        String stop, 
+        int startdate, 
+        int enddate, 
+        String vehtype, 
+        Double mincost, 
+        Double maxcost
+    ) {
         List<ATrip> trips = em.createQuery("SELECT * FROM ATrip").getResultList();
         if (!(startLocation.equals(""))) {
-            trips = trips.stream().filter(u -> u.getStartLocation().toUpperCase().contains(startLocation.toUpperCase()))
-                    .collect(Collectors.toList());
+            trips = trips.stream()
+                .filter(u -> u.getStartLocation().toUpperCase().contains(startLocation.toUpperCase()))
+                .collect(Collectors.toList());
         }
         if (!(stop.equals(""))) {
             List<ATrip> newList = new ArrayList<ATrip>(trips);
