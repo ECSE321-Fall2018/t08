@@ -42,7 +42,7 @@ public class rideshareUserBasicTests {
         when(userDao.getUser(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(USER_ID)) {
                 User user = new User();
-                user.setUserID(USER_ID);
+                user.setUserId(USER_ID);
                 user.setUsername(USER_KEY);
                 user.setFullName(USER_FULLNAME);
                 user.setEmailAddress(USER_EMAIL);

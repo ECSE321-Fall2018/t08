@@ -44,7 +44,7 @@ public class ATripRepository {
         }
         
         User user = userRep.getUser(driverId);
-        user.setTripNumber(user.getTripnumber() + 1);
+        user.setTripNumber(user.getTripNumber() + 1);
         em.merge(user);
         
         ATrip aTrip = new ATrip(
@@ -85,33 +85,33 @@ public class ATripRepository {
     public String selectTrip(int aTripID, String username, String password) {
         ATrip trip = getTrip(aTripID);
         List<User> user = userRep.findUser(username);
-
-        // Make sure user and trip exist
+        
         if (user.size() != 1 || trip == null) {
             return "User or trip does not exist.";
         }
-        // password is correct
-        if (!(user.get(0).getPassword().equals(password))) {
+        // Make sure username and password are correct
+        else if (!(user.get(0).getPassword().equals(password))) {
             return "Unable to authenticate user to select trip.";
         }
-
-        if (!("Passenger".equalsIgnoreCase(user.get(0).getRole()))) {
+        else if (!("Passenger".equalsIgnoreCase(user.get(0).getRole()))) {
             return "Only passengers can select trips.";
         }
+        
+        String userid = String.valueOf(user.get(0).getUserId());
 
-        if (trip.getPassengerid().equalsIgnoreCase(String.valueOf(user.get(0).getUserID()))) {
+        if (trip.getPassengerid().equalsIgnoreCase(userid)) {
             return "User has already selected this trip.";
         }
-        if (trip.getPassengerid() == null || trip.getPassengerid().equals("")) {
-            trip.setPassengerid(String.valueOf(user.get(0).getUserID()));
+        else if (trip.getPassengerid() == null || trip.getPassengerid() == "") {
+            trip.setPassengerid(userid);
         } else {
-            trip.setPassengerid(trip.getPassengerid() + ";" + String.valueOf(user.get(0).getUserID()));
+            trip.setPassengerid(trip.getPassengerid() + ";" + userid);
         }
-        user.get(0).setTripNumber(user.get(0).getTripnumber() + 1);
+        user.get(0).setTripNumber(user.get(0).getTripNumber() + 1);
         em.merge(user);
         em.merge(trip);
-        return ("Passenger " + username + " selected this trip.");
 
+        return ("Passenger " + username + " selected this trip.");
     }
 
 
@@ -130,12 +130,12 @@ public class ATripRepository {
         }
         // If user is driver, delete entire trip
         else if ("Driver".equalsIgnoreCase(user.get(0).getRole())) {
-            if (user.get(0).getUserID() == trip.getDriverid()) {
-                user.get(0).setTripNumber(user.get(0).getTripnumber() - 1);
+            if (user.get(0).getUserId() == trip.getDriverid()) {
+                user.get(0).setTripNumber(user.get(0).getTripNumber() - 1);
                 ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
                 for (String s : ids) {
                     User passenger = userRep.getUser(Integer.parseInt(s));
-                    passenger.setTripNumber(passenger.getTripnumber() - 1);
+                    passenger.setTripNumber(passenger.getTripNumber() - 1);
                     em.merge(passenger);
                 }
 
@@ -149,9 +149,9 @@ public class ATripRepository {
             List<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
             List<String> newIds = new ArrayList<String>(ids);
             for (String s : ids) {
-                if (s.equals(String.valueOf(user.get(0).getUserID()))) {
+                if (s.equals(String.valueOf(user.get(0).getUserId()))) {
                     newIds.remove(s);
-                    user.get(0).setTripNumber(user.get(0).getTripnumber() - 1);
+                    user.get(0).setTripNumber(user.get(0).getTripNumber() - 1);
                     em.merge(user);
                 }
             }
@@ -181,7 +181,7 @@ public class ATripRepository {
         if (!("Driver".equalsIgnoreCase(user.get(0).getRole()))) {
             return "Only a driver can change the status of a trip.";
         }
-        if (trip.getDriverid() != user.get(0).getUserID()) {
+        if (trip.getDriverid() != user.get(0).getUserId()) {
             return "Driver can only change status of their own trip.";
         }
 
@@ -223,11 +223,11 @@ public class ATripRepository {
 
         List<ATrip> list = em.createQuery("SELECT * FROM ATrip").getResultList();
         if (user.get(0).getRole().equalsIgnoreCase("Driver")) {
-            List<ATrip> flist = list.stream().filter(u -> (u.getDriverid() == user.get(0).getUserID()))
+            List<ATrip> flist = list.stream().filter(u -> (u.getDriverid() == user.get(0).getUserId()))
                 .collect(Collectors.toList());
             List<Integer> result = new ArrayList<Integer>();
             for (ATrip i : flist) {
-                result.add(i.getTripid());
+                result.add(i.getTripId());
             }
             return result;
         }
@@ -236,8 +236,8 @@ public class ATripRepository {
             for (ATrip el : list) {
                 List<String> idlist = rideshareHelper.tokenizer(el.getPassengerid(), ";");
                 for (String id : idlist) {
-                    if (id.equalsIgnoreCase(String.valueOf(user.get(0).getUserID()))) {
-                        result.add(el.getTripid());
+                    if (id.equalsIgnoreCase(String.valueOf(user.get(0).getUserId()))) {
+                        result.add(el.getTripId());
                     }
                 }
             }
@@ -348,7 +348,7 @@ public class ATripRepository {
         }
         List<Integer> tripid = new ArrayList<Integer>();
         for (ATrip trip : trips) {
-            tripid.add(trip.getTripid());
+            tripid.add(trip.getTripId());
         }
         return tripid;
     }

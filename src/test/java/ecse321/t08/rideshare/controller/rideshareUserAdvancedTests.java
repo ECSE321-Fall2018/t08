@@ -128,7 +128,7 @@ public class rideshareUserAdvancedTests {
                 user2.setTripNumber(1);
                 userList.add(user);
                 userList.add(user2);
-                Collections.sort(userList, Comparator.comparing(User::getTripnumber));
+                Collections.sort(userList, Comparator.comparing(User::getTripNumber));
                 return userList;
             } else {
                 return new ArrayList<User>();

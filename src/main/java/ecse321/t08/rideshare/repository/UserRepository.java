@@ -62,8 +62,8 @@ public class UserRepository {
     }
 
     @Transactional
-    public User getUser(int userId) {
-        return em.find(User.class, userId);
+    public User getUser(int userid) {
+        return em.find(User.class, userid);
     }
 
     @Transactional
@@ -119,7 +119,7 @@ public class UserRepository {
             user.getPassword().equals(password)
             && (role == "" || user.getRole().equalsIgnoreCase(role))
         ) {
-            return user.getUserID();
+            return user.getUserId();
         } else {
             return -1;
         }
@@ -188,7 +188,7 @@ public class UserRepository {
             return new ArrayList<User>();
         }
         List<User> userli = em.createNamedQuery("User.findAll").getResultList();
-        Collections.sort(userli, Comparator.comparing(User::getTripnumber));
+        Collections.sort(userli, Comparator.comparing(User::getTripNumber));
         if (userli.size() > 99) {
             return userli.subList(0, 99);
         }

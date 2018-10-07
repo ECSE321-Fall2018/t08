@@ -155,14 +155,14 @@ public class rideshareATripAdvancedTests {
 
             user.setUsername(PASSENGER_ID);
             user.setPassword(PASSENGER_PASSWORD);
-            user.setUserID(1);
+            user.setUserId(1);
             trip.setPassengerid(PASSENGER_ID);
-            trip.setTripid(TRIP_ID);
+            trip.setTripId(TRIP_ID);
             trip.setDriverid(DRIVER_ID);
-            trip2.setTripid(TRIP_ID2);
+            trip2.setTripId(TRIP_ID2);
             trip2.setPassengerid(PASSENGER_ID);
             trip2.setDriverid(DRIVER_ID);
-            trip3.setTripid(TRIP_ID3);
+            trip3.setTripId(TRIP_ID3);
             trip3.setPassengerid(NONEXISTING_PASSENGER_ID);
             trip3.setDriverid(NONEXSITING_DRIVER_ID);
             List<ATrip> tripsList = new ArrayList<ATrip>();
@@ -174,7 +174,7 @@ public class rideshareATripAdvancedTests {
                     .collect(Collectors.toList());
                 List<Integer> result = new ArrayList<Integer>();
                 for (ATrip i : flist) {
-                    result.add(i.getTripid());
+                    result.add(i.getTripId());
                 }
                 return result;
             }
@@ -183,8 +183,8 @@ public class rideshareATripAdvancedTests {
                 for (ATrip el : tripsList) {
                     List<String> idlist = rideshareHelper.tokenizer(el.getPassengerid(), ";");
                     for (String id : idlist) {
-                        if (id.equalsIgnoreCase(String.valueOf(user.getUserID()))) {
-                            result.add(el.getTripid());
+                        if (id.equalsIgnoreCase(String.valueOf(user.getUserId()))) {
+                            result.add(el.getTripId());
                         }
                     }
                 }
@@ -203,7 +203,7 @@ public class rideshareATripAdvancedTests {
 
             List<ATrip> trips = new ArrayList<ATrip>();
             trip1.setStartLocation(START_LOCATION);
-            trip1.setTripid(TRIP_ID);
+            trip1.setTripId(TRIP_ID);
             trip1.setStops(STOPS);
             trip1.setStartDate(START_DATE);
             trip1.setEndDate(END_DATE);
@@ -229,7 +229,7 @@ public class rideshareATripAdvancedTests {
                 trips = newList;
                 List<Integer> tripid = new ArrayList<Integer>();
                 for (ATrip trip : trips) {
-                    tripid.add(trip.getTripid());
+                    tripid.add(trip.getTripId());
                 }
                 return tripid;
             } else if (invocation.getArgument(1).equals(TEST_FAKE_STOP)) {
@@ -249,7 +249,7 @@ public class rideshareATripAdvancedTests {
                 trips = newList;
                 List<Integer> tripid = new ArrayList<Integer>();
                 for (ATrip trip : trips) {
-                    tripid.add(trip.getTripid());
+                    tripid.add(trip.getTripId());
                 }
                 return tripid;
             } else {

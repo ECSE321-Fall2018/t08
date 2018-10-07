@@ -32,7 +32,6 @@ public class ATrip {
         String passengerid,
         int driverid
     ) {
-        this.tripid = tripid;
         this.tripStatus = tripStatus;
         this.costPerStop = costPerStop;
         this.startDate = startDate;
@@ -54,11 +53,11 @@ public class ATrip {
     }
 
     @Column(name = "tripid")
-    public int getTripid() {
+    public int getTripId() {
         return this.tripid;
     }
 
-    public void setTripid(int value) {
+    public void setTripId(int value) {
         this.tripid = value;
     }
 

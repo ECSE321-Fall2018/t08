@@ -10,7 +10,7 @@ import javax.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int userID;
+    private int userid;
 
     private String username;
     private boolean isUserActive = false;
@@ -20,27 +20,26 @@ public class User {
     private int tripnumber;
     private String role; // Either Driver, Passenger or Administrator (case-sensitive!)
 
-    public User() {
-    }
+    public User() {}
 
     public User(User user) {
         this.isUserActive = user.getStatus();
         this.emailAddress = user.getEmailAddress();
         this.fullName = user.getFullName();
         this.username = user.getUsername();
-        this.userID = user.getUserID();
+        this.userid = user.getUserId();
         this.password = user.getPassword();
         this.role = user.getRole();
-        this.tripnumber = user.getTripnumber();
+        this.tripnumber = user.getTripNumber();
     }
 
-    public void setUserID(int value) {
-        this.userID = value;
+    public void setUserId(int value) {
+        this.userid = value;
     }
 
     @Column(name = "userid")
-    public int getUserID() {
-        return this.userID;
+    public int getUserId() {
+        return this.userid;
     }
 
     public void setUsername(String value) {
@@ -60,7 +59,6 @@ public class User {
     public String getEmailAddress() {
         return this.emailAddress;
     }
-
 
     public void setPassword(String value) {
         this.password = value;
@@ -99,7 +97,7 @@ public class User {
     }
 
     @Column(name = "tripnumber")
-    public int getTripnumber() {
+    public int getTripNumber() {
         return tripnumber;
     }
 
