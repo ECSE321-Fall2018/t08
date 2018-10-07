@@ -14,20 +14,20 @@ import java.util.stream.Collectors;
 @Repository
 public class VehicleRepository {
 
-	@PersistenceContext
-	EntityManager em;
+    @PersistenceContext
+    EntityManager em;
 
-	@Autowired
+    @Autowired
     UserRepository userRep;
-	
-	@Transactional
-	public Vehicle createVehicle(String driverUserName, String driverPassword, int nbOfSeats, String colour, String model, String vehicleType) {
+
+    @Transactional
+    public Vehicle createVehicle(String driverUserName, String driverPassword, int nbOfSeats, String colour, String model, String vehicleType) {
         int driverId = userRep.authenticateUser(driverUserName, driverPassword);
-        if(driverId == -1) {
+        if (driverId == -1) {
             return null;
         }
         User user = userRep.getUser(driverId);
-        if(!(user.getRole().equalsIgnoreCase("Driver"))) {
+        if (!(user.getRole().equalsIgnoreCase("Driver"))) {
             return null;
         }
 
@@ -39,7 +39,7 @@ public class VehicleRepository {
         aVehicle.setVehicleType(vehicleType);
         em.persist(aVehicle);
         return aVehicle;
-	}
+    }
 
     @Transactional
     public Vehicle getVehicle(int id) {
@@ -49,10 +49,10 @@ public class VehicleRepository {
     @Transactional
     public int findVehicleForDriver(int driverid) {
         List<Vehicle> vehList = em.createNamedQuery("Vehicle.findAll").getResultList();
-        vehList =  vehList.stream().filter(u -> u.getDriverId() == driverid)
+        vehList = vehList.stream().filter(u -> u.getDriverId() == driverid)
                 .collect(Collectors.toList());
 
-        if(vehList.size() > 1 || vehList.size() < 1) {
+        if (vehList.size() > 1 || vehList.size() < 1) {
             return -1;
         } else {
             return vehList.get(0).getVehicleId();

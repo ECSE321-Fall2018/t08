@@ -3,7 +3,7 @@ package ecse321.t08.rideshare.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name="ATrip")
+@Table(name = "ATrip")
 public class ATrip {
     private int tripid;
     private int tripStatus; // 0 for ongoing, 1 for planned, 2 for completed
@@ -17,19 +17,20 @@ public class ATrip {
     private String passengerid; // Contains all passenger ids, separated by delimiter ';'
     private int driverid;
 
-    public ATrip() {}
+    public ATrip() {
+    }
 
     public ATrip(
-        int tripid, 
-        int tripStatus, 
-        String costPerStop, 
-        int startDate, 
-        int endDate, 
-        String startLocation, 
-        String stops, 
-        int vehicleid, 
-        String passengerid,
-        int driverid
+            int tripid,
+            int tripStatus,
+            String costPerStop,
+            int startDate,
+            int endDate,
+            String startLocation,
+            String stops,
+            int vehicleid,
+            String passengerid,
+            int driverid
     ) {
         this.tripid = tripid;
         this.tripStatus = tripStatus;
@@ -41,9 +42,9 @@ public class ATrip {
         this.vehicleid = vehicleid;
         this.passengerid = passengerid;
         this.driverid = driverid;
-   }
+    }
 
-    @Column(name="passengerid")
+    @Column(name = "passengerid")
     public String getPassengerid() {
         return passengerid;
     }
@@ -54,7 +55,7 @@ public class ATrip {
 
 
     @Id
-    @Column(name="tripid")
+    @Column(name = "tripid")
     @GeneratedValue(strategy = GenerationType.AUTO)
     public int getTripid() {
         return this.tripid;
@@ -65,7 +66,7 @@ public class ATrip {
     }
 
 
-    @Column(name="startdate")
+    @Column(name = "startdate")
     public int getStartDate() {
         return this.startDate;
     }
@@ -74,7 +75,7 @@ public class ATrip {
         this.startDate = value;
     }
 
-    @Column(name="enddate")
+    @Column(name = "enddate")
     public int getEndDate() {
         return endDate;
     }
@@ -83,7 +84,7 @@ public class ATrip {
         this.endDate = endDate;
     }
 
-    @Column(name="status")
+    @Column(name = "status")
     public int getStatus() {
         return this.tripStatus;
     }
@@ -92,7 +93,7 @@ public class ATrip {
         this.tripStatus = value;
     }
 
-    @Column(name="startlocation")
+    @Column(name = "startlocation")
     public String getStartLocation() {
         return this.startLocation;
     }
@@ -101,7 +102,7 @@ public class ATrip {
         this.startLocation = value;
     }
 
-    @Column(name="getstops")
+    @Column(name = "getstops")
     public String getStops() {
         return this.stops;
     }
@@ -110,7 +111,7 @@ public class ATrip {
         this.stops = value;
     }
 
-    @Column(name="cost")
+    @Column(name = "cost")
     public String getCostPerStop() {
         return costPerStop;
     }
@@ -119,7 +120,7 @@ public class ATrip {
         this.costPerStop = costPerStop;
     }
 
-    @Column(name="vehicleid")
+    @Column(name = "vehicleid")
     public int getVehicleid() {
         return vehicleid;
     }
@@ -128,7 +129,7 @@ public class ATrip {
         this.vehicleid = vehicleid;
     }
 
-    @Column(name="driverid")
+    @Column(name = "driverid")
     public int getDriverid() {
         return vehicleid;
     }

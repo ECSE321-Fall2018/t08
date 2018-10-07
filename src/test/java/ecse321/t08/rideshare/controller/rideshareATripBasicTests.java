@@ -42,7 +42,7 @@ public class rideshareATripBasicTests {
     @Before
     public void setMockTrueOutput() {
         when(tripDao.getTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
-            if(invocation.getArgument(0).equals(TRIP_ID)) {
+            if (invocation.getArgument(0).equals(TRIP_ID)) {
                 ATrip trip = new ATrip();
                 trip.setTripid(TRIP_ID);
                 trip.setStatus(TRIP_STATUS);

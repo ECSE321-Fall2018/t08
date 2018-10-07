@@ -20,6 +20,7 @@ public class rideshareHelperTests {
         // Then
         assertEquals(result, testStringAnswer);
     }
+
     @Test
     public void concatenator() {
         // Given

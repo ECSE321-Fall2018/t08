@@ -14,14 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @Transactional
-public class rideshareVehicleAdvancedTests  {
+public class rideshareVehicleAdvancedTests {
     private static final String findall = "User.findAll";
     private static final String findUser = "User.findUsername";
 
