@@ -109,35 +109,31 @@ public class ATripController {
     @RequestMapping(value = "/find", method = RequestMethod.POST)
     @ResponseBody
     public List<Integer> findTrip(
-        @RequestParam(value = "startloc", required = false) String startLocation,
-        @RequestParam(value = "stop", required = false) String stop,
-        @RequestParam(value = "startdate", required = false, defaultValue = "-1") Integer startdate,
-        @RequestParam(value = "enddate", required = false, defaultValue = "-1") Integer enddate,
-        @RequestParam(value = "vehtype", required = false) String vehtype,
-        @RequestParam(value = "mincost", required = false, defaultValue = "-1.0") Double mincost,
-        @RequestParam(value = "maxcost", required = false, defaultValue = "-1.0") Double maxcost
+        @RequestParam(value = "startLocation", required = false) String startLocation,
+        @RequestParam(value = "stop", required = false) String stops,
+        @RequestParam(value = "startDate", required = false, defaultValue = "-1") Integer startDate,
+        @RequestParam(value = "endDate", required = false, defaultValue = "-1") Integer endDate,
+        @RequestParam(value = "vehicleType", required = false) String vehicleType,
+        @RequestParam(value = "maxcost", required = false, defaultValue = "-1.0") Double maxCost
     ) {
         if (startLocation == null) {
             startLocation = "";
         }
-        if (stop == null) {
-            stop = "";
+        if (stops == null) {
+            stops = "";
         }
-        if (startdate == null) {
-            startdate = -1;
+        if (startDate == null) {
+            startDate = -1;
         }
-        if (enddate == null) {
-            enddate = -1;
+        if (endDate == null) {
+            endDate = -1;
         }
-        if (vehtype == null) {
-            vehtype = "";
+        if (vehicleType == null) {
+            vehicleType = "";
         }
-        if (mincost == null) {
-            mincost = -1.0;
+        if (maxCost == null) {
+            maxCost = -1.0;
         }
-        if (maxcost == null) {
-            maxcost = -1.0;
-        }
-        return repository.findtrip(startLocation, stop, startdate, enddate, vehtype, mincost, maxcost);
+        return repository.findTrip(startLocation, stops, startDate, endDate, vehicleType, maxCost);
     }
 }

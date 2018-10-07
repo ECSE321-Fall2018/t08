@@ -192,7 +192,7 @@ public class rideshareATripAdvancedTests {
             }
             return new ArrayList<Integer>();
         });
-        when(repository.findtrip(
+        when(repository.findTrip(
             anyString(), anyString(), anyInt(), anyInt(), anyString(), anyDouble(), anyDouble()
         ))
         .thenAnswer((InvocationOnMock invocation) -> {

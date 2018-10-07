@@ -23,7 +23,7 @@ public class ATripRepository {
     UserRepository userRep;
 
     @Autowired
-    VehicleRepository vehRep;
+    VehicleRepository vehicleRep;
 
     @Transactional
     public ATrip createATrip(
@@ -205,150 +205,143 @@ public class ATripRepository {
 
         if (trip == null) {
             return -1;
+        } else {
+            return trip.getDriverId();
         }
-        return trip.getDriverId();
     }
 
     @Transactional
     public List<Integer> userTrips(String username, String password) {
         List<User> user = userRep.findUser(username);
-
-        if (user.size() != 1) {
-            return new ArrayList<Integer>();
-        }
-        if (!(user.get(0).getPassword().equals(password))) {
-            return new ArrayList<Integer>();
-        }
-
         List<ATrip> list = em.createQuery("SELECT * FROM ATrip").getResultList();
-        if (user.get(0).getRole().equalsIgnoreCase("Driver")) {
-            List<ATrip> flist = list.stream().filter(u -> (u.getDriverId() == user.get(0).getUserId()))
+        int userId = user.get(0).getUserId();
+
+        if (userRep.authorizeUser(username, password, "Driver") != -1) {
+            // Display trips that driver is in charge of
+
+            List<ATrip> filteredList = list.stream()
+                .filter(u -> (u.getDriverId() == userId))
                 .collect(Collectors.toList());
             List<Integer> result = new ArrayList<Integer>();
-            for (ATrip i : flist) {
-                result.add(i.getTripId());
+
+            for (ATrip trip : filteredList) {
+                result.add(trip.getTripId());
             }
+
             return result;
         }
-        if (user.get(0).getRole().equalsIgnoreCase("Passenger")) {
+        else if (userRep.authorizeUser(username, password, "Passenger") != -1) {
+            // Display trips that passenger is a part of
+
             List<Integer> result = new ArrayList<Integer>();
+
+            // We'll have to search through each trip
             for (ATrip el : list) {
-                List<String> idlist = Helper.tokenizer(el.getPassengerId(), ";");
-                for (String id : idlist) {
-                    if (id.equalsIgnoreCase(String.valueOf(user.get(0).getUserId()))) {
+                List<String> idList = Helper.tokenizer(el.getPassengerId(), ";");
+
+                for (String id : idList) {
+                    if (id.equalsIgnoreCase(String.valueOf(userId))) {
                         result.add(el.getTripId());
                     }
                 }
             }
+
             return result;
+        } else {
+            return new ArrayList<Integer>();
         }
-        return new ArrayList<Integer>();
     }
 
     @Transactional
-    public List<Integer> findtrip(
+    public List<Integer> findTrip(
         String startLocation, 
-        String stop, 
-        int startdate, 
-        int enddate, 
-        String vehtype, 
-        Double mincost, 
-        Double maxcost
+        String stops, 
+        int startDate, 
+        int endDate, 
+        String vehicleType, 
+        Double maxCost
     ) {
         List<ATrip> trips = em.createQuery("SELECT * FROM ATrip").getResultList();
-        if (!(startLocation.equals(""))) {
+
+        if (startLocation != "") {
+            // only get trips with this startLocation
             trips = trips.stream()
-                .filter(u -> u.getStartLocation().toUpperCase().contains(startLocation.toUpperCase()))
+                .filter(u -> u.getStartLocation().equalsIgnoreCase(startLocation))
                 .collect(Collectors.toList());
         }
-        if (!(stop.equals(""))) {
-            List<ATrip> newList = new ArrayList<ATrip>(trips);
+
+        if (stops != "") {
+            // only get trips with these stops
+            List<ATrip> newList = new ArrayList<ATrip>();
             for (ATrip trip : trips) {
-                List<String> stops = Helper.tokenizer(trip.getStops(), ";");
-                boolean found = false;
-                for (String end : stops) {
-                    if (end.toUpperCase().contains(stop.toUpperCase())) {
-                        found = true;
+                if (trip.getStops().contains(stops)) {
+                    newList.add(trip);
+                }
+            }
+            trips = newList;
+        }
+
+        if (startDate != -1) {
+            // only get trips the leave at this day
+            // (with a 1 hour margin of error)
+            List<ATrip> newList = new ArrayList<ATrip>();
+            for (ATrip trip : trips) {
+                if (trip.getStartDate() - 3600 <= startDate && startDate <= trip.getStartDate() + 3600) {
+                    newList.add(trip);
+                }
+            }
+            trips = newList;
+        }
+
+        if (endDate != -1) {
+            // only get trips the arrive at this day
+            // (with a 2 hour margin of error, since arrival can be unpredictable)
+            List<ATrip> newList = new ArrayList<ATrip>();
+            for (ATrip trip : trips) {
+                if (trip.getEndDate() - 7200 <= endDate && endDate <= trip.getEndDate() + 7200) {
+                    newList.add(trip);
+                }
+            }
+            trips = newList;
+        }
+
+        if (vehicleType != "") {
+            // only get trips with a vehicle of this type
+            List<ATrip> newList = new ArrayList<ATrip>();
+            for (ATrip trip : trips) {
+                Vehicle vehicle = vehicleRep.getVehicle(trip.getVehicleId());
+                if (vehicle != null) {
+                    if (vehicle.getVehicleType().equalsIgnoreCase(vehicleType)) {
+                        newList.add(trip);
                     }
                 }
-                if (found == false) {
-                    newList.remove(trip);
-                }
             }
             trips = newList;
         }
 
-        //Finds start and end date within hours (unix time stamp)
-        if (startdate != -1) {
-            List<ATrip> newList = new ArrayList<ATrip>(trips);
-            for (ATrip trip : trips) {
-                if (!(trip.getStartDate() - 3600 <= startdate && startdate <= trip.getStartDate() + 3600)) {
-                    newList.remove(trip);
-                }
-            }
-            trips = newList;
-        }
-
-        if (enddate != -1) {
-            List<ATrip> newList = new ArrayList<ATrip>(trips);
-            for (ATrip trip : trips) {
-                if (!(trip.getEndDate() - 3600 <= enddate && enddate <= trip.getEndDate() + 3600)) {
-                    newList.remove(trip);
-                }
-            }
-            trips = newList;
-        }
-
-        if (!(vehtype.equals(""))) {
-            List<ATrip> newList = new ArrayList<ATrip>(trips);
-            for (ATrip trip : trips) {
-                Vehicle veh = vehRep.getVehicle(trip.getVehicleId());
-                if (veh != null) {
-                    if (!(veh.getVehicleType().toUpperCase().contains(vehtype.toUpperCase()))) {
-                        newList.remove(trip);
-                    }
-                }
-            }
-            trips = newList;
-        }
-
-        if (mincost != -1.0) {
-            List<ATrip> newList = new ArrayList<ATrip>(trips);
+        if (maxCost != -1.0) {
+            // only get trips that the user can pay for
+            List<ATrip> newList = new ArrayList<ATrip>();
             for (ATrip trip : trips) {
                 List<String> costs = Helper.tokenizer(trip.getCostPerStop(), ";");
-                boolean found = false;
+                double totalCost = 0;
+                // We did not consider just the cost up to the user's destination
+                // We should do that
                 for (String cost : costs) {
-                    if (Double.parseDouble(cost) >= mincost) {
-                        found = true;
-                    }
+                    totalCost += Double.parseDouble(cost);
                 }
-                if (found == false) {
-                    newList.remove(trip);
+                if (totalCost <= maxCost) {
+                    newList.add(trip);
                 }
             }
             trips = newList;
         }
 
-        if (maxcost != -1.0) {
-            List<ATrip> newList = new ArrayList<ATrip>(trips);
-            for (ATrip trip : trips) {
-                List<String> costs = Helper.tokenizer(trip.getCostPerStop(), ";");
-                boolean found = false;
-                for (String cost : costs) {
-                    if (Double.parseDouble(cost) <= maxcost) {
-                        found = true;
-                    }
-                }
-                if (found == false) {
-                    newList.remove(trip);
-                }
-            }
-            trips = newList;
-        }
-        List<Integer> tripid = new ArrayList<Integer>();
+        // We only need the IDs of the filtered trips
+        List<Integer> tripId = new ArrayList<Integer>();
         for (ATrip trip : trips) {
-            tripid.add(trip.getTripId());
+            tripId.add(trip.getTripId());
         }
-        return tripid;
+        return tripId;
     }
 }

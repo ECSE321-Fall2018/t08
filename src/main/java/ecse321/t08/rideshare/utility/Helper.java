@@ -13,8 +13,7 @@ public class Helper {
         return new ArrayList<>(Arrays.asList(str.split(separator)));
     }
 
-    // method returns a string
-    // put the separator will separate each element of the array in the string
+    // Joins the List elements into one string, separating the elements with semicolons
     public static String concatenator(List<String> list, String separator) {
         return String.join(separator, list);
     }
