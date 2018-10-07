@@ -47,8 +47,8 @@ public class ATripController {
 	        return repository.getTrip(id);
 		}
 		
-		// User selects trip and we record it on ATrip
-		@RequestMapping(value="/selecttrip", method = RequestMethod.POST)
+		// Passenger selects trip and we record it on ATrip
+		@RequestMapping(value="/selectTrip", method = RequestMethod.POST)
 		public String selectTrip(
 			@RequestParam("tripid") int ATripID,
 			@RequestParam("username") String username,
@@ -57,7 +57,7 @@ public class ATripController {
 			return repository.selectTrip(ATripID, username, password);
 		}
 
-        // Cancel trip based on ID, if you are a user
+        // Cancel trip based on ID, if you are a passenger
 	    @RequestMapping(value="/cancelTrip", method = RequestMethod.POST)
 	    public String cancelATrip(
             @RequestParam("tripid") int ATripID,
@@ -89,7 +89,7 @@ public class ATripController {
 		}
 
 		@RequestMapping(value="/usertrip", method = RequestMethod.POST)
-		public List<Integer> usertrip(@RequestParam("username") String username,
+		public List<Integer> userTrip(@RequestParam("username") String username,
 									  @RequestParam("password") String password) {
 			return repository.userTrip(username, password);
 		}
