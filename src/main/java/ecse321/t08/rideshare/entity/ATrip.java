@@ -3,7 +3,7 @@ package ecse321.t08.rideshare.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "ATrip")
+@Table(name = "atrip")
 public class ATrip {
     private int tripid;
     private int tripStatus; // 0 for ongoing, 1 for planned, 2 for completed
