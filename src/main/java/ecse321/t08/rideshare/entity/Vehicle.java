@@ -8,16 +8,27 @@ import javax.persistence.*;
     @NamedQuery(name = "Vehicle.findAll", query = "SELECT e FROM Vehicle e")
 })
 public class Vehicle {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int vehicleId;
-    private int nbOfSeats;
-    private String colour;
-    private String model;
+
     private int driverId;
     private String vehicleType;
+    private int nbOfSeats;
+    private String model;
+    private String colour;
 
-    @Id
+    public Vehicle() {}
+
+    public Vehicle(int driverId, String vehicleType, int nbOfSeats, String model, String colour) {
+        this.driverId = driverId;
+        this.vehicleType = vehicleType;
+        this.nbOfSeats = nbOfSeats;
+        this.model = model;
+        this.colour = colour;
+    }
+
     @Column(name = "vehicleid")
-    @GeneratedValue(strategy = GenerationType.AUTO)
     public int getVehicleId() {
         return vehicleId;
     }

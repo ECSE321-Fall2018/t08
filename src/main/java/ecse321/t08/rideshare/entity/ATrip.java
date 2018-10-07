@@ -5,9 +5,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "ATrip")
 public class ATrip {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int tripid;
-    private int tripStatus; // 0 for ongoing, 1 for planned, 2 for completed
 
+    private int tripStatus; // 0 for ongoing, 1 for planned, 2 for completed
     private String costPerStop; // Contains all costs per stop, in order, separated by delimiter ';'
     private int startDate; // Implemented as Unix Time Stamp
     private int endDate;
@@ -17,11 +19,9 @@ public class ATrip {
     private String passengerid; // Contains all passenger ids, separated by delimiter ';'
     private int driverid;
 
-    public ATrip() {
-    }
+    public ATrip() {}
 
     public ATrip(
-        int tripid,
         int tripStatus,
         String costPerStop,
         int startDate,
@@ -32,7 +32,6 @@ public class ATrip {
         String passengerid,
         int driverid
     ) {
-        this.tripid = tripid;
         this.tripStatus = tripStatus;
         this.costPerStop = costPerStop;
         this.startDate = startDate;
@@ -45,22 +44,24 @@ public class ATrip {
     }
 
     @Column(name = "passengerid")
-    public String getPassengerid() {
+    public String getPassengerId() {
         return passengerid;
     }
 
-    public void setPassengerid(String passengerid) {
+    public void setPassengerId(String passengerid) {
         this.passengerid = passengerid;
     }
 
-    @Id
+    public void appendPassengerId(String passengerid) {
+        this.passengerid += ";" + passengerid;
+    }
+
     @Column(name = "tripid")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public int getTripid() {
+    public int getTripId() {
         return this.tripid;
     }
 
-    public void setTripid(int value) {
+    public void setTripId(int value) {
         this.tripid = value;
     }
 
@@ -119,20 +120,20 @@ public class ATrip {
     }
 
     @Column(name = "vehicleid")
-    public int getVehicleid() {
+    public int getVehicleId() {
         return vehicleid;
     }
 
-    public void setVehicleid(int vehicleid) {
+    public void setVehicleId(int vehicleid) {
         this.vehicleid = vehicleid;
     }
 
     @Column(name = "driverid")
-    public int getDriverid() {
+    public int getDriverId() {
         return driverid;
     }
 
-    public void setDriverid(int driverid) {
+    public void setDriverId(int driverid) {
         this.driverid = driverid;
     }
 }

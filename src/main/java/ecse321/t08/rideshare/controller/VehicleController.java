@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/vehicle")
 public class VehicleController {
     @Autowired
-    VehicleRepository repository;
+    VehicleRepository vehicleRepo;
 
-    @RequestMapping(value = "/createvehicle", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public String createVehicle(
         @RequestParam("driveruser") String username,
@@ -21,22 +21,23 @@ public class VehicleController {
         @RequestParam("model") String model,
         @RequestParam("vehicleType") String vehicleType
     ) {
-        Vehicle result = repository.createVehicle(username, password, nbOfSeats, colour, model, vehicleType);
+        Vehicle result = vehicleRepo.createVehicle(username, password, nbOfSeats, colour, model, vehicleType);
+        
         if (result != null) {
             return model + " created!";
         } else {
-            return "Vehicle could not be created. Please verify credentials.";
+            return "Vehicle could not be created. Please verify your credentials.";
         }
     }
 
-    @RequestMapping(value = "/vehicles/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Vehicle getVehicle(@PathVariable("id") int id) {
-        return repository.getVehicle(id);
+        return vehicleRepo.getVehicle(id);
     }
 
     @RequestMapping(value = "/finddriver", method = RequestMethod.POST)
     @ResponseBody
-    public int findVehicleForDriver(@RequestParam("driverid") Integer driverid) {
-        return repository.findVehicleForDriver(driverid);
+    public int findVehicleForDriver(@RequestParam("driverid") int driverId) {
+        return vehicleRepo.findVehicleForDriver(driverId);
     }
 }

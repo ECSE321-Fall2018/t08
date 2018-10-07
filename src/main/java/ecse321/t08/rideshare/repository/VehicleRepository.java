@@ -17,34 +17,25 @@ public class VehicleRepository {
     EntityManager em;
 
     @Autowired
-    UserRepository userRep;
+    UserRepository userRepo;
 
     @Transactional
     public Vehicle createVehicle(
-        String driverUserName, 
+        String driverUsername, 
         String driverPassword, 
         int nbOfSeats, 
         String colour, 
         String model, 
         String vehicleType
     ) {
-        int driverId = userRep.authenticateUser(driverUserName, driverPassword);
+        int driverId = userRepo.authorizeUser(driverUsername, driverPassword, "Driver");
         if (driverId == -1) {
             return null;
         }
-        User user = userRep.getUser(driverId);
-        if (!(user.getRole().equalsIgnoreCase("Driver"))) {
-            return null;
-        }
 
-        Vehicle aVehicle = new Vehicle();
-        aVehicle.setDriverId(driverId);
-        aVehicle.setNbOfSeats(nbOfSeats);
-        aVehicle.setColour(colour);
-        aVehicle.setModel(model);
-        aVehicle.setVehicleType(vehicleType);
-        em.persist(aVehicle);
-        return aVehicle;
+        Vehicle vehicle = new Vehicle(driverId, vehicleType, nbOfSeats, model, colour);
+        em.persist(vehicle);
+        return vehicle;
     }
 
     @Transactional
@@ -53,16 +44,16 @@ public class VehicleRepository {
     }
 
     @Transactional
-    public int findVehicleForDriver(int driverid) {
-        List<Vehicle> vehList = em.createNamedQuery("Vehicle.findAll").getResultList();
-        vehList = vehList.stream().filter(u -> u.getDriverId() == driverid)
-            
-        .collect(Collectors.toList());
+    public int findVehicleForDriver(int driverId) {
+        List<Vehicle> vehicleList = em.createNamedQuery("Vehicle.findAll").getResultList();
+        vehicleList = vehicleList.stream()
+            .filter(u -> u.getDriverId() == driverId)
+            .collect(Collectors.toList());
 
-        if (vehList.size() > 1 || vehList.size() < 1) {
+        if (vehicleList.size() != 1) {
             return -1;
         } else {
-            return vehList.get(0).getVehicleId();
+            return vehicleList.get(0).getVehicleId();
         }
     }
 }

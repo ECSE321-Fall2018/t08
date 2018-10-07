@@ -3,43 +3,48 @@ package ecse321.t08.rideshare.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 @NamedQueries({
     @NamedQuery(name = "User.findAll", query = "SELECT e FROM User e")
 })
 public class User {
-    private int userID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int userid;
+
     private String username;
-    private boolean isUserActive = false;
     private String emailAddress;
     private String fullName;
-    private String password;
-    private int tripnumber;
     private String role; // Either Driver, Passenger or Administrator (case-sensitive!)
+    private String password;
+    private boolean isUserActive = false;
+    private int tripnumber;
 
-    public User() {
+    public User() {}
+
+    public User(
+        String username,
+        String emailAddress,
+        String fullName,
+        String role,
+        String password,
+        int tripnumber
+    ) {
+        this.username = username;
+        this.emailAddress = emailAddress;
+        this.fullName = fullName;
+        this.role = role;
+        this.password = password;
+        this.tripnumber = tripnumber;
     }
 
-    public User(User user) {
-        this.isUserActive = user.getStatus();
-        this.emailAddress = user.getEmailAddress();
-        this.fullName = user.getFullName();
-        this.username = user.getUsername();
-        this.userID = user.getUserID();
-        this.password = user.getPassword();
-        this.role = user.getRole();
-        this.tripnumber = user.getTripnumber();
+    public void setUserId(int value) {
+        this.userid = value;
     }
 
-    public void setUserID(int value) {
-        this.userID = value;
-    }
-
-    @Id
     @Column(name = "userid")
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    public int getUserID() {
-        return this.userID;
+    public int getUserId() {
+        return this.userid;
     }
 
     public void setUsername(String value) {
@@ -59,7 +64,6 @@ public class User {
     public String getEmailAddress() {
         return this.emailAddress;
     }
-
 
     public void setPassword(String value) {
         this.password = value;
@@ -98,11 +102,16 @@ public class User {
     }
 
     @Column(name = "tripnumber")
-    public int getTripnumber() {
+    public int getTripNumber() {
         return tripnumber;
     }
 
-    public void setTripnumber(int tripnumber) {
+    public void setTripNumber(int tripnumber) {
         this.tripnumber = tripnumber;
     }
+
+    public void incrementTripNumber() {
+        this.tripnumber++;
+    }
+
 }

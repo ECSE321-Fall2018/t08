@@ -11,9 +11,9 @@ import java.util.List;
 @RequestMapping("api/trip")
 public class ATripController {
     @Autowired
-    ATripRepository repository;
+    ATripRepository aTripRepo;
 
-    @RequestMapping(value = "/createtrip", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public String createTrip(
         @RequestParam("status") Integer status,
@@ -26,7 +26,7 @@ public class ATripController {
         @RequestParam("driveruser") String driverUsername,
         @RequestParam("driverpass") String driverPassword
     ) {
-        ATrip result = repository.createATrip(
+        ATrip result = aTripRepo.createATrip(
             status, 
             cost, 
             startDate, 
@@ -50,103 +50,90 @@ public class ATripController {
         @RequestParam("username") String username,
         @RequestParam("password") String password
     ) {
-        return repository.getUnfilteredTripsList(username, password);
+        return aTripRepo.getUnfilteredTripsList(username, password);
     }
 
     @RequestMapping(value = "/trips/{id}", method = RequestMethod.GET)
     public ATrip getTrip(@PathVariable("id") int id) {
-        return repository.getTrip(id);
+        return aTripRepo.getTrip(id);
     }
 
     // User selects trip and we record it on ATrip
-    @RequestMapping(value = "/selecttrip", method = RequestMethod.POST)
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
     public String selectTrip(
         @RequestParam("tripid") int ATripID,
         @RequestParam("username") String username,
         @RequestParam("password") String password
     ) {
-        return repository.selectTrip(ATripID, username, password);
+        return aTripRepo.selectTrip(ATripID, username, password);
     }
 
     // Cancel trip based on ID, if you are a user
-    @RequestMapping(value = "/cancelTrip", method = RequestMethod.POST)
+    @RequestMapping(value = "/cancel", method = RequestMethod.POST)
     public String cancelATrip(
         @RequestParam("tripid") int ATripID,
         @RequestParam("username") String username,
         @RequestParam("password") String password
     ) {
-        return repository.cancelATrip(ATripID, username, password);
+        return aTripRepo.cancelATrip(ATripID, username, password);
     }
-
 
     @RequestMapping(value = "/status", method = RequestMethod.POST)
     public String changeTripStatus(
-        @RequestParam("tripid") Integer ATripID,
+        @RequestParam("tripid") int ATripID,
         @RequestParam("username") String username,
         @RequestParam("password") String password,
-        @RequestParam("tripstatus") Integer status
+        @RequestParam("tripstatus") int status
     ) {
-        return repository.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
+        return aTripRepo.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
     }
 
-    @RequestMapping(value = "/passengerontrip", method = RequestMethod.POST)
-    public List<String> passengerOnTrip(@RequestParam("tripid") Integer ATripID) {
-        return repository.findPassengerOnTrip(ATripID);
+    @RequestMapping(value = "/passengersontrip", method = RequestMethod.POST)
+    public List<String> passengersOnTrip(@RequestParam("tripid") int ATripID) {
+        return aTripRepo.findPassengersOnTrip(ATripID);
     }
 
     @RequestMapping(value = "/driverontrip", method = RequestMethod.POST)
-    public int driverOnTrip(@RequestParam("tripid") Integer ATripID) {
-        return repository.findDriverOnTrip(ATripID);
+    public int driverOnTrip(@RequestParam("tripid") int ATripID) {
+        return aTripRepo.findDriverOnTrip(ATripID);
     }
 
-    @RequestMapping(value = "/usertrip", method = RequestMethod.POST)
-    public List<Integer> usertrip(@RequestParam("username") String username,
-    @RequestParam("password") String password) {
-        return repository.userTrip(username, password);
+    @RequestMapping(value = "/usertrips", method = RequestMethod.POST)
+    public List<Integer> userTrips(
+        @RequestParam("username") String username,
+        @RequestParam("password") String password
+    ) {
+        return aTripRepo.userTrips(username, password);
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.POST)
     @ResponseBody
     public List<Integer> findTrip(
-        @RequestParam(value = "startloc", required = false) String startLocation,
-        @RequestParam(value = "stop", required = false) String stop,
-        @RequestParam(value = "startdate", required = false, defaultValue = "-1") Integer startdate,
-        @RequestParam(value = "enddate", required = false, defaultValue = "-1") Integer enddate,
-        @RequestParam(value = "vehtype", required = false) String vehtype,
-        @RequestParam(value = "mincost", required = false, defaultValue = "-1.0") Double mincost,
-        @RequestParam(value = "maxcost", required = false, defaultValue = "-1.0") Double maxcost
+        @RequestParam(value = "startLocation", required = false) String startLocation,
+        @RequestParam(value = "stop", required = false) String stops,
+        @RequestParam(value = "startDate", required = false, defaultValue = "-1") Integer startDate,
+        @RequestParam(value = "endDate", required = false, defaultValue = "-1") Integer endDate,
+        @RequestParam(value = "vehicleType", required = false) String vehicleType,
+        @RequestParam(value = "maxcost", required = false, defaultValue = "-1.0") Double maxCost
     ) {
         if (startLocation == null) {
             startLocation = "";
         }
-        if (stop == null) {
-            stop = "";
+        if (stops == null) {
+            stops = "";
         }
-        if (startdate == null) {
-            startdate = -1;
+        if (startDate == null) {
+            startDate = -1;
         }
-        if (enddate == null) {
-            enddate = -1;
+        if (endDate == null) {
+            endDate = -1;
         }
-        if (vehtype == null) {
-            vehtype = "";
+        if (vehicleType == null) {
+            vehicleType = "";
         }
-        if (mincost == null) {
-            mincost = -1.0;
+        if (maxCost == null) {
+            maxCost = -1.0;
         }
-        if (maxcost == null) {
-            maxcost = -1.0;
-        }
-        return repository.findtrip(startLocation, stop, startdate, enddate, vehtype, mincost, maxcost);
+        return aTripRepo.findTrip(startLocation, stops, startDate, endDate, vehicleType, maxCost);
     }
-
-	@RequestMapping(value="/status", method = RequestMethod.POST)
-	public String changeTripStatus(
-		@RequestParam("tripid") int ATripID,
-		@RequestParam("username") String username,
-		@RequestParam("password") String password,
-		@RequestParam("tripstatus") int status
-	) {
-		return repository.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
-	}
 }

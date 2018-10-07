@@ -58,7 +58,7 @@ public class rideshareUserAdvancedTests {
 
     @Before
     public void setMockOutput() {
-        when(userDao.updateUser(anyString(), anyString(), anyString(), anyString(), anyString()))
+        when(userDao.updateUser(anyString(), anyString(), anyString(), anyString(), anyString(), anyString()))
         .thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(2).equals(USER_FULLNAME_UPDATED)) {
                 User user = new User();
@@ -122,13 +122,13 @@ public class rideshareUserAdvancedTests {
                 User user = new User();
                 List<User> userList = new ArrayList<User>();
                 user.setUsername(USER_KEY);
-                user.setTripnumber(2);
+                user.setTripNumber(2);
                 User user2 = new User();
                 user2.setUsername(USER_KEY2);
-                user2.setTripnumber(1);
+                user2.setTripNumber(1);
                 userList.add(user);
                 userList.add(user2);
-                Collections.sort(userList, Comparator.comparing(User::getTripnumber));
+                Collections.sort(userList, Comparator.comparing(User::getTripNumber));
                 return userList;
             } else {
                 return new ArrayList<User>();
@@ -159,6 +159,7 @@ public class rideshareUserAdvancedTests {
             USER_EMAIL, 
             USER_FULLNAME_UPDATED, 
             USER_ROLE, 
+            USER_PASSWORD,
             USER_PASSWORD
         );
 
@@ -172,6 +173,7 @@ public class rideshareUserAdvancedTests {
             USER_EMAIL, 
             USER_FULLNAME, 
             USER_ROLE, 
+            USER_PASSWORD,
             USER_PASSWORD
         );
 
@@ -195,13 +197,14 @@ public class rideshareUserAdvancedTests {
     @Test
     public void testUserCreatePasswordIncorrectLength() {
         String result = userController.createUser(
-            USER_KEY, 
-            USER_STATUS, 
+            USER_KEY,
             USER_EMAIL, 
             USER_FULLNAME, 
-            USER_ROLE, "test"
+            USER_ROLE,
+            "test"
         );
-        String expectedResult = USER_ROLE + " " + USER_KEY + " could not be created, select a new username and make sure your email has not been used before.";
+
+        String expectedResult = USER_ROLE + " " + USER_KEY + " could not be created, either the username or email is taken.";
 
         assertEquals(expectedResult, result);
     }

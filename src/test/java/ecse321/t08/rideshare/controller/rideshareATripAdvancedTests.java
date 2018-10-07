@@ -4,7 +4,7 @@ import ecse321.t08.rideshare.entity.ATrip;
 import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.entity.Vehicle;
 import ecse321.t08.rideshare.repository.ATripRepository;
-import ecse321.t08.rideshare.utility.rideshareHelper;
+import ecse321.t08.rideshare.utility.Helper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -24,7 +24,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class rideshareATripAdvancedTests {
 
     @Mock
-    ATripRepository repository;
+    ATripRepository aTripRepo;
 
     @InjectMocks
     ATripController aTripController;
@@ -33,7 +33,6 @@ public class rideshareATripAdvancedTests {
     private static final int TRIP_ID2 = -5;
     private static final int TRIP_ID3 = -10;
     private static final int TRIP_STATUS = 1;
-    private static final Double MIN_COST = 2.00;
     private static final Double MAX_COST = 5.00;
     private static final String COST_PER_STOP = "5.00;8.00";
     private static final int START_DATE = 934238908;
@@ -63,9 +62,9 @@ public class rideshareATripAdvancedTests {
         initMocks(this);
 
         aTrip = new ATrip();
-        when(repository.getTrip(eq(TRIP_ID))).thenReturn(aTrip);
-        when(repository.getTrip(eq(NON_EXISTING_TRIP_ID))).thenReturn(null);
-        when(repository.getUnfilteredTripsList(anyString(), anyString()))
+        when(aTripRepo.getTrip(eq(TRIP_ID))).thenReturn(aTrip);
+        when(aTripRepo.getTrip(eq(NON_EXISTING_TRIP_ID))).thenReturn(null);
+        when(aTripRepo.getUnfilteredTripsList(anyString(), anyString()))
         .thenAnswer((InvocationOnMock invocation) -> {
             if (
                 invocation.getArgument(0).equals(ADMIN_USERNAME)
@@ -80,7 +79,7 @@ public class rideshareATripAdvancedTests {
                 return new ArrayList<ATrip>();
             }
         });
-        when(repository.selectTrip(anyInt(), anyString(), anyString()))
+        when(aTripRepo.selectTrip(anyInt(), anyString(), anyString()))
         .thenAnswer((InvocationOnMock invocation) -> {
             if (
                 invocation.getArgument(0).equals(TRIP_ID)
@@ -92,7 +91,7 @@ public class rideshareATripAdvancedTests {
                 return "User or trip does not exist.";
             }
         });
-        when(repository.cancelATrip(anyInt(), anyString(), anyString()))
+        when(aTripRepo.cancelATrip(anyInt(), anyString(), anyString()))
         .thenAnswer((InvocationOnMock invocation) -> {
             if (
                 invocation.getArgument(0).equals(TRIP_ID)
@@ -106,7 +105,7 @@ public class rideshareATripAdvancedTests {
                 return "Unknown error.";
             }
         });
-        when(repository.changeTripStatus(anyInt(), anyString(), anyString(), anyInt()))
+        when(aTripRepo.changeTripStatus(anyInt(), anyString(), anyString(), anyInt()))
         .thenAnswer((InvocationOnMock invocation) -> {
             if (
                 invocation.getArgument(0).equals(TRIP_ID)
@@ -118,22 +117,22 @@ public class rideshareATripAdvancedTests {
                 return "Only a driver can change the status of a trip.";
             }
         });
-        when(repository.findPassengerOnTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+        when(aTripRepo.findPassengersOnTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(TRIP_ID)) {
-                List<String> list = (rideshareHelper.tokenizer(PASSENGER_ID, ";"));
+                List<String> list = (Helper.tokenizer(PASSENGER_ID, ";"));
                 return list;
             } else {
                 return new ArrayList<User>();
             }
         });
-        when(repository.findDriverOnTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+        when(aTripRepo.findDriverOnTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(TRIP_ID)) {
                 return DRIVER_ID;
             } else {
                 return -1;
             }
         });
-        when(repository.userTrip(anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
+        when(aTripRepo.userTrips(anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
             User user = new User();
             if (
                 invocation.getArgument(0).equals(PASSENGER_USERNAME)
@@ -155,36 +154,36 @@ public class rideshareATripAdvancedTests {
 
             user.setUsername(PASSENGER_ID);
             user.setPassword(PASSENGER_PASSWORD);
-            user.setUserID(1);
-            trip.setPassengerid(PASSENGER_ID);
-            trip.setTripid(TRIP_ID);
-            trip.setDriverid(DRIVER_ID);
-            trip2.setTripid(TRIP_ID2);
-            trip2.setPassengerid(PASSENGER_ID);
-            trip2.setDriverid(DRIVER_ID);
-            trip3.setTripid(TRIP_ID3);
-            trip3.setPassengerid(NONEXISTING_PASSENGER_ID);
-            trip3.setDriverid(NONEXSITING_DRIVER_ID);
+            user.setUserId(1);
+            trip.setPassengerId(PASSENGER_ID);
+            trip.setTripId(TRIP_ID);
+            trip.setDriverId(DRIVER_ID);
+            trip2.setTripId(TRIP_ID2);
+            trip2.setPassengerId(PASSENGER_ID);
+            trip2.setDriverId(DRIVER_ID);
+            trip3.setTripId(TRIP_ID3);
+            trip3.setPassengerId(NONEXISTING_PASSENGER_ID);
+            trip3.setDriverId(NONEXSITING_DRIVER_ID);
             List<ATrip> tripsList = new ArrayList<ATrip>();
             tripsList.add(trip);
             tripsList.add(trip2);
             tripsList.add(trip3);
             if (user.getRole().equalsIgnoreCase("Driver")) {
-                List<ATrip> flist = tripsList.stream().filter(u -> (u.getDriverid() == 1))
+                List<ATrip> flist = tripsList.stream().filter(u -> (u.getDriverId() == 1))
                     .collect(Collectors.toList());
                 List<Integer> result = new ArrayList<Integer>();
                 for (ATrip i : flist) {
-                    result.add(i.getTripid());
+                    result.add(i.getTripId());
                 }
                 return result;
             }
             if (user.getRole().equalsIgnoreCase("Passenger")) {
                 List<Integer> result = new ArrayList<Integer>();
                 for (ATrip el : tripsList) {
-                    List<String> idlist = rideshareHelper.tokenizer(el.getPassengerid(), ";");
+                    List<String> idlist = Helper.tokenizer(el.getPassengerId(), ";");
                     for (String id : idlist) {
-                        if (id.equalsIgnoreCase(String.valueOf(user.getUserID()))) {
-                            result.add(el.getTripid());
+                        if (id.equalsIgnoreCase(String.valueOf(user.getUserId()))) {
+                            result.add(el.getTripId());
                         }
                     }
                 }
@@ -192,8 +191,8 @@ public class rideshareATripAdvancedTests {
             }
             return new ArrayList<Integer>();
         });
-        when(repository.findtrip(
-            anyString(), anyString(), anyInt(), anyInt(), anyString(), anyDouble(), anyDouble()
+        when(aTripRepo.findTrip(
+            anyString(), anyString(), anyInt(), anyInt(), anyString(), anyDouble()
         ))
         .thenAnswer((InvocationOnMock invocation) -> {
             ATrip trip1 = new ATrip();
@@ -203,19 +202,19 @@ public class rideshareATripAdvancedTests {
 
             List<ATrip> trips = new ArrayList<ATrip>();
             trip1.setStartLocation(START_LOCATION);
-            trip1.setTripid(TRIP_ID);
+            trip1.setTripId(TRIP_ID);
             trip1.setStops(STOPS);
             trip1.setStartDate(START_DATE);
             trip1.setEndDate(END_DATE);
             trip1.setCostPerStop(COST_PER_STOP);
-            trip1.setVehicleid(1);
+            trip1.setVehicleId(1);
             trips.add(trip1);
 
             if (invocation.getArgument(1).equals(TEST_STOP)) {
                 List<ATrip> newList = new ArrayList<ATrip>(trips);
 
                 for (ATrip trip : trips) {
-                    List<String> stops = rideshareHelper.tokenizer(trip.getStops(), ";");
+                    List<String> stops = Helper.tokenizer(trip.getStops(), ";");
                     boolean found = false;
                     for (String end : stops) {
                         if (end.toUpperCase().contains(TEST_STOP.toUpperCase())) {
@@ -229,13 +228,13 @@ public class rideshareATripAdvancedTests {
                 trips = newList;
                 List<Integer> tripid = new ArrayList<Integer>();
                 for (ATrip trip : trips) {
-                    tripid.add(trip.getTripid());
+                    tripid.add(trip.getTripId());
                 }
                 return tripid;
             } else if (invocation.getArgument(1).equals(TEST_FAKE_STOP)) {
                 List<ATrip> newList = new ArrayList<ATrip>(trips);
                 for (ATrip trip : trips) {
-                    List<String> stops = rideshareHelper.tokenizer(trip.getStops(), ";");
+                    List<String> stops = Helper.tokenizer(trip.getStops(), ";");
                     boolean found = false;
                     for (String end : stops) {
                         if (end.toUpperCase().contains(TEST_FAKE_STOP.toUpperCase())) {
@@ -249,7 +248,7 @@ public class rideshareATripAdvancedTests {
                 trips = newList;
                 List<Integer> tripid = new ArrayList<Integer>();
                 for (ATrip trip : trips) {
-                    tripid.add(trip.getTripid());
+                    tripid.add(trip.getTripId());
                 }
                 return tripid;
             } else {
@@ -262,7 +261,6 @@ public class rideshareATripAdvancedTests {
     public void createTrip() {
         // Given
         ATrip myTrip = new ATrip(
-            TRIP_ID,
             TRIP_STATUS,
             COST_PER_STOP,
             START_DATE,
@@ -274,7 +272,7 @@ public class rideshareATripAdvancedTests {
             DRIVER_ID
         );
 
-        when(repository.createATrip(
+        when(aTripRepo.createATrip(
             anyInt(), 
             anyString(), 
             anyInt(), 
@@ -301,7 +299,7 @@ public class rideshareATripAdvancedTests {
         );
 
         // Then
-        verify(repository).createATrip(
+        verify(aTripRepo).createATrip(
             anyInt(), 
             anyString(), 
             anyInt(), 
@@ -318,14 +316,14 @@ public class rideshareATripAdvancedTests {
     @Test
     public void getTrip() {
         ATrip result = aTripController.getTrip(TRIP_ID);
-        verify(repository).getTrip(anyInt());
+        verify(aTripRepo).getTrip(anyInt());
         assertEquals(result, aTrip);
     }
 
     @Test
     public void getTripUnsuccessful() {
         ATrip result = aTripController.getTrip(NON_EXISTING_TRIP_ID);
-        verify(repository).getTrip(anyInt());
+        verify(aTripRepo).getTrip(anyInt());
         assertNull(result);
     }
 
@@ -394,8 +392,8 @@ public class rideshareATripAdvancedTests {
     }
 
     @Test
-    public void passengerOnTrip() {
-        List<String> result = aTripController.passengerOnTrip(TRIP_ID);
+    public void passengersOnTrip() {
+        List<String> result = aTripController.passengersOnTrip(TRIP_ID);
         int iter = 1;
         for (String s : result) {
             assertEquals(String.valueOf(iter), result.get(iter - 1));
@@ -404,8 +402,8 @@ public class rideshareATripAdvancedTests {
     }
 
     @Test
-    public void passengerOnTripUnsuccessful() {
-        List<String> result = aTripController.passengerOnTrip(NON_EXISTING_TRIP_ID);
+    public void passengersOnTripUnsuccessful() {
+        List<String> result = aTripController.passengersOnTrip(NON_EXISTING_TRIP_ID);
         assertTrue(result.isEmpty());
     }
 
@@ -422,34 +420,34 @@ public class rideshareATripAdvancedTests {
     }
 
     @Test
-    public void userTripDriver() {
-        List<Integer> result = aTripController.usertrip(DRIVER_USERNAME, DRIVER_PASSWORD);
+    public void userTripsDriver() {
+        List<Integer> result = aTripController.userTrips(DRIVER_USERNAME, DRIVER_PASSWORD);
         assertEquals((int) result.get(0), TRIP_ID);
         assertEquals((int) result.get(1), TRIP_ID2);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void userTripDriverFailure() {
-        List<Integer> result = aTripController.usertrip(DRIVER_USERNAME, DRIVER_PASSWORD);
+    public void userTripsDriverFailure() {
+        List<Integer> result = aTripController.userTrips(DRIVER_USERNAME, DRIVER_PASSWORD);
         result.get(2);
     }
 
     @Test
-    public void userTripPassenger() {
-        List<Integer> result = aTripController.usertrip(PASSENGER_USERNAME, PASSENGER_PASSWORD);
+    public void userTripsPassenger() {
+        List<Integer> result = aTripController.userTrips(PASSENGER_USERNAME, PASSENGER_PASSWORD);
         assertEquals((int) result.get(0), TRIP_ID);
         assertEquals((int) result.get(1), TRIP_ID2);
     }
 
     @Test(expected = IndexOutOfBoundsException.class)
-    public void userTripPassengerFailure() {
-        List<Integer> result = aTripController.usertrip(PASSENGER_USERNAME, PASSENGER_PASSWORD);
+    public void userTripsPassengerFailure() {
+        List<Integer> result = aTripController.userTrips(PASSENGER_USERNAME, PASSENGER_PASSWORD);
         result.get(2);
     }
 
     @Test
-    public void userTripFailure() {
-        List<Integer> result = aTripController.usertrip(ADMIN_USERNAME, ADMIN_PASSWORD);
+    public void userTripsFailure() {
+        List<Integer> result = aTripController.userTrips(ADMIN_USERNAME, ADMIN_PASSWORD);
         assertTrue(result.isEmpty());
     }
 
@@ -461,7 +459,6 @@ public class rideshareATripAdvancedTests {
             START_DATE, 
             END_DATE, 
             VEH_TYPE, 
-            MIN_COST, 
             MAX_COST
         );
         assertEquals((int) result.get(0), (int) TRIP_ID);
@@ -475,7 +472,6 @@ public class rideshareATripAdvancedTests {
             START_DATE, 
             END_DATE, 
             VEH_TYPE, 
-            MIN_COST, 
             MAX_COST
         );
         assertTrue(result.isEmpty());
