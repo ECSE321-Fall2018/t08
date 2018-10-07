@@ -19,7 +19,6 @@ import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.when;
 
 
-
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 public class rideshareVehicleBasicTests {
@@ -45,7 +44,7 @@ public class rideshareVehicleBasicTests {
     @Before
     public void setMockTrueOutput() {
         when(vehicleDao.getVehicle(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
-            if(invocation.getArgument(0).equals(VEHICLE_ID)) {
+            if (invocation.getArgument(0).equals(VEHICLE_ID)) {
                 Vehicle vehicle = new Vehicle();
                 vehicle.setVehicleId(VEHICLE_ID);
                 vehicle.setNbOfSeats(SEATS);

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -13,17 +14,17 @@ import java.util.stream.Collectors;
 
 @Repository
 public class UserRepository {
-	@PersistenceContext
+    @PersistenceContext
     EntityManager em;
 
-	@Transactional
-	public User createUser(
-        String userName, 
-        boolean isuseractive, 
-        String emailaddress, 
-        String fullname, 
-        String role, 
-        String password
+    @Transactional
+    public User createUser(
+            String userName,
+            boolean isuseractive,
+            String emailaddress,
+            String fullname,
+            String role,
+            String password
     ) {
         List<User> existingUserName = findUser(userName);
         List<User> existingUserEmail = findUserByEmail(emailaddress);
@@ -95,15 +96,15 @@ public class UserRepository {
 
     @Transactional
     public int authenticateUser(String username, String password) {
-	    List<User> userlist = findUser(username);
-	    if(userlist.size() < 1 || userlist.size() > 1) {
-	        return -1;
+        List<User> userlist = findUser(username);
+        if (userlist.size() < 1 || userlist.size() > 1) {
+            return -1;
         }
         User user = userlist.get(0);
-	    if(user.getPassword().equals(password)) {
-	        return user.getUserID();
+        if (user.getPassword().equals(password)) {
+            return user.getUserID();
         } else {
-	        return -1;
+            return -1;
         }
     }
 
@@ -112,9 +113,9 @@ public class UserRepository {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
 
         return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(userName))
-            .filter(u -> u.getEmailAddress().toUpperCase().equalsIgnoreCase(emailAddress.toUpperCase()))
-            .filter(u -> u.getFullName().toUpperCase().equalsIgnoreCase(name.toUpperCase()))
-            .collect(Collectors.toList());
+                .filter(u -> u.getEmailAddress().toUpperCase().equalsIgnoreCase(emailAddress.toUpperCase()))
+                .filter(u -> u.getFullName().toUpperCase().equalsIgnoreCase(name.toUpperCase()))
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -146,14 +147,8 @@ public class UserRepository {
     public List getUnfilteredUserList(String username, String password) {
         List<User> user = findUser(username);
         // Check if user is admin
-        if (
-            user.size() == 0
-            ||
-            user.size() > 1
-            ||!(user.get(0).getRole().equalsIgnoreCase("administrator"))
-            || !(user.get(0).getPassword().equals(password))
-        ) {
-            return null;
+        if (user.size() == 0 || user.size() > 1 || !(user.get(0).getRole().equalsIgnoreCase("administrator")) || !(user.get(0).getPassword().equals(password))) {
+            return new ArrayList<User>();
         }
         return em.createNamedQuery("User.findAll").getResultList();
     }
@@ -162,12 +157,12 @@ public class UserRepository {
     public List getFilteredUserList(String username, String password) {
         List<User> user = findUser(username);
         // Check if user is admin
-        if (user.size() == 0 || user.size() > 1 ||!(user.get(0).getRole().equalsIgnoreCase("administrator")) || !(user.get(0).getPassword().equals(password))) {
-            return null;
+        if (user.size() == 0 || user.size() > 1 || !(user.get(0).getRole().equalsIgnoreCase("administrator")) || !(user.get(0).getPassword().equals(password))) {
+            return new ArrayList<User>();
         }
         List<User> userli = em.createNamedQuery("User.findAll").getResultList();
         Collections.sort(userli, Comparator.comparing(User::getTripnumber));
-        if(userli.size() > 99) {
+        if (userli.size() > 99) {
             return userli.subList(0, 99);
         }
         return userli;

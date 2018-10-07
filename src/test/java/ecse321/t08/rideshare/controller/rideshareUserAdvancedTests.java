@@ -19,13 +19,12 @@ import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 @Transactional
-public class rideshareUserAdvancedTests  {
+public class rideshareUserAdvancedTests {
     private static final String findall = "User.findAll";
     private static final String findUser = "User.findUsername";
 
@@ -171,7 +170,7 @@ public class rideshareUserAdvancedTests  {
     @Test
     public void testUserCreatePasswordIncorrectLength() {
         String result = userController.createUser(USER_KEY, USER_STATUS, USER_EMAIL, USER_FULLNAME, USER_ROLE, "test");
-        String expectedResult = USER_ROLE+ " " + USER_KEY + " could not be created, select a new username and make sure your email has not been used before.";
+        String expectedResult = USER_ROLE + " " + USER_KEY + " could not be created, select a new username and make sure your email has not been used before.";
 
         assertEquals(expectedResult, result);
     }

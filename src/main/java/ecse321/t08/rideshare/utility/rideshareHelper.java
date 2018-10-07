@@ -2,6 +2,7 @@ package ecse321.t08.rideshare.utility;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class rideshareHelper {
     // method returns a arraylist
@@ -13,7 +14,7 @@ public class rideshareHelper {
 
     // method returns a string
     // put the separator will separate each element of the array in the string
-    public static String concatenator(ArrayList<String> list, String separator) {
+    public static String concatenator(List<String> list, String separator) {
         return String.join(separator, list);
     }
 }

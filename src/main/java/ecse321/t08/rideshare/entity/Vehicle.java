@@ -3,71 +3,71 @@ package ecse321.t08.rideshare.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name="vehicles")
+@Table(name = "vehicles")
 @NamedQueries({
-	@NamedQuery(name="Vehicle.findAll", query="SELECT e FROM Vehicle e")
+        @NamedQuery(name = "Vehicle.findAll", query = "SELECT e FROM Vehicle e")
 })
 public class Vehicle {
-	private int vehicleId;
-	private int nbOfSeats;
-	private String colour;
-	private String model;
-	private int driverId;
-	private String vehicleType;
+    private int vehicleId;
+    private int nbOfSeats;
+    private String colour;
+    private String model;
+    private int driverId;
+    private String vehicleType;
 
-	@Id
-	@Column(name="vehicleid")
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	public int getVehicleId() {
-		return vehicleId;
-	}
+    @Id
+    @Column(name = "vehicleid")
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    public int getVehicleId() {
+        return vehicleId;
+    }
 
-	public void setVehicleId(int vehicleId) {
-		this.vehicleId = vehicleId;
-	}
+    public void setVehicleId(int vehicleId) {
+        this.vehicleId = vehicleId;
+    }
 
-	@Column(name="driverid")
-	public int getDriverId() {
-		return driverId;
-	}
+    @Column(name = "driverid")
+    public int getDriverId() {
+        return driverId;
+    }
 
-	public void setDriverId(int driverId) {
-		this.driverId = driverId;
-	}
+    public void setDriverId(int driverId) {
+        this.driverId = driverId;
+    }
 
-	@Column(name="seats")
-	public int getNbOfSeats() {
-		return this.nbOfSeats;
-	}
+    @Column(name = "seats")
+    public int getNbOfSeats() {
+        return this.nbOfSeats;
+    }
 
-	public void setNbOfSeats(int value) {
-		this.nbOfSeats = value;
-	}
+    public void setNbOfSeats(int value) {
+        this.nbOfSeats = value;
+    }
 
-	@Column(name="colour")
-	public String getColour() {
-		return this.colour;
-	}
+    @Column(name = "colour")
+    public String getColour() {
+        return this.colour;
+    }
 
-	public void setColour(String value) {
-		this.colour = value;
-	}
+    public void setColour(String value) {
+        this.colour = value;
+    }
 
-	@Column(name="model")
-	public String getModel() {
-		return this.model;
-	}
+    @Column(name = "model")
+    public String getModel() {
+        return this.model;
+    }
 
-	public void setModel(String value) {
-		this.model = value;
-	}
+    public void setModel(String value) {
+        this.model = value;
+    }
 
-	@Column(name="vehicleType")
-	public String getVehicleType() {
-		return this.vehicleType;
-	}
+    @Column(name = "vehicleType")
+    public String getVehicleType() {
+        return this.vehicleType;
+    }
 
-	public void setVehicleType(String value) {
-		this.vehicleType = value;
-	}
+    public void setVehicleType(String value) {
+        this.vehicleType = value;
+    }
 }
