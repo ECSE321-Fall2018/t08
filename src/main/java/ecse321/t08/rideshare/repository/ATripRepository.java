@@ -158,7 +158,7 @@ public class ATripRepository {
                     if (s.equals(String.valueOf(user.get(0).getUserID()))) {
                         newIds.remove(s);
                         user.get(0).setTripnumber(user.get(0).getTripnumber() - 1);
-                        em.merge(user);
+                        em.merge(user.get(0));
                     }
                 }
                 ids = newIds;
