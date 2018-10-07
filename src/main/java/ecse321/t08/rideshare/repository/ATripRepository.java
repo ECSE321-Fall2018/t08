@@ -56,6 +56,7 @@ public class ATripRepository {
         aTrip.setStartLocation(startLocation);
         aTrip.setStops(stops);
         aTrip.setVehicleid(vehicleId);
+        aTrip.setDriverid(driverId);
         em.persist(aTrip);
         return aTrip;
     }
