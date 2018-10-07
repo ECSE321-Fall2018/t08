@@ -58,7 +58,7 @@ public class rideshareUserAdvancedTests {
 
     @Before
     public void setMockOutput() {
-        when(userDao.updateUser(anyString(), anyString(), anyString(), anyString(), anyString()))
+        when(userDao.updateUser(anyString(), anyString(), anyString(), anyString(), anyString(), anyString()))
         .thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(2).equals(USER_FULLNAME_UPDATED)) {
                 User user = new User();

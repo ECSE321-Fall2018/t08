@@ -56,35 +56,29 @@ public class UserRepository {
     @Transactional
     public User updateUser(
         String username, 
-        String emailaddress, 
+        String emailAddress, 
         String fullName, 
         String role, 
-        String password
+        String oldPassword,
+        String newPassword
     ) {
-        List<User> userList = findUser(username);
-
-        if (userList.isEmpty() || userList.size() > 1) {
+        
+        if (authenticateUser(username, oldPassword) == -1) {
             return null;
-        }
-
-        User user = userList.get(0);
-        if (!(user.getPassword().equals(password))) {
-            return null;
-        }
-
-        if (!(user.getEmailAddress().equalsIgnoreCase(emailaddress))) {
-            user.setEmailAddress(emailaddress);
-        }
-
-        if (!(user.getFullName().equalsIgnoreCase(fullName))) {
+        } else {
+            List<User> userList = findUser(username);
+            User user = userList.get(0);
+            List<User> existingUserEmail = findUserByEmail(emailAddress);
+    
+            if (existingUserEmail.size() == 0) {
+                user.setEmailAddress(emailAddress);
+            }
             user.setFullName(fullName);
-        }
-
-        if (!(user.getRole().equalsIgnoreCase(role))) {
             user.setRole(role);
+            user.setPassword(newPassword);
+            em.merge(user);
+            return user;
         }
-        em.merge(user);
-        return user;
     }
 
     // Is the user logged in?
@@ -97,11 +91,11 @@ public class UserRepository {
     // If you pass an empty string, it's the same thing as authenticateUser
     @Transactional
     public int authorizeUser(String username, String password, String role) {
-        List<User> userlist = findUser(username);
-        if (userlist.size() < 1 || userlist.size() > 1) {
+        List<User> userList = findUser(username);
+        if (userList.size() != 1) {
             return -1;
         }
-        User user = userlist.get(0);
+        User user = userList.get(0);
         if (
             user.getPassword().equals(password)
             && (role == "" || user.getRole().equalsIgnoreCase(role))

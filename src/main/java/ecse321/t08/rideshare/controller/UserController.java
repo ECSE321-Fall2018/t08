@@ -37,7 +37,8 @@ public class UserController {
         @RequestParam(value = "email", required = false) String emailAddress,
         @RequestParam(value = "name", required = false) String name,
         @RequestParam(value = "role", required = false) String role,
-        @RequestParam("password") String password
+        @RequestParam("oldPassword") String oldPassword,
+        @RequestParam("newPassword") String newPassword
     ) {
         if (emailAddress == null) {
             emailAddress = "";
@@ -48,7 +49,7 @@ public class UserController {
         if (role == null) {
             role = "";
         }
-        return repository.updateUser(userName, emailAddress, name, role, password);
+        return repository.updateUser(userName, emailAddress, name, role, oldPassword, newPassword);
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
