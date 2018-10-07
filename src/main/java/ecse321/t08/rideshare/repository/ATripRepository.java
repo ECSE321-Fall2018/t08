@@ -347,6 +347,8 @@ public class ATripRepository {
         for (ATrip trip : trips) {
             tripid.add(trip.getTripid());
         }
-        return tripid;
+        return tripid.stream()
+                .distinct()
+                .collect(Collectors.toList());
     }
 }
