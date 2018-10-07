@@ -8,7 +8,10 @@ import javax.persistence.*;
     @NamedQuery(name = "User.findAll", query = "SELECT e FROM User e")
 })
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int userID;
+
     private String username;
     private boolean isUserActive = false;
     private String emailAddress;
@@ -35,9 +38,7 @@ public class User {
         this.userID = value;
     }
 
-    @Id
     @Column(name = "userid")
-    @GeneratedValue(strategy=GenerationType.AUTO)
     public int getUserID() {
         return this.userID;
     }

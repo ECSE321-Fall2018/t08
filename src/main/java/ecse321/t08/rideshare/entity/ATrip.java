@@ -8,8 +8,8 @@ public class ATrip {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int tripid;
-    private int tripStatus; // 0 for ongoing, 1 for planned, 2 for completed
 
+    private int tripStatus; // 0 for ongoing, 1 for planned, 2 for completed
     private String costPerStop; // Contains all costs per stop, in order, separated by delimiter ';'
     private int startDate; // Implemented as Unix Time Stamp
     private int endDate;
