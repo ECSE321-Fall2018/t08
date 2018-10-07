@@ -264,7 +264,7 @@ public class ATripRepository {
                 }
             }
             trips.clear();
-            trips = newList.stream().collect(Collectors.toList())
+            trips = newList.stream().collect(Collectors.toList());
         } else {
             return new ArrayList<Integer>();
         }
@@ -285,7 +285,7 @@ public class ATripRepository {
                 }
             }
             trips.clear();
-            trips = newList.stream().collect(Collectors.toList())
+            trips = newList.stream().collect(Collectors.toList());
         }
 
         //Finds start and end date within hours (unix time stamp)
@@ -297,7 +297,7 @@ public class ATripRepository {
                 }
             }
             trips.clear();
-            trips = newList.stream().collect(Collectors.toList())
+            trips = newList.stream().collect(Collectors.toList());
         }
 
         if (enddate != -1) {
@@ -308,7 +308,7 @@ public class ATripRepository {
                 }
             }
             trips.clear();
-            trips = newList.stream().collect(Collectors.toList())
+            trips = newList.stream().collect(Collectors.toList());
         }
 
         if (!(vehtype.equals(""))) {
@@ -322,7 +322,7 @@ public class ATripRepository {
                 }
             }
             trips.clear();
-            trips = newList.stream().collect(Collectors.toList())
+            trips = newList.stream().collect(Collectors.toList());
         }
 
         if (maxcost != -1.0) {
@@ -336,7 +336,7 @@ public class ATripRepository {
                 }
             }
             trips.clear();
-            trips = newList.stream().collect(Collectors.toList())
+            trips = newList.stream().collect(Collectors.toList());
         }
         List<Integer> tripid = new ArrayList<Integer>();
         for (ATrip trip : trips) {
