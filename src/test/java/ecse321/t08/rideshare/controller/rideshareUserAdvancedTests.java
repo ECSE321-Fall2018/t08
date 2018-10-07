@@ -122,10 +122,10 @@ public class rideshareUserAdvancedTests {
                 User user = new User();
                 List<User> userList = new ArrayList<User>();
                 user.setUsername(USER_KEY);
-                user.setTripnumber(2);
+                user.setTripNumber(2);
                 User user2 = new User();
                 user2.setUsername(USER_KEY2);
-                user2.setTripnumber(1);
+                user2.setTripNumber(1);
                 userList.add(user);
                 userList.add(user2);
                 Collections.sort(userList, Comparator.comparing(User::getTripnumber));

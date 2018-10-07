@@ -55,7 +55,7 @@ public class UserRepository {
         user.setFullName(fullname);
         user.setRole(role);
         user.setPassword(password);
-        user.setTripnumber(0);
+        user.setTripNumber(0);
 
         em.persist(user);
         return user;
@@ -100,14 +100,25 @@ public class UserRepository {
         return user;
     }
 
+    // Is the user logged in?
     @Transactional
     public int authenticateUser(String username, String password) {
+        return authorizeUser(username, password, "");
+    }
+
+    // Is the user logged in and does the user have the right privileges?
+    // If you pass an empty string, it's the same thing as authenticateUser
+    @Transactional
+    public int authorizeUser(String username, String password, String role) {
         List<User> userlist = findUser(username);
         if (userlist.size() < 1 || userlist.size() > 1) {
             return -1;
         }
         User user = userlist.get(0);
-        if (user.getPassword().equals(password)) {
+        if (
+            user.getPassword().equals(password)
+            && (role == "" || user.getRole().equalsIgnoreCase(role))
+        ) {
             return user.getUserID();
         } else {
             return -1;

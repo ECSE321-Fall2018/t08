@@ -102,7 +102,7 @@ public class User {
         return tripnumber;
     }
 
-    public void setTripnumber(int tripnumber) {
+    public void setTripNumber(int tripnumber) {
         this.tripnumber = tripnumber;
     }
 }

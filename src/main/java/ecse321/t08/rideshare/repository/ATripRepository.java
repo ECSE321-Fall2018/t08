@@ -38,15 +38,14 @@ public class ATripRepository {
         String driverPassword
     ) {
         ATrip aTrip = new ATrip();
-        int driverId = userRep.authenticateUser(driverUserName, driverPassword);
+        // Check for username, password, user is driver
+        int driverId = userRep.authorizeUser(driverUserName, driverPassword, "Driver");
         if (driverId == -1) {
             return null;
         }
+        
         User user = userRep.getUser(driverId);
-        if (!(user.getRole().equalsIgnoreCase("Driver"))) {
-            return null;
-        }
-        user.setTripnumber(user.getTripnumber() + 1);
+        user.setTripNumber(user.getTripnumber() + 1);
         em.merge(user);
 
         aTrip.setStatus(status);
@@ -57,6 +56,7 @@ public class ATripRepository {
         aTrip.setStops(stops);
         aTrip.setVehicleid(vehicleId);
         em.persist(aTrip);
+        
         return aTrip;
     }
 
@@ -70,8 +70,7 @@ public class ATripRepository {
             || user.size() > 1 
             || !(user.get(0).getRole().equalsIgnoreCase("administrator")) 
             || !(user.get(0).getPassword().equals(password))
-        
-                ) {
+        ) {
             return new ArrayList<User>();
         }
         return em.createQuery("SELECT * FROM ATrip").getResultList();
@@ -109,7 +108,7 @@ public class ATripRepository {
         } else {
             trip.setPassengerid(trip.getPassengerid() + ";" + String.valueOf(user.get(0).getUserID()));
         }
-        user.get(0).setTripnumber(user.get(0).getTripnumber() + 1);
+        user.get(0).setTripNumber(user.get(0).getTripnumber() + 1);
         em.merge(user);
         em.merge(trip);
         return ("Passenger " + username + " selected this trip.");
@@ -133,11 +132,11 @@ public class ATripRepository {
         // If user is driver, delete entire trip
         else if ("Driver".equalsIgnoreCase(user.get(0).getRole())) {
             if (user.get(0).getUserID() == trip.getDriverid()) {
-                user.get(0).setTripnumber(user.get(0).getTripnumber() - 1);
+                user.get(0).setTripNumber(user.get(0).getTripnumber() - 1);
                 ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
                 for (String s : ids) {
                     User passenger = userRep.getUser(Integer.parseInt(s));
-                    passenger.setTripnumber(passenger.getTripnumber() - 1);
+                    passenger.setTripNumber(passenger.getTripnumber() - 1);
                     em.merge(passenger);
                 }
 
@@ -153,7 +152,7 @@ public class ATripRepository {
             for (String s : ids) {
                 if (s.equals(String.valueOf(user.get(0).getUserID()))) {
                     newIds.remove(s);
-                    user.get(0).setTripnumber(user.get(0).getTripnumber() - 1);
+                    user.get(0).setTripNumber(user.get(0).getTripnumber() - 1);
                     em.merge(user);
                 }
             }

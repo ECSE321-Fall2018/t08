@@ -17,8 +17,7 @@ public class ATrip {
     private String passengerid; // Contains all passenger ids, separated by delimiter ';'
     private int driverid;
 
-    public ATrip() {
-    }
+    public ATrip() {}
 
     public ATrip(
         int tripid,
