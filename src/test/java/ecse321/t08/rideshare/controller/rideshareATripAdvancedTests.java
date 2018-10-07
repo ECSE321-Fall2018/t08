@@ -33,7 +33,6 @@ public class rideshareATripAdvancedTests {
     private static final int TRIP_ID2 = -5;
     private static final int TRIP_ID3 = -10;
     private static final int TRIP_STATUS = 1;
-    private static final Double MIN_COST = 2.00;
     private static final Double MAX_COST = 5.00;
     private static final String COST_PER_STOP = "5.00;8.00";
     private static final int START_DATE = 934238908;

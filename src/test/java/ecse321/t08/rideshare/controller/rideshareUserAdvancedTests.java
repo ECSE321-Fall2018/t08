@@ -204,7 +204,7 @@ public class rideshareUserAdvancedTests {
             "test"
         );
 
-        String expectedResult = USER_ROLE + " " + USER_KEY + " could not be created, select a new username and make sure your email has not been used before.";
+        String expectedResult = USER_ROLE + " " + USER_KEY + " could not be created, either the username or email is taken.";
 
         assertEquals(expectedResult, result);
     }
