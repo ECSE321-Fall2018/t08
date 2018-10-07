@@ -159,6 +159,7 @@ public class rideshareUserAdvancedTests {
             USER_EMAIL, 
             USER_FULLNAME_UPDATED, 
             USER_ROLE, 
+            USER_PASSWORD,
             USER_PASSWORD
         );
 
@@ -172,6 +173,7 @@ public class rideshareUserAdvancedTests {
             USER_EMAIL, 
             USER_FULLNAME, 
             USER_ROLE, 
+            USER_PASSWORD,
             USER_PASSWORD
         );
 
