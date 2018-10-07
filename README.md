@@ -3,7 +3,11 @@
 ## TravisCI Build Status
 To check the details on why our TravisCI build succeeded or failed:
 
+Master
 [![Build Status](https://travis-ci.com/ECSE321-Fall2018/t08.svg?token=atEt1SppUvzajjRzBkhC&branch=master)](https://travis-ci.com/ECSE321-Fall2018/t08)
+
+Sprint1
+[![Build Status](https://travis-ci.com/ECSE321-Fall2018/t08.svg?token=atEt1SppUvzajjRzBkhC&branch=sprint1)](https://travis-ci.com/ECSE321-Fall2018/t08)
 
 ## Wiki
 See our wiki here: https://github.com/ECSE321-Fall2018/t08/wiki.
