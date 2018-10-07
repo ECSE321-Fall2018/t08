@@ -73,7 +73,7 @@ public class ATrip {
     }
 
     public void setStartdate(int value) {
-        this.enddate = value;
+        this.startdate = value;
     }
 
     @Column(name = "enddate")
