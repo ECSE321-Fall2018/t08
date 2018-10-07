@@ -38,7 +38,7 @@ public class UserController {
         @RequestParam(value = "name", required = false) String name,
         @RequestParam(value = "role", required = false) String role,
         @RequestParam("oldpass") String oldpassword,
-        @RequestParam("newpass") String newpassword) {
+        @RequestParam(value="newpass", required = false) String newpassword) {
         if (emailAddress == null) {
             emailAddress = "";
         }
@@ -86,8 +86,8 @@ public class UserController {
     @RequestMapping(value = "/find", method = RequestMethod.POST)
     @ResponseBody
     public List<User> findUser(
-        @RequestParam(value = "adminusername", required = false) String adusername,
-        @RequestParam(value = "adminpass", required = false) String adpass,
+        @RequestParam("adminusername") String adusername,
+        @RequestParam("adminpass") String adpass,
         @RequestParam(value = "username", required = false) String userName,
         @RequestParam(value = "name", required = false) String name,
         @RequestParam(value = "email", required = false) String emailAddress

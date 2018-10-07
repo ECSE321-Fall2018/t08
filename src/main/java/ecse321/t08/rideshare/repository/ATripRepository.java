@@ -95,9 +95,11 @@ public class ATripRepository {
         if (!("Passenger".equalsIgnoreCase(user.get(0).getRole()))) {
             return "Only passengers can select trips.";
         }
-
-        if (trip.getPassengerid().equalsIgnoreCase(String.valueOf(user.get(0).getUserID()))) {
-            return "User has already selected this trip.";
+        List<String> passengerIds = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
+        for(String id: passengerIds) {
+            if (id.equalsIgnoreCase(String.valueOf(user.get(0).getUserID()))) {
+                return "User has already selected this trip.";
+            }
         }
         if (trip.getPassengerid() == null || trip.getPassengerid().equals("")) {
             trip.setPassengerid(String.valueOf(user.get(0).getUserID()));
@@ -133,10 +135,11 @@ public class ATripRepository {
                 ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
                 for (String s : ids) {
                     User passenger = userRep.getUser(Integer.parseInt(s));
-                    passenger.setTripnumber(passenger.getTripnumber() - 1);
-                    em.merge(passenger);
+                    if(passenger != null) {
+                        passenger.setTripnumber(passenger.getTripnumber() - 1);
+                        em.merge(passenger);
+                    }
                 }
-
                 em.merge(user.get(0));
                 em.remove(trip);
                 return "Trip " + aTripID + "deleted";
