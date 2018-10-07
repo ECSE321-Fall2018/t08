@@ -86,6 +86,8 @@ public class UserController {
     @RequestMapping(value = "/find", method = RequestMethod.POST)
     @ResponseBody
     public List<User> findUser(
+        @RequestParam(value = "adminusername", required = false) String adusername,
+        @RequestParam(value = "adminpass", required = false) String adpass,
         @RequestParam(value = "username", required = false) String userName,
         @RequestParam(value = "name", required = false) String name,
         @RequestParam(value = "email", required = false) String emailAddress
@@ -100,7 +102,7 @@ public class UserController {
             emailAddress = "";
         }
 
-        List<User> userList = repository.findUser(userName, emailAddress, name);
+        List<User> userList = repository.findUser(adusername, adpass, userName, emailAddress, name);
         if (userList.isEmpty()) {
             System.out.println("User not found.");
         }

@@ -122,7 +122,11 @@ public class UserRepository {
     }
 
     @Transactional
-    public List<User> findUser(String userName, String emailAddress, String name) {
+    public List<User> findUser(String adminUser, String adminPass, String userName, String emailAddress, String name) {
+        if(authorizeUser(adminUser, adminPass, "Administrator") == -1) {
+            return new ArrayList<>();
+        }
+
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
 
         return userlist.stream().filter(u -> u.getUsername().equalsIgnoreCase(userName))

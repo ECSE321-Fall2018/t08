@@ -71,9 +71,9 @@ public class rideshareUserAdvancedTests {
                 return null;
             }
         });
-        when(userDao.findUser(anyString(), anyString(), anyString()))
+        when(userDao.findUser(anyString(), anyString(), anyString(), anyString(), anyString()))
         .thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(USER_KEY)) {
+            if (invocation.getArgument(2).equals(USER_KEY)) {
                 User user = new User();
                 List<User> userList = new ArrayList<User>();
                 user.setUsername(USER_KEY);
@@ -150,7 +150,7 @@ public class rideshareUserAdvancedTests {
 
     @Test
     public void testAdvancedUserQuery() {
-        List<User> userList = userController.findUser(USER_KEY, USER_EMAIL, USER_FULLNAME);
+        List<User> userList = userController.findUser(ADMIN_USERNAME, ADMIN_PASSWORD, USER_KEY, USER_EMAIL, USER_FULLNAME);
 
         assertNotNull(userList);
         assertEquals(1, userList.size());
@@ -159,7 +159,7 @@ public class rideshareUserAdvancedTests {
 
     @Test
     public void testAdvancedUserQueryNotFound() {
-        List<User> userList = userController.findUser(NONEXISTING_USER_KEY, USER_EMAIL, USER_FULLNAME);
+        List<User> userList = userController.findUser(ADMIN_USERNAME, ADMIN_PASSWORD, USER_KEY2, USER_EMAIL, USER_FULLNAME);
 
         assertTrue(userList.isEmpty());
     }
