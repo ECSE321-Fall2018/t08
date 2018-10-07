@@ -270,9 +270,14 @@ public class ATripRepository {
         }
 
         if (!(startLocation.equals(""))) {
-            trips = trips.stream()
-                .filter(u -> u.getStartLocation().toUpperCase().contains(startLocation.toUpperCase()))
-                .collect(Collectors.toList());
+            List<ATrip> newList = new ArrayList<ATrip>();
+            for (ATrip trip : trips) {
+                if (trip.getStartLocation().toUpperCase().contains(startLocation.toUpperCase())) {
+                        newList.add(trip);
+                }
+            }
+            trips.clear();
+            trips = newList.stream().collect(Collectors.toList());
         }
         if (!(stop.equals(""))) {
             List<ATrip> newList = new ArrayList<ATrip>();
