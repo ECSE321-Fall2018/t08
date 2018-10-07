@@ -95,10 +95,12 @@ public class ATripRepository {
         if (!("Passenger".equalsIgnoreCase(user.get(0).getRole()))) {
             return "Only passengers can select trips.";
         }
-        List<String> passengerIds = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
-        for(String id: passengerIds) {
-            if (id.equalsIgnoreCase(String.valueOf(user.get(0).getUserID()))) {
-                return "User has already selected this trip.";
+        if(trip.getPassengerid() != null && !(trip.getPassengerid().equals(""))) {
+            List<String> passengerIds = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
+            for (String id : passengerIds) {
+                if (id.equalsIgnoreCase(String.valueOf(user.get(0).getUserID()))) {
+                    return "User has already selected this trip.";
+                }
             }
         }
         if (trip.getPassengerid() == null || trip.getPassengerid().equals("")) {
