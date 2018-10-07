@@ -193,7 +193,7 @@ public class rideshareATripAdvancedTests {
             return new ArrayList<Integer>();
         });
         when(repository.findTrip(
-            anyString(), anyString(), anyInt(), anyInt(), anyString(), anyDouble(), anyDouble()
+            anyString(), anyString(), anyInt(), anyInt(), anyString(), anyDouble()
         ))
         .thenAnswer((InvocationOnMock invocation) -> {
             ATrip trip1 = new ATrip();
@@ -460,7 +460,6 @@ public class rideshareATripAdvancedTests {
             START_DATE, 
             END_DATE, 
             VEH_TYPE, 
-            MIN_COST, 
             MAX_COST
         );
         assertEquals((int) result.get(0), (int) TRIP_ID);
@@ -474,7 +473,6 @@ public class rideshareATripAdvancedTests {
             START_DATE, 
             END_DATE, 
             VEH_TYPE, 
-            MIN_COST, 
             MAX_COST
         );
         assertTrue(result.isEmpty());
