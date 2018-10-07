@@ -146,7 +146,7 @@ public class ATripRepository {
                 }
                 em.merge(user.get(0));
                 em.remove(trip);
-                return "Trip " + aTripID + "deleted";
+                return "Trip " + aTripID + " deleted";
             }
         }
         // Is user is passenger, just remove passenger ID
@@ -194,7 +194,7 @@ public class ATripRepository {
 
         trip.setStatus(status);
         em.merge(trip);
-        return "Trip status changed successfully";
+        return "Trip status changed successfully.";
     }
 
     @Transactional
@@ -256,10 +256,21 @@ public class ATripRepository {
     @Transactional
     public List<Integer> findtrip(String startLocation, String stop, int startdate, int enddate, String vehtype, Double maxcost) {
         List<ATrip> trips = em.createNamedQuery("ATrip.findAll").getResultList();
+        if(trips != null && !(trips.isEmpty())) {
+            List<ATrip> newList = new ArrayList<ATrip>();
+            for (ATrip trip : trips) {
+                if (trip.getStatus() == 1) {
+                    newList.add(trip);
+                }
+            }
+            trips = newList;
+        } else {
+            new ArrayList<Integer>();
+        }
+
         if (!(startLocation.equals(""))) {
             trips = trips.stream()
                 .filter(u -> u.getStartLocation().toUpperCase().contains(startLocation.toUpperCase()))
-                .filter(u -> u.getStatus() == 1)
                 .collect(Collectors.toList());
         }
         if (!(stop.equals(""))) {
@@ -310,7 +321,7 @@ public class ATripRepository {
         }
 
         if (maxcost != -1.0) {
-            List<ATrip> newList = new ArrayList<ATrip>(trips);
+            List<ATrip> newList = new ArrayList<ATrip>();
             for (ATrip trip : trips) {
                 List<String> costs = rideshareHelper.tokenizer(trip.getCostPerStop(), ";");
                 for (String cost : costs) {
