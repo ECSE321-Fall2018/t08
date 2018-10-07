@@ -69,7 +69,7 @@ public class ATripRepository {
         if (userRep.authorizeUser(username, password, "Administrator") == -1 ) {
             return new ArrayList<User>();
         }
-        return em.createQuery("SELECT * FROM ATrip").getResultList();
+        return em.createNamedQuery("ATrip.findAll").getResultList();
     }
 
     @Transactional
@@ -220,7 +220,7 @@ public class ATripRepository {
         }
 
 
-        List<ATrip> trips = em.createQuery("SELECT * FROM ATrip").getResultList();
+        List<ATrip> trips = em.createNamedQuery("ATrip.findAll").getResultList();
         if (user.get(0).getRole().equalsIgnoreCase("Driver")) {
             List<ATrip> filteredlist = trips.stream().filter(u -> (u.getDriverid() == user.get(0).getUserID()))
                     .collect(Collectors.toList());
@@ -247,7 +247,7 @@ public class ATripRepository {
 
     @Transactional
     public List<Integer> findtrip(String startLocation, String stop, int startdate, int enddate, String vehtype, Double maxcost) {
-        List<ATrip> trips = em.createQuery("SELECT * FROM ATrip").getResultList();
+        List<ATrip> trips = em.createNamedQuery("ATrip.findAll").getResultList();
         if (!(startLocation.equals(""))) {
             trips = trips.stream()
                 .filter(u -> u.getStartLocation().toUpperCase().contains(startLocation.toUpperCase()))

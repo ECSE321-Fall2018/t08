@@ -3,7 +3,10 @@ package ecse321.t08.rideshare.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "atrip")
+@Table(name = "trips")
+@NamedQueries({
+        @NamedQuery(name = "ATrip.findAll", query = "SELECT e FROM ATrip e")
+})
 public class ATrip {
     private int tripid;
     private int tripStatus; // 0 for ongoing, 1 for planned, 2 for completed
