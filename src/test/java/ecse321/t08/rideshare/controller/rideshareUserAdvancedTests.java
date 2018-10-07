@@ -58,7 +58,7 @@ public class rideshareUserAdvancedTests {
 
     @Before
     public void setMockOutput() {
-        when(userDao.updateUser(anyString(), anyString(), anyString(), anyString(), anyString()))
+        when(userDao.updateUser(anyString(), anyString(), anyString(), anyString(), anyString(), anyString()))
         .thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(2).equals(USER_FULLNAME_UPDATED)) {
                 User user = new User();
@@ -98,6 +98,18 @@ public class rideshareUserAdvancedTests {
                 return -1;
             }
         });
+        when(userDao.authorizeUser(anyString(), anyString(), anyString()))
+                .thenAnswer((InvocationOnMock invocation) -> {
+                    if (
+                            invocation.getArgument(0).equals(USER_KEY)
+                                    && invocation.getArgument(1).equals(USER_PASSWORD)
+                                    && invocation.getArgument(2).equals(USER_ROLE)
+                    ) {
+                        return USER_ID;
+                    } else {
+                        return -1;
+                    }
+                });
         when(userDao.getUnfilteredUserList(anyString(), anyString()))
         .thenAnswer((InvocationOnMock invocation) -> {
             if (
@@ -159,6 +171,7 @@ public class rideshareUserAdvancedTests {
             USER_EMAIL, 
             USER_FULLNAME_UPDATED, 
             USER_ROLE, 
+            USER_PASSWORD,
             USER_PASSWORD
         );
 
@@ -172,6 +185,7 @@ public class rideshareUserAdvancedTests {
             USER_EMAIL, 
             USER_FULLNAME, 
             USER_ROLE, 
+            USER_PASSWORD,
             USER_PASSWORD
         );
 
@@ -193,10 +207,23 @@ public class rideshareUserAdvancedTests {
     }
 
     @Test
+    public void testAuthorizeUser() {
+        int result = userController.authorize(USER_KEY, USER_PASSWORD, USER_ROLE);
+
+        assertEquals(USER_ID, result);
+    }
+
+    @Test
+    public void testAuthorizeUserFails() {
+        int result = userController.authorize(USER_KEY, USER_NON_PASSWORD, USER_ROLE);
+
+        assertEquals(-1, result);
+    }
+
+    @Test
     public void testUserCreatePasswordIncorrectLength() {
         String result = userController.createUser(
-            USER_KEY, 
-            USER_STATUS, 
+            USER_KEY,
             USER_EMAIL, 
             USER_FULLNAME, 
             USER_ROLE, "test"

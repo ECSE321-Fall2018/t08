@@ -28,12 +28,8 @@ public class VehicleRepository {
         String model, 
         String vehicleType
     ) {
-        int driverId = userRep.authenticateUser(driverUserName, driverPassword);
+        int driverId = userRep.authorizeUser(driverUserName, driverPassword, "Driver");
         if (driverId == -1) {
-            return null;
-        }
-        User user = userRep.getUser(driverId);
-        if (!(user.getRole().equalsIgnoreCase("Driver"))) {
             return null;
         }
 

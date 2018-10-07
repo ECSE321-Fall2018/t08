@@ -13,17 +13,16 @@ public class UserController {
     @Autowired
     UserRepository repository;
 
-    @RequestMapping(value = "/createUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public String createUser(
         @RequestParam("username") String userName,
-        @RequestParam("status") boolean getStatus,
         @RequestParam("email") String emailAddress,
-        @RequestParam("name") String name,
+        @RequestParam("fullname") String fullname,
         @RequestParam("role") String role,
         @RequestParam("password") String password
     ) {
-        User user = repository.createUser(userName, getStatus, emailAddress, name, role, password);
+        User user = repository.createUser(userName, emailAddress, fullname, role, password);
         if (user != null) {
             return role + " " + userName + " created.";
         } else {
@@ -31,15 +30,15 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public User updateUser(
         @RequestParam("username") String userName,
         @RequestParam(value = "email", required = false) String emailAddress,
         @RequestParam(value = "name", required = false) String name,
         @RequestParam(value = "role", required = false) String role,
-        @RequestParam("password") String password
-    ) {
+        @RequestParam("oldpass") String oldpassword,
+        @RequestParam("newpass") String newpassword) {
         if (emailAddress == null) {
             emailAddress = "";
         }
@@ -49,7 +48,10 @@ public class UserController {
         if (role == null) {
             role = "";
         }
-        return repository.updateUser(userName, emailAddress, name, role, password);
+        if (newpassword == null) {
+            newpassword = "";
+        }
+        return repository.updateUser(userName, emailAddress, name, role, oldpassword, newpassword);
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
@@ -59,6 +61,17 @@ public class UserController {
         @RequestParam("password") String password
     ) {
         return repository.authenticateUser(userName, password);
+    }
+
+    @RequestMapping(value = "/authorize", method = RequestMethod.POST)
+    @ResponseBody
+    public int authorize(
+            @RequestParam("username") String userName,
+            @RequestParam("password") String password,
+            @RequestParam("role") String role
+
+            ) {
+        return repository.authorizeUser(userName, password, role);
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)

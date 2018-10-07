@@ -51,8 +51,8 @@ public class ATripRepository {
 
         aTrip.setStatus(status);
         aTrip.setCostPerStop(cost);
-        aTrip.setStartDate(startDate);
-        aTrip.setEndDate(endDate);
+        aTrip.setStartdate(startDate);
+        aTrip.setEnddate(endDate);
         aTrip.setStartLocation(startLocation);
         aTrip.setStops(stops);
         aTrip.setVehicleid(vehicleId);
@@ -65,13 +65,7 @@ public class ATripRepository {
     public List getUnfilteredTripsList(String username, String password) {
         List<User> user = userRep.findUser(username);
         // Check if user is admin
-        if (
-            user.size() == 0 
-            || user.size() > 1 
-            || !(user.get(0).getRole().equalsIgnoreCase("administrator")) 
-            || !(user.get(0).getPassword().equals(password))
-        
-                ) {
+        if (userRep.authorizeUser(username, password, "Administrator") == -1 ) {
             return new ArrayList<User>();
         }
         return em.createQuery("SELECT * FROM ATrip").getResultList();
@@ -127,11 +121,12 @@ public class ATripRepository {
 
         if (user.size() != 1 || trip == null) {
             return "User or trip does not exist.";
-        } else if (!(user.get(0).getPassword().equals(password))) {
+        }
+        if (!(user.get(0).getPassword().equals(password))) {
             return "Unable to authenticate user to cancel trip.";
         }
         // If user is driver, delete entire trip
-        else if ("Driver".equalsIgnoreCase(user.get(0).getRole())) {
+        if ("Driver".equalsIgnoreCase(user.get(0).getRole())) {
             if (user.get(0).getUserID() == trip.getDriverid()) {
                 user.get(0).setTripnumber(user.get(0).getTripnumber() - 1);
                 ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
@@ -147,7 +142,7 @@ public class ATripRepository {
             }
         }
         // Is user is passenger, just remove passenger ID
-        else if ("Passenger".equalsIgnoreCase(user.get(0).getRole())) {
+        if ("Passenger".equalsIgnoreCase(user.get(0).getRole())) {
             List<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
             List<String> newIds = new ArrayList<String>(ids);
             for (String s : ids) {
@@ -216,30 +211,28 @@ public class ATripRepository {
     public List<Integer> userTrip(String username, String password) {
         List<User> user = userRep.findUser(username);
 
-        if (user.size() != 1) {
-            return new ArrayList<Integer>();
-        }
-        if (!(user.get(0).getPassword().equals(password))) {
+        if (userRep.authenticateUser(username, password) == -1) {
             return new ArrayList<Integer>();
         }
 
-        List<ATrip> list = em.createQuery("SELECT * FROM ATrip").getResultList();
+
+        List<ATrip> trips = em.createQuery("SELECT * FROM ATrip").getResultList();
         if (user.get(0).getRole().equalsIgnoreCase("Driver")) {
-            List<ATrip> flist = list.stream().filter(u -> (u.getDriverid() == user.get(0).getUserID()))
+            List<ATrip> filteredlist = trips.stream().filter(u -> (u.getDriverid() == user.get(0).getUserID()))
                     .collect(Collectors.toList());
             List<Integer> result = new ArrayList<Integer>();
-            for (ATrip i : flist) {
-                result.add(i.getTripid());
+            for (ATrip trip : filteredlist) {
+                result.add(trip.getTripid());
             }
             return result;
         }
         if (user.get(0).getRole().equalsIgnoreCase("Passenger")) {
             List<Integer> result = new ArrayList<Integer>();
-            for (ATrip el : list) {
-                List<String> idlist = rideshareHelper.tokenizer(el.getPassengerid(), ";");
+            for (ATrip trip : trips) {
+                List<String> idlist = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
                 for (String id : idlist) {
                     if (id.equalsIgnoreCase(String.valueOf(user.get(0).getUserID()))) {
-                        result.add(el.getTripid());
+                        result.add(trip.getTripid());
                     }
                 }
             }
@@ -249,15 +242,7 @@ public class ATripRepository {
     }
 
     @Transactional
-    public List<Integer> findtrip(
-        String startLocation, 
-        String stop, 
-        int startdate, 
-        int enddate, 
-        String vehtype, 
-        Double mincost, 
-        Double maxcost
-    ) {
+    public List<Integer> findtrip(String startLocation, String stop, int startdate, int enddate, String vehtype, Double maxcost) {
         List<ATrip> trips = em.createQuery("SELECT * FROM ATrip").getResultList();
         if (!(startLocation.equals(""))) {
             trips = trips.stream()
@@ -265,17 +250,13 @@ public class ATripRepository {
                 .collect(Collectors.toList());
         }
         if (!(stop.equals(""))) {
-            List<ATrip> newList = new ArrayList<ATrip>(trips);
+            List<ATrip> newList = new ArrayList<ATrip>();
             for (ATrip trip : trips) {
                 List<String> stops = rideshareHelper.tokenizer(trip.getStops(), ";");
-                boolean found = false;
                 for (String end : stops) {
                     if (end.toUpperCase().contains(stop.toUpperCase())) {
-                        found = true;
+                        newList.add(trip);
                     }
-                }
-                if (found == false) {
-                    newList.remove(trip);
                 }
             }
             trips = newList;
@@ -283,50 +264,33 @@ public class ATripRepository {
 
         //Finds start and end date within hours (unix time stamp)
         if (startdate != -1) {
-            List<ATrip> newList = new ArrayList<ATrip>(trips);
+            List<ATrip> newList = new ArrayList<ATrip>();
             for (ATrip trip : trips) {
-                if (!(trip.getStartDate() - 3600 <= startdate && startdate <= trip.getStartDate() + 3600)) {
-                    newList.remove(trip);
+                if (trip.getStartdate() - 3600 <= startdate && startdate <= trip.getStartdate() + 3600) {
+                    newList.add(trip);
                 }
             }
             trips = newList;
         }
 
         if (enddate != -1) {
-            List<ATrip> newList = new ArrayList<ATrip>(trips);
+            List<ATrip> newList = new ArrayList<ATrip>();
             for (ATrip trip : trips) {
-                if (!(trip.getEndDate() - 3600 <= enddate && enddate <= trip.getEndDate() + 3600)) {
-                    newList.remove(trip);
+                if (trip.getEnddate() - 7200 <= enddate && enddate <= trip.getEnddate() + 7200) {
+                    newList.add(trip);
                 }
             }
             trips = newList;
         }
 
         if (!(vehtype.equals(""))) {
-            List<ATrip> newList = new ArrayList<ATrip>(trips);
+            List<ATrip> newList = new ArrayList<ATrip>();
             for (ATrip trip : trips) {
                 Vehicle veh = vehRep.getVehicle(trip.getVehicleid());
                 if (veh != null) {
-                    if (!(veh.getVehicleType().toUpperCase().contains(vehtype.toUpperCase()))) {
-                        newList.remove(trip);
+                    if (veh.getVehicleType().toUpperCase().contains(vehtype.toUpperCase())) {
+                        newList.add(trip);
                     }
-                }
-            }
-            trips = newList;
-        }
-
-        if (mincost != -1.0) {
-            List<ATrip> newList = new ArrayList<ATrip>(trips);
-            for (ATrip trip : trips) {
-                List<String> costs = rideshareHelper.tokenizer(trip.getCostPerStop(), ";");
-                boolean found = false;
-                for (String cost : costs) {
-                    if (Double.parseDouble(cost) >= mincost) {
-                        found = true;
-                    }
-                }
-                if (found == false) {
-                    newList.remove(trip);
                 }
             }
             trips = newList;
@@ -336,14 +300,10 @@ public class ATripRepository {
             List<ATrip> newList = new ArrayList<ATrip>(trips);
             for (ATrip trip : trips) {
                 List<String> costs = rideshareHelper.tokenizer(trip.getCostPerStop(), ";");
-                boolean found = false;
                 for (String cost : costs) {
                     if (Double.parseDouble(cost) <= maxcost) {
-                        found = true;
+                        newList.add(trip);
                     }
-                }
-                if (found == false) {
-                    newList.remove(trip);
                 }
             }
             trips = newList;

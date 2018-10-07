@@ -45,8 +45,8 @@ public class rideshareATripBasicTests {
                 trip.setTripid(TRIP_ID);
                 trip.setStatus(TRIP_STATUS);
                 trip.setCostPerStop(COST_PER_STOP);
-                trip.setStartDate(START_DATE);
-                trip.setEndDate(END_DATE);
+                trip.setStartdate(START_DATE);
+                trip.setEnddate(END_DATE);
                 trip.setStartLocation(START_LOCATION);
                 trip.setStops(STOPS);
                 trip.setVehicleid(VEHICLE_ID);

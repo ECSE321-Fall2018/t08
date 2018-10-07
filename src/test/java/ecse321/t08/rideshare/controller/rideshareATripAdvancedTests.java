@@ -33,7 +33,6 @@ public class rideshareATripAdvancedTests {
     private static final int TRIP_ID2 = -5;
     private static final int TRIP_ID3 = -10;
     private static final int TRIP_STATUS = 1;
-    private static final Double MIN_COST = 2.00;
     private static final Double MAX_COST = 5.00;
     private static final String COST_PER_STOP = "5.00;8.00";
     private static final int START_DATE = 934238908;
@@ -193,7 +192,7 @@ public class rideshareATripAdvancedTests {
             return new ArrayList<Integer>();
         });
         when(repository.findtrip(
-            anyString(), anyString(), anyInt(), anyInt(), anyString(), anyDouble(), anyDouble()
+            anyString(), anyString(), anyInt(), anyInt(), anyString(), anyDouble()
         ))
         .thenAnswer((InvocationOnMock invocation) -> {
             ATrip trip1 = new ATrip();
@@ -205,8 +204,8 @@ public class rideshareATripAdvancedTests {
             trip1.setStartLocation(START_LOCATION);
             trip1.setTripid(TRIP_ID);
             trip1.setStops(STOPS);
-            trip1.setStartDate(START_DATE);
-            trip1.setEndDate(END_DATE);
+            trip1.setStartdate(START_DATE);
+            trip1.setEnddate(END_DATE);
             trip1.setCostPerStop(COST_PER_STOP);
             trip1.setVehicleid(1);
             trips.add(trip1);
@@ -460,8 +459,7 @@ public class rideshareATripAdvancedTests {
             TEST_STOP, 
             START_DATE, 
             END_DATE, 
-            VEH_TYPE, 
-            MIN_COST, 
+            VEH_TYPE,
             MAX_COST
         );
         assertEquals((int) result.get(0), (int) TRIP_ID);
@@ -474,8 +472,7 @@ public class rideshareATripAdvancedTests {
             TEST_FAKE_STOP, 
             START_DATE, 
             END_DATE, 
-            VEH_TYPE, 
-            MIN_COST, 
+            VEH_TYPE,
             MAX_COST
         );
         assertTrue(result.isEmpty());

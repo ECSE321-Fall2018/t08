@@ -11,7 +11,7 @@ public class VehicleController {
     @Autowired
     VehicleRepository repository;
 
-    @RequestMapping(value = "/createvehicle", method = RequestMethod.POST)
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public String createVehicle(
         @RequestParam("driveruser") String username,

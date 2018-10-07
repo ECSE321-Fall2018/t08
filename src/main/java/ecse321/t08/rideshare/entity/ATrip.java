@@ -9,8 +9,8 @@ public class ATrip {
     private int tripStatus; // 0 for ongoing, 1 for planned, 2 for completed
 
     private String costPerStop; // Contains all costs per stop, in order, separated by delimiter ';'
-    private int startDate; // Implemented as Unix Time Stamp
-    private int endDate;
+    private int startdate; // Implemented as Unix Time Stamp
+    private int enddate;
     private String startLocation;
     private String stops; // Contains all stops, separated by delimiter ';'
     private int vehicleid;
@@ -35,8 +35,8 @@ public class ATrip {
         this.tripid = tripid;
         this.tripStatus = tripStatus;
         this.costPerStop = costPerStop;
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.startdate = startDate;
+        this.enddate = endDate;
         this.startLocation = startLocation;
         this.stops = stops;
         this.vehicleid = vehicleid;
@@ -65,21 +65,21 @@ public class ATrip {
     }
 
     @Column(name = "startdate")
-    public int getStartDate() {
-        return this.startDate;
+    public int getStartdate() {
+        return this.startdate;
     }
 
-    public void setStartDate(int value) {
-        this.startDate = value;
+    public void setStartdate(int value) {
+        this.enddate = value;
     }
 
     @Column(name = "enddate")
-    public int getEndDate() {
-        return endDate;
+    public int getEnddate() {
+        return enddate;
     }
 
-    public void setEndDate(int endDate) {
-        this.endDate = endDate;
+    public void setEnddate(int endDate) {
+        this.enddate = endDate;
     }
 
     @Column(name = "status")
