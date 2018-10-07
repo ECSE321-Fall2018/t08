@@ -140,7 +140,7 @@ public class ATripController {
         return repository.findtrip(startLocation, stop, startdate, enddate, vehtype, mincost, maxcost);
     }
 
-	@RequestMapping(value="/status", method = RequestMethod.POST)
+	@RequestMapping(value = "/status", method = RequestMethod.POST)
 	public String changeTripStatus(
 		@RequestParam("tripid") int ATripID,
 		@RequestParam("username") String username,
