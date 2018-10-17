@@ -63,6 +63,15 @@ public class UserController {
         return repository.authenticateUser(userName, password);
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @ResponseBody
+    public String login(
+            @RequestParam("username") String userName,
+            @RequestParam("password") String password
+    ) {
+        return repository.login(userName, password);
+    }
+
     @RequestMapping(value = "/authorize", method = RequestMethod.POST)
     @ResponseBody
     public int authorize(

@@ -118,7 +118,19 @@ public class UserRepository {
             return user.getUserID();
         }
         return -1;
+    }
 
+    @Transactional
+    public String login(String username, String password) {
+        List<User> userlist = findUser(username);
+        if (userlist.size() < 1 || userlist.size() > 1) {
+            return "";
+        }
+        User user = userlist.get(0);
+        if (user.getPassword().equals(password)) {
+            return user.getRole();
+        }
+        return "";
     }
 
     @Transactional

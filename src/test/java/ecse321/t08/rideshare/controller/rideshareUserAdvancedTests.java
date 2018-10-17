@@ -98,6 +98,17 @@ public class rideshareUserAdvancedTests {
                 return -1;
             }
         });
+        when(userDao.login(anyString(), anyString()))
+                .thenAnswer((InvocationOnMock invocation) -> {
+                    if (
+                            invocation.getArgument(0).equals(USER_KEY)
+                                    && invocation.getArgument(1).equals(USER_PASSWORD)
+                    ) {
+                        return USER_ROLE;
+                    } else {
+                        return "";
+                    }
+                });
         when(userDao.authorizeUser(anyString(), anyString(), anyString()))
                 .thenAnswer((InvocationOnMock invocation) -> {
                     if (
@@ -218,6 +229,20 @@ public class rideshareUserAdvancedTests {
         int result = userController.authorize(USER_KEY, USER_NON_PASSWORD, USER_ROLE);
 
         assertEquals(-1, result);
+    }
+
+    @Test
+    public void testLoginUser() {
+        String result = userController.login(USER_KEY, USER_PASSWORD);
+
+        assertEquals(USER_ROLE, result);
+    }
+
+    @Test
+    public void testLoginUserFails() {
+        String result = userController.login(USER_KEY, USER_NON_PASSWORD);
+
+        assertEquals("", result);
     }
 
     @Test
