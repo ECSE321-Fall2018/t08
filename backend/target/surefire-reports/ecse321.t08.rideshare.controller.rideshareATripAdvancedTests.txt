@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: ecse321.t08.rideshare.controller.rideshareATripAdvancedTests
+-------------------------------------------------------------------------------
+Tests run: 23, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.08 s - in ecse321.t08.rideshare.controller.rideshareATripAdvancedTests
