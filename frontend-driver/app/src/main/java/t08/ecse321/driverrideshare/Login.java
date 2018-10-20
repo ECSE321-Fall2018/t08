@@ -38,6 +38,22 @@ import static android.Manifest.permission.READ_CONTACTS;
  */
 public class Login extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
+     private String error = null;
+
+     private void refreshErrorMessage() {
+         // set the error message
+         TextView tvError = (TextView) findViewById(R.id.error);
+         tvError.setText(error);
+
+         if (error == null || error.length() == 0) {
+             tvError.setVisibility(View.GONE);
+         } else {
+             tvError.setVisibility(View.VISIBLE);
+         }
+
+     }
+
+    
     /**
      * Id to identity READ_CONTACTS permission request.
      */
