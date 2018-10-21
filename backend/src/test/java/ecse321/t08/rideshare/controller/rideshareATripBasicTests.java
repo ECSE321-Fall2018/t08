@@ -10,9 +10,9 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
@@ -61,11 +61,11 @@ public class rideshareATripBasicTests {
 
     @Test
     public void testTripSimpleQueryFound() {
-        assertEquals(STOPS, tripController.getTrip(TRIP_ID).getStops());
+        assertEquals(HttpStatus.OK, tripController.getTrip(TRIP_ID).getStatusCode());
     }
 
     @Test
     public void testUserQueryNotFound() {
-        assertNull(tripController.getTrip(NON_EXISTING_TRIP_ID));
+        assertEquals(HttpStatus.NOT_FOUND, tripController.getTrip(NON_EXISTING_TRIP_ID).getStatusCode());
     }
 }

@@ -3,6 +3,8 @@ package ecse321.t08.rideshare.controller;
 import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +17,7 @@ public class UserController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public String createUser(
+    public ResponseEntity<?> createUser(
         @RequestParam("username") String userName,
         @RequestParam("email") String emailAddress,
         @RequestParam("fullname") String fullname,
@@ -24,15 +26,15 @@ public class UserController {
     ) {
         User user = repository.createUser(userName, emailAddress, fullname, role, password);
         if (user != null) {
-            return role + " " + userName + " created.";
+            return new ResponseEntity<>(role+ " " + userName + " created.", HttpStatus.OK);
         } else {
-            return role + " " + userName + " could not be created, select a new username and make sure your email has not been used before.";
+            return new ResponseEntity<>(role + " " + userName + " could not be created.", HttpStatus.CONFLICT);
         }
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
-    public User updateUser(
+    public ResponseEntity<?> updateUser(
         @RequestParam("username") String userName,
         @RequestParam(value = "email", required = false) String emailAddress,
         @RequestParam(value = "name", required = false) String name,
@@ -51,50 +53,56 @@ public class UserController {
         if (newpassword == null) {
             newpassword = "";
         }
-        return repository.updateUser(userName, emailAddress, name, role, oldpassword, newpassword);
+        User user = repository.updateUser(userName, emailAddress, name, role, oldpassword, newpassword);
+        if (user != null) {
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(user, HttpStatus.FORBIDDEN);
+        }
     }
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     @ResponseBody
-    public int authenticateUser(
+    public ResponseEntity<?> authenticateUser(
         @RequestParam("username") String userName,
         @RequestParam("password") String password
     ) {
-        return repository.authenticateUser(userName, password);
+        return new ResponseEntity<>(repository.authenticateUser(userName, password), HttpStatus.OK);
     }
 
+    //Returns role
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public String login(
+    public ResponseEntity<?> login(
             @RequestParam("username") String userName,
             @RequestParam("password") String password
     ) {
-        return repository.login(userName, password);
+        return new ResponseEntity<>(repository.login(userName, password), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/authorize", method = RequestMethod.POST)
     @ResponseBody
-    public int authorize(
+    public ResponseEntity<?> authorize(
             @RequestParam("username") String userName,
             @RequestParam("password") String password,
             @RequestParam("role") String role
 
             ) {
-        return repository.authorizeUser(userName, password, role);
+        return new ResponseEntity<>(repository.authorizeUser(userName, password, role), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-    public User getUser(@PathVariable("id") int id) {
+    public ResponseEntity<?> getUser(@PathVariable("id") int id) {
         User user = repository.getUser(id);
         if (user == null) {
-            System.out.println("NOT FOUND");
+            return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
         }
-        return user;
+        return  new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.POST)
     @ResponseBody
-    public List<User> findUser(
+    public ResponseEntity<?> findUser(
         @RequestParam("adminusername") String adusername,
         @RequestParam("adminpass") String adpass,
         @RequestParam(value = "username", required = false) String userName,
@@ -113,24 +121,33 @@ public class UserController {
 
         List<User> userList = repository.findUser(adusername, adpass, userName, emailAddress, name);
         if (userList.isEmpty()) {
-            System.out.println("User not found.");
+            return new ResponseEntity<>(userList, HttpStatus.NOT_FOUND);
         }
-        return userList;
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/userlist", method = RequestMethod.POST)
-    public List getUnfilteredUserList(
+    public ResponseEntity<?> getUnfilteredUserList(
         @RequestParam("username") String username,
         @RequestParam("password") String password
     ) {
-        return repository.getUnfilteredUserList(username, password);
-    }
+        List<User> userlist = repository.getUnfilteredUserList(username, password);
+        if(userlist.isEmpty()) {
+            return new ResponseEntity<>(userlist, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(userlist, HttpStatus.OK);
+        }    }
 
     @RequestMapping(value = "/fuserlist", method = RequestMethod.POST)
-    public List getFilteredUserList(
+    public ResponseEntity<?> getFilteredUserList(
         @RequestParam("username") String username,
         @RequestParam("password") String password
     ) {
-        return repository.getFilteredUserList(username, password);
+        List<User> userlist = repository.getFilteredUserList(username, password);
+        if(userlist.isEmpty()) {
+            return new ResponseEntity<>(userlist, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(userlist, HttpStatus.OK);
+        }
     }
 }

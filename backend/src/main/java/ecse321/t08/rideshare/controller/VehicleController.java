@@ -3,6 +3,8 @@ package ecse321.t08.rideshare.controller;
 import ecse321.t08.rideshare.entity.Vehicle;
 import ecse321.t08.rideshare.repository.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -13,7 +15,7 @@ public class VehicleController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public String createVehicle(
+    public ResponseEntity<?> createVehicle(
         @RequestParam("driveruser") String username,
         @RequestParam("driverpass") String password,
         @RequestParam("nbOfSeats") Integer nbOfSeats,
@@ -23,20 +25,30 @@ public class VehicleController {
     ) {
         Vehicle result = repository.createVehicle(username, password, nbOfSeats, colour, model, vehicleType);
         if (result != null) {
-            return model + " created!";
+            return new ResponseEntity<>(model + " created!", HttpStatus.OK);
         } else {
-            return "Vehicle could not be created. Please verify credentials.";
+            return new ResponseEntity<>("Vehicle could not be created. Please verify credentials.", HttpStatus.BAD_REQUEST);
         }
     }
 
     @RequestMapping(value = "/vehicles/{id}", method = RequestMethod.GET)
-    public Vehicle getVehicle(@PathVariable("id") int id) {
-        return repository.getVehicle(id);
+    public ResponseEntity<?> getVehicle(@PathVariable("id") int id) {
+        Vehicle vehicle = repository.getVehicle(id);
+        if(vehicle == null) {
+            return new ResponseEntity<>(vehicle, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(vehicle, HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/finddriver", method = RequestMethod.POST)
     @ResponseBody
-    public int findVehicleForDriver(@RequestParam("driverusername") String username, @RequestParam("driverpassword") String password) {
-        return repository.findVehicleForDriver(username, password);
+    public ResponseEntity<?> findVehicleForDriver(@RequestParam("driverusername") String username, @RequestParam("driverpassword") String password) {
+        int result = repository.findVehicleForDriver(username, password);
+        if(result == -1) {
+            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
     }
 }

@@ -9,10 +9,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.xml.ws.Response;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -57,16 +60,16 @@ public class rideshareVehicleAdvancedTests {
 
     @Test
     public void testFindVehicleForDriver() {
-        int result = vehicleController.findVehicleForDriver(USERNAME, PASSWORD);
+        ResponseEntity<?> result = vehicleController.findVehicleForDriver(USERNAME, PASSWORD);
 
-        assertEquals(result, VEHICLE_ID);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
     public void testFindVehicleForDriverFails() {
-        int result = vehicleController.findVehicleForDriver(USERNAME, NONEXISTING_PASSWORD);
+        ResponseEntity<?> result = vehicleController.findVehicleForDriver(USERNAME, NONEXISTING_PASSWORD);
 
-        assertEquals(-1, result);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
 }
