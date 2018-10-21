@@ -74,7 +74,7 @@ public class UserController {
     ) {
         JSONObject json = new JSONObject();
         json.put("data",repository.authenticateUser(userName, password));
-        return new ResponseEntity<>(json , HttpStatus.OK);
+        return new ResponseEntity<>(json.toString(), HttpStatus.OK);
     }
 
     //Returns role
@@ -86,7 +86,7 @@ public class UserController {
     ) {
         JSONObject json = new JSONObject();
         json.put("data",repository.login(userName, password));
-        return new ResponseEntity<>(json , HttpStatus.OK);
+        return new ResponseEntity<>(json.toString(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/authorize", method = RequestMethod.POST)
@@ -99,7 +99,7 @@ public class UserController {
             ) {
         JSONObject json = new JSONObject();
         json.put("data",repository.authorizeUser(userName, password, role));
-        return new ResponseEntity<>(json , HttpStatus.OK);
+        return new ResponseEntity<>(json.toString(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)

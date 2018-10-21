@@ -111,7 +111,7 @@ public class ATripController {
         } else {
             JSONObject json = new JSONObject();
             json.put("data", result);
-            return new ResponseEntity<>(json , HttpStatus.OK);
+            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
 
         }
     }
@@ -144,7 +144,7 @@ public class ATripController {
             return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
         } else {
             JSONArray array = new JSONArray(list);
-            return new ResponseEntity<>(array, HttpStatus.OK);
+            return new ResponseEntity<>(array.toString(), HttpStatus.OK);
         }
     }
 
@@ -172,7 +172,7 @@ public class ATripController {
             return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
         } else {
             JSONArray array = new JSONArray(list);
-            return new ResponseEntity<>(array, HttpStatus.OK);
+            return new ResponseEntity<>(array.toString(), HttpStatus.OK);
         }
 
     }
@@ -210,7 +210,7 @@ public class ATripController {
             return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
         } else {
             JSONArray array = new JSONArray(list);
-            return new ResponseEntity<>(array, HttpStatus.OK);
+            return new ResponseEntity<>(array.toString(), HttpStatus.OK);
         }
     }
 }
