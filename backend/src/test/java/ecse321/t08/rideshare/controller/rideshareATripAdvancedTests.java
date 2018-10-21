@@ -5,6 +5,8 @@ import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.entity.Vehicle;
 import ecse321.t08.rideshare.repository.ATripRepository;
 import ecse321.t08.rideshare.utility.rideshareHelper;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -274,8 +276,14 @@ public class rideshareATripAdvancedTests {
 
     @Test
     public void selectTrip() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("data", "Passenger " + PASSENGER_USERNAME + " selected this trip.");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         ResponseEntity<?> result = aTripController.selectTrip(TRIP_ID, PASSENGER_USERNAME, PASSENGER_PASSWORD);
-        assertEquals("Passenger " + PASSENGER_USERNAME + " selected this trip.", result.getBody());
+        assertEquals(json.toString(), result.getBody().toString());
     }
 
     @Test
@@ -286,14 +294,26 @@ public class rideshareATripAdvancedTests {
 
     @Test
     public void cancelTripDriver() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("data", "Trip " + TRIP_ID + "deleted");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         ResponseEntity<?> result = aTripController.cancelATrip(TRIP_ID, DRIVER_USERNAME, DRIVER_PASSWORD);
-        assertEquals("Trip " + TRIP_ID + "deleted", result.getBody());
+        assertEquals(json.toString(), result.getBody().toString());
     }
 
     @Test
     public void cancelTripPassenger() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("data", "Passenger " + PASSENGER_USERNAME + " removed from trip " + TRIP_ID + ".");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         ResponseEntity<?> result = aTripController.cancelATrip(TRIP_ID, PASSENGER_USERNAME, PASSENGER_PASSWORD);
-        assertEquals("Passenger " + PASSENGER_USERNAME + " removed from trip " + TRIP_ID + ".", result.getBody());
+        assertEquals(json.toString(), result.getBody().toString());
     }
 
     @Test
@@ -310,7 +330,13 @@ public class rideshareATripAdvancedTests {
             DRIVER_PASSWORD, 
             TRIP_STATUS
         );
-        assertEquals("Trip status changed successfully", result.getBody());
+        JSONObject json = new JSONObject();
+        try {
+            json.put("data", "Trip status changed successfully");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        assertEquals(json.toString(), result.getBody().toString());
     }
 
     @Test
@@ -345,13 +371,25 @@ public class rideshareATripAdvancedTests {
     @Test
     public void driverOnTrip() {
         ResponseEntity<?> result = aTripController.driverOnTrip(TRIP_ID);
-        assertEquals(DRIVER_ID, result.getBody());
+        JSONObject json = new JSONObject();
+        try {
+            json.put("data", DRIVER_ID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        assertEquals(json.toString(), result.getBody().toString());
     }
 
     @Test
     public void driverOnTripUnsuccessful() {
         ResponseEntity<?> result = aTripController.driverOnTrip(NON_EXISTING_TRIP_ID);
-        assertEquals(-1, result.getBody());
+        JSONObject json = new JSONObject();
+        try {
+            json.put("data", -1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        assertEquals(json.toString(), result.getBody().toString());
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 

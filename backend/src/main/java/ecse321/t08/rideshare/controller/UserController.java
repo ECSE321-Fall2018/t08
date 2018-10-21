@@ -2,6 +2,7 @@ package ecse321.t08.rideshare.controller;
 
 import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.repository.UserRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +27,13 @@ public class UserController {
     ) {
         User user = repository.createUser(userName, emailAddress, fullname, role, password);
         if (user != null) {
-            return new ResponseEntity<>(role+ " " + userName + " created.", HttpStatus.OK);
+            JSONObject json = new JSONObject();
+            json.put("data", role + " " + userName + " created!");
+            return new ResponseEntity<>(json, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(role + " " + userName + " could not be created.", HttpStatus.CONFLICT);
+            JSONObject json = new JSONObject();
+            json.put("data", role + " " + userName + " could not be created.");
+            return new ResponseEntity<>(json, HttpStatus.CONFLICT);
         }
     }
 
@@ -67,7 +72,9 @@ public class UserController {
         @RequestParam("username") String userName,
         @RequestParam("password") String password
     ) {
-        return new ResponseEntity<>(repository.authenticateUser(userName, password), HttpStatus.OK);
+        JSONObject json = new JSONObject();
+        json.put("data",repository.authenticateUser(userName, password));
+        return new ResponseEntity<>(json , HttpStatus.OK);
     }
 
     //Returns role
@@ -77,7 +84,9 @@ public class UserController {
             @RequestParam("username") String userName,
             @RequestParam("password") String password
     ) {
-        return new ResponseEntity<>(repository.login(userName, password), HttpStatus.OK);
+        JSONObject json = new JSONObject();
+        json.put("data",repository.login(userName, password));
+        return new ResponseEntity<>(json , HttpStatus.OK);
     }
 
     @RequestMapping(value = "/authorize", method = RequestMethod.POST)
@@ -88,7 +97,9 @@ public class UserController {
             @RequestParam("role") String role
 
             ) {
-        return new ResponseEntity<>(repository.authorizeUser(userName, password, role), HttpStatus.OK);
+        JSONObject json = new JSONObject();
+        json.put("data",repository.authorizeUser(userName, password, role));
+        return new ResponseEntity<>(json , HttpStatus.OK);
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)

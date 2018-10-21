@@ -2,6 +2,7 @@ package ecse321.t08.rideshare.controller;
 
 import ecse321.t08.rideshare.entity.Vehicle;
 import ecse321.t08.rideshare.repository.VehicleRepository;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +26,13 @@ public class VehicleController {
     ) {
         Vehicle result = repository.createVehicle(username, password, nbOfSeats, colour, model, vehicleType);
         if (result != null) {
-            return new ResponseEntity<>(model + " created!", HttpStatus.OK);
+            JSONObject json = new JSONObject();
+            json.put("data",  model + " created!");
+            return new ResponseEntity<>(json, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Vehicle could not be created. Please verify credentials.", HttpStatus.BAD_REQUEST);
+            JSONObject json = new JSONObject();
+            json.put("data","Vehicle could not be created. Please verify credentials.");
+            return new ResponseEntity<>(json, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -46,9 +51,13 @@ public class VehicleController {
     public ResponseEntity<?> findVehicleForDriver(@RequestParam("driverusername") String username, @RequestParam("driverpassword") String password) {
         int result = repository.findVehicleForDriver(username, password);
         if(result == -1) {
-            return new ResponseEntity<>(result, HttpStatus.NOT_FOUND);
+            JSONObject json = new JSONObject();
+            json.put("data", result);
+            return new ResponseEntity<>(json, HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            JSONObject json = new JSONObject();
+            json.put("data", result);
+            return new ResponseEntity<>(json, HttpStatus.OK);
         }
     }
 }
