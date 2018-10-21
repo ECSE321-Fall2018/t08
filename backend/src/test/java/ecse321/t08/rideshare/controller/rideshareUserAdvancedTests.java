@@ -2,6 +2,8 @@ package ecse321.t08.rideshare.controller;
 
 import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.repository.UserRepository;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -210,43 +212,77 @@ public class rideshareUserAdvancedTests {
     @Test
     public void testAuthenticateUser() {
         ResponseEntity<?> response = userController.authenticateUser(USER_KEY, USER_PASSWORD);
-
-        assertEquals(USER_ID, response.getBody());
+        JSONObject json = new JSONObject();
+        try {
+            json.put("data", USER_ID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        assertEquals(json.toString(), response.getBody().toString());
     }
 
     @Test
     public void testAuthenticateUserFails() {
         ResponseEntity<?> response= userController.authenticateUser(USER_KEY, USER_NON_PASSWORD);
-
-        assertEquals(-1,  response.getBody());
+        JSONObject json = new JSONObject();
+        try {
+            json.put("data", -1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        assertEquals(json.toString(),  response.getBody().toString());
     }
 
     @Test
     public void testAuthorizeUser() {
         ResponseEntity<?> response = userController.authorize(USER_KEY, USER_PASSWORD, USER_ROLE);
 
-        assertEquals(USER_ID, response.getBody());
+        JSONObject json = new JSONObject();
+        try {
+            json.put("data", USER_ID);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        assertEquals(json.toString(), response.getBody().toString());
     }
 
     @Test
     public void testAuthorizeUserFails() {
         ResponseEntity<?> response= userController.authorize(USER_KEY, USER_NON_PASSWORD, USER_ROLE);
 
-        assertEquals(-1, response.getBody());
+        JSONObject json = new JSONObject();
+        try {
+            json.put("data", -1);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        assertEquals(json.toString(),  response.getBody().toString());
     }
 
     @Test
     public void testLoginUser() {
         ResponseEntity<?> response = userController.login(USER_KEY, USER_PASSWORD);
 
-        assertEquals(USER_ROLE, response.getBody());
+        JSONObject json = new JSONObject();
+        try {
+            json.put("data", USER_ROLE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        assertEquals(json.toString(), response.getBody().toString());
     }
 
     @Test
     public void testLoginUserFails() {
         ResponseEntity<?> response = userController.login(USER_KEY, USER_NON_PASSWORD);
 
-        assertEquals("", response.getBody());
+        JSONObject json = new JSONObject();
+        try {
+            json.put("data", "");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        assertEquals(json.toString(), response.getBody().toString());
     }
 
     @Test

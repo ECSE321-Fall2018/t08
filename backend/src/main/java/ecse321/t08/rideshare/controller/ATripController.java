@@ -2,6 +2,8 @@ package ecse321.t08.rideshare.controller;
 
 import ecse321.t08.rideshare.entity.ATrip;
 import ecse321.t08.rideshare.repository.ATripRepository;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,14 +37,18 @@ public class ATripController {
             endDate, 
             startLocation, 
             stops, 
-            vehicleId, 
+            vehicleId,
             driverUsername, 
             driverPassword
         );
         if (result == null) {
-            return new ResponseEntity<>("Unable to create trip.", HttpStatus.FORBIDDEN);
+            JSONObject json = new JSONObject();
+            json.put("data", "Unable to create trip.");
+            return new ResponseEntity<>(json, HttpStatus.FORBIDDEN);
         } else {
-            return new ResponseEntity<>("Trip created starting at " + startLocation + "!", HttpStatus.OK);
+            JSONObject json = new JSONObject();
+            json.put("data", "Trip created starting at" + startLocation +"!");
+            return new ResponseEntity<>(json, HttpStatus.OK);
         }
     }
 
@@ -79,9 +85,13 @@ public class ATripController {
     ) {
         String result = repository.selectTrip(ATripID, username, password);
         if(result == "") {
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+            JSONObject json = new JSONObject();
+            json.put("data", result);
+            return new ResponseEntity<>(json, HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            JSONObject json = new JSONObject();
+            json.put("data", result);
+            return new ResponseEntity<>(json, HttpStatus.OK);
 
         }
     }
@@ -95,9 +105,13 @@ public class ATripController {
     ) {
         String result = repository.cancelATrip(ATripID, username, password);
         if(result == "") {
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+            JSONObject json = new JSONObject();
+            json.put("data", result);
+            return new ResponseEntity<>(json, HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            JSONObject json = new JSONObject();
+            json.put("data", result);
+            return new ResponseEntity<>(json , HttpStatus.OK);
 
         }
     }
@@ -112,9 +126,13 @@ public class ATripController {
     ) {
         String result = repository.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
         if(result == "") {
-            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+            JSONObject json = new JSONObject();
+            json.put("data", result);
+            return new ResponseEntity<>(json, HttpStatus.BAD_REQUEST);
         } else {
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            JSONObject json = new JSONObject();
+            json.put("data", result);
+            return new ResponseEntity<>(json, HttpStatus.OK);
         }
     }
 
@@ -125,7 +143,8 @@ public class ATripController {
         if(list.isEmpty()) {
             return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(list, HttpStatus.OK);
+            JSONArray array = new JSONArray(list);
+            return new ResponseEntity<>(array, HttpStatus.OK);
         }
     }
 
@@ -134,9 +153,13 @@ public class ATripController {
     public ResponseEntity<?> driverOnTrip(@RequestParam("tripid") Integer ATripID) {
         int driverid =  repository.findDriverOnTrip(ATripID);
         if(driverid == -1) {
-            return new ResponseEntity<>(driverid, HttpStatus.NOT_FOUND);
+            JSONObject json = new JSONObject();
+            json.put("data", driverid);
+            return new ResponseEntity<>(json, HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(driverid, HttpStatus.OK);
+            JSONObject json = new JSONObject();
+            json.put("data", driverid);
+            return new ResponseEntity<>(json, HttpStatus.OK);
         }
     }
 
@@ -148,7 +171,8 @@ public class ATripController {
         if(list.isEmpty()) {
             return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(list, HttpStatus.OK);
+            JSONArray array = new JSONArray(list);
+            return new ResponseEntity<>(array, HttpStatus.OK);
         }
 
     }
@@ -185,7 +209,8 @@ public class ATripController {
         if(list.isEmpty()) {
             return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
         } else {
-            return new ResponseEntity<>(list, HttpStatus.OK);
+            JSONArray array = new JSONArray(list);
+            return new ResponseEntity<>(array, HttpStatus.OK);
         }
     }
 }
