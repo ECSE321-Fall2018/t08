@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 
 import javax.persistence.EntityManager;
 
@@ -59,11 +60,12 @@ public class rideshareVehicleBasicTests {
 
     @Test
     public void testVehicleSimpleQueryFound() {
-        assertEquals(DRIVER_ID, vehicleController.getVehicle(VEHICLE_ID).getDriverId());
+        assertEquals(HttpStatus.OK, vehicleController.getVehicle(VEHICLE_ID).getStatusCode());
     }
 
     @Test
     public void testVehicleQueryNotFound() {
-        assertNull(vehicleController.getVehicle(NONEXISTING_VEHICLE_ID));
+        assertEquals(HttpStatus.NOT_FOUND, vehicleController.getVehicle(NONEXISTING_VEHICLE_ID).getStatusCode());
+
     }
 }

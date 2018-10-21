@@ -9,6 +9,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -84,7 +86,8 @@ public class rideshareUserAdvancedTests {
                 userList.add(user);
                 return userList;
             } else {
-                return new ArrayList<User>();
+                return new ArrayList();
+
             }
         });
         when(userDao.authenticateUser(anyString(), anyString()))
@@ -96,6 +99,7 @@ public class rideshareUserAdvancedTests {
                 return USER_ID;
             } else {
                 return -1;
+
             }
         });
         when(userDao.login(anyString(), anyString()))
@@ -133,7 +137,8 @@ public class rideshareUserAdvancedTests {
                 userList.add(user);
                 return userList;
             } else {
-                return new ArrayList<User>();
+                return new ArrayList();
+
             }
         });
         when(userDao.getFilteredUserList(anyString(), anyString()))
@@ -154,30 +159,29 @@ public class rideshareUserAdvancedTests {
                 Collections.sort(userList, Comparator.comparing(User::getTripnumber));
                 return userList;
             } else {
-                return new ArrayList<User>();
+                return new ArrayList();
             }
         });
     }
 
     @Test
     public void testAdvancedUserQuery() {
-        List<User> userList = userController.findUser(ADMIN_USERNAME, ADMIN_PASSWORD, USER_KEY, USER_EMAIL, USER_FULLNAME);
+        ResponseEntity<?> response = userController.findUser(ADMIN_USERNAME, ADMIN_PASSWORD, USER_KEY, USER_EMAIL, USER_FULLNAME);
 
-        assertNotNull(userList);
-        assertEquals(1, userList.size());
-        assertEquals(USER_FULLNAME, userList.get(0).getFullName());
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
     }
 
     @Test
     public void testAdvancedUserQueryNotFound() {
-        List<User> userList = userController.findUser(ADMIN_USERNAME, ADMIN_PASSWORD, USER_KEY2, USER_EMAIL, USER_FULLNAME);
+        ResponseEntity<?> response = userController.findUser(ADMIN_USERNAME, ADMIN_PASSWORD, USER_KEY2, USER_EMAIL, USER_FULLNAME);
 
-        assertTrue(userList.isEmpty());
+        assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
+
     }
 
     @Test
     public void testAdvancedUserUpdateQuery() {
-        User user = userController.updateUser(
+        ResponseEntity<?> response = userController.updateUser(
             USER_KEY, 
             USER_EMAIL, 
             USER_FULLNAME_UPDATED, 
@@ -186,12 +190,12 @@ public class rideshareUserAdvancedTests {
             USER_PASSWORD
         );
 
-        assertEquals(USER_FULLNAME_UPDATED, user.getFullName());
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
     }
 
     @Test
     public void testAdvancedUserUpdateQueryNotFound() {
-        User user = userController.updateUser(
+        ResponseEntity<?> response = userController.updateUser(
             NONEXISTING_USER_KEY, 
             USER_EMAIL, 
             USER_FULLNAME, 
@@ -200,86 +204,84 @@ public class rideshareUserAdvancedTests {
             USER_PASSWORD
         );
 
-        assertNull(user);
+        assertEquals(response.getStatusCode(), HttpStatus.FORBIDDEN);
     }
 
     @Test
     public void testAuthenticateUser() {
-        int result = userController.authenticateUser(USER_KEY, USER_PASSWORD);
+        ResponseEntity<?> response = userController.authenticateUser(USER_KEY, USER_PASSWORD);
 
-        assertEquals(USER_ID, result);
+        assertEquals(USER_ID, response.getBody());
     }
 
     @Test
     public void testAuthenticateUserFails() {
-        int result = userController.authenticateUser(USER_KEY, USER_NON_PASSWORD);
+        ResponseEntity<?> response= userController.authenticateUser(USER_KEY, USER_NON_PASSWORD);
 
-        assertEquals(-1, result);
+        assertEquals(-1,  response.getBody());
     }
 
     @Test
     public void testAuthorizeUser() {
-        int result = userController.authorize(USER_KEY, USER_PASSWORD, USER_ROLE);
+        ResponseEntity<?> response = userController.authorize(USER_KEY, USER_PASSWORD, USER_ROLE);
 
-        assertEquals(USER_ID, result);
+        assertEquals(USER_ID, response.getBody());
     }
 
     @Test
     public void testAuthorizeUserFails() {
-        int result = userController.authorize(USER_KEY, USER_NON_PASSWORD, USER_ROLE);
+        ResponseEntity<?> response= userController.authorize(USER_KEY, USER_NON_PASSWORD, USER_ROLE);
 
-        assertEquals(-1, result);
+        assertEquals(-1, response.getBody());
     }
 
     @Test
     public void testLoginUser() {
-        String result = userController.login(USER_KEY, USER_PASSWORD);
+        ResponseEntity<?> response = userController.login(USER_KEY, USER_PASSWORD);
 
-        assertEquals(USER_ROLE, result);
+        assertEquals(USER_ROLE, response.getBody());
     }
 
     @Test
     public void testLoginUserFails() {
-        String result = userController.login(USER_KEY, USER_NON_PASSWORD);
+        ResponseEntity<?> response = userController.login(USER_KEY, USER_NON_PASSWORD);
 
-        assertEquals("", result);
+        assertEquals("", response.getBody());
     }
 
     @Test
     public void testUserCreatePasswordIncorrectLength() {
-        String result = userController.createUser(
+        ResponseEntity<?> result = userController.createUser(
             USER_KEY,
             USER_EMAIL, 
             USER_FULLNAME, 
             USER_ROLE, "test"
         );
-        String expectedResult = USER_ROLE + " " + USER_KEY + " could not be created, select a new username and make sure your email has not been used before.";
 
-        assertEquals(expectedResult, result);
+        assertEquals(HttpStatus.CONFLICT, result.getStatusCode());
     }
 
     @Test
     public void getUnfilteredUserList() {
-        List<User> result = userController.getUnfilteredUserList(ADMIN_USERNAME, ADMIN_PASSWORD);
-        assertEquals(result.get(0).getUsername(), USER_KEY);
+        ResponseEntity<?> response = userController.getUnfilteredUserList(ADMIN_USERNAME, ADMIN_PASSWORD);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     public void getUnfilteredUserListUnsuccessful() {
-        List<User> result = userController.getUnfilteredUserList(ADMIN_USERNAME, USER_PASSWORD);
-        assertTrue(result.isEmpty());
+        ResponseEntity<?> response = userController.getUnfilteredUserList(ADMIN_USERNAME, USER_PASSWORD);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
     public void getFilteredUserList() {
-        List<User> result = userController.getFilteredUserList(ADMIN_USERNAME, ADMIN_PASSWORD);
-        assertEquals(result.get(0).getUsername(), USER_KEY2);
-        assertEquals(result.get(1).getUsername(), USER_KEY);
+        ResponseEntity<?> response = userController.getFilteredUserList(ADMIN_USERNAME, ADMIN_PASSWORD);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     public void getUnFilteredUserListUnsuccessful() {
-        List<User> result = userController.getFilteredUserList(ADMIN_USERNAME, USER_PASSWORD);
-        assertTrue(result.isEmpty());
+        ResponseEntity<?> response = userController.getFilteredUserList(ADMIN_USERNAME, USER_PASSWORD);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 }

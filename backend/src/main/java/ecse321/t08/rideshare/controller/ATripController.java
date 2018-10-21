@@ -3,6 +3,8 @@ package ecse321.t08.rideshare.controller;
 import ecse321.t08.rideshare.entity.ATrip;
 import ecse321.t08.rideshare.repository.ATripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +17,7 @@ public class ATripController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public String createTrip(
+    public ResponseEntity<?> createTrip(
         @RequestParam("status") Integer status,
         @RequestParam("cost") String cost,
         @RequestParam("startDate") Integer startDate,
@@ -38,76 +40,122 @@ public class ATripController {
             driverPassword
         );
         if (result == null) {
-            return "Unable to create trip.";
+            return new ResponseEntity<>("Unable to create trip.", HttpStatus.FORBIDDEN);
         } else {
-            return "Trip created starting at " + startLocation + "!";
+            return new ResponseEntity<>("Trip created starting at " + startLocation + "!", HttpStatus.OK);
         }
     }
 
     // Get list of trips if you are admin
     @RequestMapping(value = "/utripslist", method = RequestMethod.POST)
-    public List getUnfilteredTripsList(
+    public ResponseEntity<?> getUnfilteredTripsList(
         @RequestParam("username") String username,
         @RequestParam("password") String password
     ) {
-        return repository.getUnfilteredTripsList(username, password);
+        List<ATrip> list = repository.getUnfilteredTripsList(username, password);
+        if(list.isEmpty()) {
+            return new ResponseEntity<>(list, HttpStatus.FORBIDDEN);
+        } else {
+            return new ResponseEntity<>(list, HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/trips/{id}", method = RequestMethod.GET)
-    public ATrip getTrip(@PathVariable("id") int id) {
-        return repository.getTrip(id);
+    public ResponseEntity<?> getTrip(@PathVariable("id") int id) {
+        ATrip trip = repository.getTrip(id);
+        if(trip == null) {
+            return new ResponseEntity<>(trip, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(trip, HttpStatus.OK);
+        }
     }
 
     // User selects trip and we record it on ATrip
     @RequestMapping(value = "/select", method = RequestMethod.POST)
-    public String selectTrip(
+    public ResponseEntity<?> selectTrip(
         @RequestParam("tripid") int ATripID,
         @RequestParam("username") String username,
         @RequestParam("password") String password
     ) {
-        return repository.selectTrip(ATripID, username, password);
+        String result = repository.selectTrip(ATripID, username, password);
+        if(result == "") {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+
+        }
     }
 
     // Cancel trip based on ID, if you are a user
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)
-    public String cancelATrip(
+    public ResponseEntity<?> cancelATrip(
         @RequestParam("tripid") int ATripID,
         @RequestParam("username") String username,
         @RequestParam("password") String password
     ) {
-        return repository.cancelATrip(ATripID, username, password);
+        String result = repository.cancelATrip(ATripID, username, password);
+        if(result == "") {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+
+        }
     }
 
 
     @RequestMapping(value = "/status", method = RequestMethod.POST)
-    public String changeTripStatus(
+    public ResponseEntity<?> changeTripStatus(
         @RequestParam("tripid") Integer ATripID,
         @RequestParam("username") String username,
         @RequestParam("password") String password,
         @RequestParam("tripstatus") Integer status
     ) {
-        return repository.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
+        String result = repository.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
+        if(result == "") {
+            return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
     }
 
+    //Finds passenger on trip tripid
     @RequestMapping(value = "/passengers", method = RequestMethod.POST)
-    public List<String> passengerOnTrip(@RequestParam("tripid") Integer ATripID) {
-        return repository.findPassengerOnTrip(ATripID);
+    public ResponseEntity<?> passengerOnTrip(@RequestParam("tripid") Integer ATripID) {
+        List<String> list = repository.findPassengerOnTrip(ATripID);
+        if(list.isEmpty()) {
+            return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(list, HttpStatus.OK);
+        }
     }
 
+    //Finds driver on trip tripid
     @RequestMapping(value = "/driver", method = RequestMethod.POST)
-    public int driverOnTrip(@RequestParam("tripid") Integer ATripID) {
-        return repository.findDriverOnTrip(ATripID);
+    public ResponseEntity<?> driverOnTrip(@RequestParam("tripid") Integer ATripID) {
+        int driverid =  repository.findDriverOnTrip(ATripID);
+        if(driverid == -1) {
+            return new ResponseEntity<>(driverid, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(driverid, HttpStatus.OK);
+        }
     }
 
+    //Finds all trips associated with user
     @RequestMapping(value = "/usertrips", method = RequestMethod.POST)
-    public List<Integer> usertrip(@RequestParam("username") String username,
+    public ResponseEntity<?> usertrip(@RequestParam("username") String username,
                                   @RequestParam("password") String password) {
-        return repository.userTrip(username, password);
+        List<Integer> list = repository.userTrip(username, password);
+        if(list.isEmpty()) {
+            return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(list, HttpStatus.OK);
+        }
+
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.POST)
     @ResponseBody
-    public List<Integer> findTrip(
+    public ResponseEntity<?> findTrip(
         @RequestParam(value = "startloc", required = false) String startLocation,
         @RequestParam(value = "stop", required = false) String stop,
         @RequestParam(value = "startdate", required = false, defaultValue = "-1") Integer startdate,
@@ -133,6 +181,11 @@ public class ATripController {
         if (maxcost == null) {
             maxcost = -1.0;
         }
-        return repository.findtrip(startLocation, stop, startdate, enddate, vehtype, maxcost);
+        List<Integer> list = repository.findtrip(startLocation, stop, startdate, enddate, vehtype, maxcost);
+        if(list.isEmpty()) {
+            return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(list, HttpStatus.OK);
+        }
     }
 }

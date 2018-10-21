@@ -10,6 +10,8 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,6 @@ import java.util.stream.Collectors;
 
 import static junit.framework.TestCase.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -88,7 +89,7 @@ public class rideshareATripAdvancedTests {
             ) {
                 return "Passenger " + PASSENGER_USERNAME + " selected this trip.";
             } else {
-                return "User or trip does not exist.";
+                return "";
             }
         });
         when(repository.cancelATrip(anyInt(), anyString(), anyString()))
@@ -102,7 +103,7 @@ public class rideshareATripAdvancedTests {
             } else if (invocation.getArgument(0).equals(TRIP_ID) && invocation.getArgument(1).equals(DRIVER_USERNAME) && invocation.getArgument(2).equals(DRIVER_PASSWORD)) {
                 return "Trip " + TRIP_ID + "deleted";
             } else {
-                return "Unknown error.";
+                return "";
             }
         });
         when(repository.changeTripStatus(anyInt(), anyString(), anyString(), anyInt()))
@@ -114,7 +115,7 @@ public class rideshareATripAdvancedTests {
             ) {
                 return "Trip status changed successfully";
             } else {
-                return "Only a driver can change the status of a trip.";
+                return "";
             }
         });
         when(repository.findPassengerOnTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
@@ -257,204 +258,136 @@ public class rideshareATripAdvancedTests {
         });
     }
 
-    @Test
-    public void createTrip() {
-        // Given
-        ATrip myTrip = new ATrip(
-            TRIP_ID,
-            TRIP_STATUS,
-            COST_PER_STOP,
-            START_DATE,
-            END_DATE,
-            START_LOCATION,
-            STOPS,
-            VEHICLE_ID,
-            PASSENGER_ID,
-            DRIVER_ID
-        );
 
-        when(repository.createATrip(
-            anyInt(), 
-            anyString(), 
-            anyInt(), 
-            anyInt(), 
-            eq(START_LOCATION), 
-            anyString(), 
-            anyInt(), 
-            anyString(), 
-            anyString()
-        )).thenReturn(myTrip);
-        String answer = "Trip created starting at " + START_LOCATION + "!";
-
-        // When
-        String result = aTripController.createTrip(
-            TRIP_ID,
-            COST_PER_STOP,
-            START_DATE,
-            END_DATE,
-            START_LOCATION,
-            STOPS,
-            VEHICLE_ID,
-            DRIVER_USERNAME,
-            DRIVER_PASSWORD
-        );
-
-        // Then
-        verify(repository).createATrip(
-            anyInt(), 
-            anyString(), 
-            anyInt(), 
-            anyInt(), 
-            eq(START_LOCATION), 
-            anyString(), 
-            anyInt(), 
-            anyString(), 
-            anyString()
-        );
-        assertEquals(answer, result);
-    }
-
-    @Test
-    public void getTrip() {
-        ATrip result = aTripController.getTrip(TRIP_ID);
-        verify(repository).getTrip(anyInt());
-        assertEquals(result, aTrip);
-    }
-
-    @Test
-    public void getTripUnsuccessful() {
-        ATrip result = aTripController.getTrip(NON_EXISTING_TRIP_ID);
-        verify(repository).getTrip(anyInt());
-        assertNull(result);
-    }
 
     @Test
     public void getUnfilteredTripsList() {
-        List<ATrip> result = aTripController.getUnfilteredTripsList(ADMIN_USERNAME, ADMIN_PASSWORD);
-        assertEquals(result.get(0).getStartLocation(), START_LOCATION);
+        ResponseEntity<?> result = aTripController.getUnfilteredTripsList(ADMIN_USERNAME, ADMIN_PASSWORD);
+        assertEquals(result.getStatusCode(), HttpStatus.OK);
     }
 
     @Test
     public void getUnfilteredTripsListUnsuccessful() {
-        List<ATrip> result = aTripController.getUnfilteredTripsList(ADMIN_USERNAME, DRIVER_PASSWORD);
-        assertTrue(result.isEmpty());
+        ResponseEntity<?> result= aTripController.getUnfilteredTripsList(ADMIN_USERNAME, DRIVER_PASSWORD);
+        assertEquals(result.getStatusCode(), HttpStatus.FORBIDDEN);
     }
 
     @Test
     public void selectTrip() {
-        String result = aTripController.selectTrip(TRIP_ID, PASSENGER_USERNAME, PASSENGER_PASSWORD);
-        assertEquals("Passenger " + PASSENGER_USERNAME + " selected this trip.", result);
+        ResponseEntity<?> result = aTripController.selectTrip(TRIP_ID, PASSENGER_USERNAME, PASSENGER_PASSWORD);
+        assertEquals("Passenger " + PASSENGER_USERNAME + " selected this trip.", result.getBody());
     }
 
     @Test
     public void selectTripUnsuccessful() {
-        String result = aTripController.selectTrip(TRIP_ID, DRIVER_USERNAME, PASSENGER_PASSWORD);
-        assertEquals("User or trip does not exist.", result);
+        ResponseEntity<?> result = aTripController.selectTrip(TRIP_ID, DRIVER_USERNAME, PASSENGER_PASSWORD);
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
     }
 
     @Test
     public void cancelTripDriver() {
-        String result = aTripController.cancelATrip(TRIP_ID, DRIVER_USERNAME, DRIVER_PASSWORD);
-        assertEquals("Trip " + TRIP_ID + "deleted", result);
+        ResponseEntity<?> result = aTripController.cancelATrip(TRIP_ID, DRIVER_USERNAME, DRIVER_PASSWORD);
+        assertEquals("Trip " + TRIP_ID + "deleted", result.getBody());
     }
 
     @Test
     public void cancelTripPassenger() {
-        String result = aTripController.cancelATrip(TRIP_ID, PASSENGER_USERNAME, PASSENGER_PASSWORD);
-        assertEquals("Passenger " + PASSENGER_USERNAME + " removed from trip " + TRIP_ID + ".", result);
+        ResponseEntity<?> result = aTripController.cancelATrip(TRIP_ID, PASSENGER_USERNAME, PASSENGER_PASSWORD);
+        assertEquals("Passenger " + PASSENGER_USERNAME + " removed from trip " + TRIP_ID + ".", result.getBody());
     }
 
     @Test
     public void cancelTripUnsuccessful() {
-        String result = aTripController.cancelATrip(TRIP_ID, ADMIN_USERNAME, ADMIN_PASSWORD);
-        assertEquals("Unknown error.", result);
+        ResponseEntity<?> result = aTripController.cancelATrip(TRIP_ID, ADMIN_USERNAME, ADMIN_PASSWORD);
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
     }
 
     @Test
     public void changeTripStatus() {
-        String result = aTripController.changeTripStatus(
+        ResponseEntity<?> result = aTripController.changeTripStatus(
             TRIP_ID, 
             DRIVER_USERNAME, 
             DRIVER_PASSWORD, 
             TRIP_STATUS
         );
-        assertEquals("Trip status changed successfully", result);
+        assertEquals("Trip status changed successfully", result.getBody());
     }
 
     @Test
     public void changeTripStatusUnsuccessful() {
-        String result = aTripController.changeTripStatus(
+        ResponseEntity<?> result = aTripController.changeTripStatus(
             TRIP_ID, 
             PASSENGER_USERNAME, 
             PASSENGER_PASSWORD, 
             TRIP_STATUS
         );
-        assertEquals("Only a driver can change the status of a trip.", result);
+        assertEquals(HttpStatus.BAD_REQUEST, result.getStatusCode());
     }
 
     @Test
     public void passengerOnTrip() {
-        List<String> result = aTripController.passengerOnTrip(TRIP_ID);
-        int iter = 1;
+        ResponseEntity<?> result = aTripController.passengerOnTrip(TRIP_ID);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+
+        /*int iter = 1;
         for (String s : result) {
             assertEquals(String.valueOf(iter), result.get(iter - 1));
             iter++;
-        }
+        }*/
     }
 
     @Test
     public void passengerOnTripUnsuccessful() {
-        List<String> result = aTripController.passengerOnTrip(NON_EXISTING_TRIP_ID);
-        assertTrue(result.isEmpty());
+        ResponseEntity<?> result= aTripController.passengerOnTrip(NON_EXISTING_TRIP_ID);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
     @Test
     public void driverOnTrip() {
-        int result = aTripController.driverOnTrip(TRIP_ID);
-        assertEquals(DRIVER_ID, result);
+        ResponseEntity<?> result = aTripController.driverOnTrip(TRIP_ID);
+        assertEquals(DRIVER_ID, result.getBody());
     }
 
     @Test
     public void driverOnTripUnsuccessful() {
-        int result = aTripController.driverOnTrip(NON_EXISTING_TRIP_ID);
-        assertEquals(-1, result);
+        ResponseEntity<?> result = aTripController.driverOnTrip(NON_EXISTING_TRIP_ID);
+        assertEquals(-1, result.getBody());
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
     @Test
     public void userTripDriver() {
-        List<Integer> result = aTripController.usertrip(DRIVER_USERNAME, DRIVER_PASSWORD);
-        assertEquals((int) result.get(0), TRIP_ID);
-        assertEquals((int) result.get(1), TRIP_ID2);
+        ResponseEntity<?> result  = aTripController.usertrip(DRIVER_USERNAME, DRIVER_PASSWORD);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void userTripDriverFailure() {
-        List<Integer> result = aTripController.usertrip(DRIVER_USERNAME, DRIVER_PASSWORD);
-        result.get(2);
+        ResponseEntity<?> result = aTripController.usertrip(ADMIN_USERNAME, DRIVER_PASSWORD);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
     @Test
     public void userTripPassenger() {
-        List<Integer> result = aTripController.usertrip(PASSENGER_USERNAME, PASSENGER_PASSWORD);
-        assertEquals((int) result.get(0), TRIP_ID);
-        assertEquals((int) result.get(1), TRIP_ID2);
+        ResponseEntity<?> result = aTripController.usertrip(PASSENGER_USERNAME, PASSENGER_PASSWORD);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test
     public void userTripPassengerFailure() {
-        List<Integer> result = aTripController.usertrip(PASSENGER_USERNAME, PASSENGER_PASSWORD);
-        result.get(2);
+        ResponseEntity<?> result = aTripController.usertrip(ADMIN_USERNAME, PASSENGER_PASSWORD);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 
     @Test
     public void userTripFailure() {
-        List<Integer> result = aTripController.usertrip(ADMIN_USERNAME, ADMIN_PASSWORD);
-        assertTrue(result.isEmpty());
-    }
+        ResponseEntity<?> result = aTripController.usertrip(ADMIN_USERNAME, ADMIN_PASSWORD);
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());    }
 
     @Test
     public void findTrip() {
-        List<Integer> result = aTripController.findTrip(
+        ResponseEntity<?>  result = aTripController.findTrip(
             START_LOCATION, 
             TEST_STOP, 
             START_DATE, 
@@ -462,12 +395,12 @@ public class rideshareATripAdvancedTests {
             VEH_TYPE,
             MAX_COST
         );
-        assertEquals((int) result.get(0), (int) TRIP_ID);
+        assertEquals(HttpStatus.OK, result.getStatusCode());
     }
 
     @Test
     public void findTripUnsuccessful() {
-        List<Integer> result = aTripController.findTrip(
+        ResponseEntity<?> result = aTripController.findTrip(
             START_LOCATION, 
             TEST_FAKE_STOP, 
             START_DATE, 
@@ -475,6 +408,6 @@ public class rideshareATripAdvancedTests {
             VEH_TYPE,
             MAX_COST
         );
-        assertTrue(result.isEmpty());
+        assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());
     }
 }
