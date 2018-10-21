@@ -29,11 +29,11 @@ public class UserController {
         if (user != null) {
             JSONObject json = new JSONObject();
             json.put("data", role + " " + userName + " created!");
-            return new ResponseEntity<>(json, HttpStatus.OK);
+            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         } else {
             JSONObject json = new JSONObject();
             json.put("data", role + " " + userName + " could not be created.");
-            return new ResponseEntity<>(json, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(json.toString(), HttpStatus.CONFLICT);
         }
     }
 

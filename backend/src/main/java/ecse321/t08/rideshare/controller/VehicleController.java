@@ -28,11 +28,11 @@ public class VehicleController {
         if (result != null) {
             JSONObject json = new JSONObject();
             json.put("data",  model + " created!");
-            return new ResponseEntity<>(json, HttpStatus.OK);
+            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         } else {
             JSONObject json = new JSONObject();
             json.put("data","Vehicle could not be created. Please verify credentials.");
-            return new ResponseEntity<>(json, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -53,11 +53,11 @@ public class VehicleController {
         if(result == -1) {
             JSONObject json = new JSONObject();
             json.put("data", result);
-            return new ResponseEntity<>(json, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(json.toString(), HttpStatus.NOT_FOUND);
         } else {
             JSONObject json = new JSONObject();
             json.put("data", result);
-            return new ResponseEntity<>(json, HttpStatus.OK);
+            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         }
     }
 }

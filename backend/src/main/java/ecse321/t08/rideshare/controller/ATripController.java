@@ -44,11 +44,11 @@ public class ATripController {
         if (result == null) {
             JSONObject json = new JSONObject();
             json.put("data", "Unable to create trip.");
-            return new ResponseEntity<>(json, HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(json.toString(), HttpStatus.FORBIDDEN);
         } else {
             JSONObject json = new JSONObject();
             json.put("data", "Trip created starting at" + startLocation +"!");
-            return new ResponseEntity<>(json, HttpStatus.OK);
+            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         }
     }
 
@@ -87,11 +87,11 @@ public class ATripController {
         if(result == "") {
             JSONObject json = new JSONObject();
             json.put("data", result);
-            return new ResponseEntity<>(json, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST);
         } else {
             JSONObject json = new JSONObject();
             json.put("data", result);
-            return new ResponseEntity<>(json, HttpStatus.OK);
+            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
 
         }
     }
@@ -107,7 +107,7 @@ public class ATripController {
         if(result == "") {
             JSONObject json = new JSONObject();
             json.put("data", result);
-            return new ResponseEntity<>(json, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST);
         } else {
             JSONObject json = new JSONObject();
             json.put("data", result);
@@ -128,11 +128,11 @@ public class ATripController {
         if(result == "") {
             JSONObject json = new JSONObject();
             json.put("data", result);
-            return new ResponseEntity<>(json, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST);
         } else {
             JSONObject json = new JSONObject();
             json.put("data", result);
-            return new ResponseEntity<>(json, HttpStatus.OK);
+            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         }
     }
 
@@ -155,11 +155,11 @@ public class ATripController {
         if(driverid == -1) {
             JSONObject json = new JSONObject();
             json.put("data", driverid);
-            return new ResponseEntity<>(json, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(json.toString(), HttpStatus.NOT_FOUND);
         } else {
             JSONObject json = new JSONObject();
             json.put("data", driverid);
-            return new ResponseEntity<>(json, HttpStatus.OK);
+            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         }
     }
 
