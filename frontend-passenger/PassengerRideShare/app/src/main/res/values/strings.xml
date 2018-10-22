@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">PassengerRideShare</string>
+    <string name="action_settings">Settings</string>
+    <string name="login_username">Username</string>
+    <string name="login_password">Password</string>
+    <string name="button_login">Login</string>
+    <string name="button_register">Register</string>
+</resources>
