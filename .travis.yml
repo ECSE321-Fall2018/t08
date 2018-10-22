@@ -1,2 +1,16 @@
-language: java
-install: true
+matrix:
+  include:
+    - language: java
+      install: true  
+
+    - language: android
+      jdk: oraclejdk8
+      android:
+	components:
+          - build-tools-26.0.2
+          - android-26
+          - tools
+        before_script:
+          - cd frontend-passenger/PassengerRideShare/
+        script:
+          - ./gradlew build connectedCheck
