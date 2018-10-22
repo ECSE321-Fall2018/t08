@@ -1,5 +1,4 @@
-package t08.ecse321.passengerrideshare;
-
+package t08.ecse321.driverrideshare;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
