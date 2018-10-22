@@ -8,9 +8,20 @@ matrix:
       android:
         components:
           - tools
-          - android-25
-          - build-tools-25.0.3
+          - android-28
+          - build-tools-26.1.1
       before_script:
         - cd frontend-passenger/PassengerRideShare
+      script:
+        - ./gradlew build connectedCheck
+    - language: android
+      jdk: oraclejdk8
+      android:
+        components:
+          - tools
+          - android-28
+          - build-tools-26.1.1
+      before_script:
+        - cd frontend-passenger/DriverRideShare
       script:
         - ./gradlew build connectedCheck
