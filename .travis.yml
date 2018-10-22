@@ -6,7 +6,7 @@ matrix:
     - language: android
       jdk: oraclejdk8
       android:
-	components:
+      component:
           - build-tools-26.0.2
           - android-26
           - tools
