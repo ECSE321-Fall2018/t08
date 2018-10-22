@@ -3,15 +3,14 @@ matrix:
     - language: java
       script:
         - mvn clean verify
-
     - language: android
       jdk: oraclejdk8
       android:
-      component:
+        components:
           - tools
-          - android-26
-          - build-tools-26.0.2
-        before_script:
-          - cd frontend-passenger/PassengerRideShare/
-        script:
-          - ./gradlew build connectedCheck
+          - android-25
+          - build-tools-25.0.3
+      before_script:
+        - cd frontend-passenger/PassengerRideShare
+      script:
+        - ./gradlew build connectedCheck
