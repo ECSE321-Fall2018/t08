@@ -8,9 +8,9 @@ matrix:
       jdk: oraclejdk8
       android:
       component:
-          - build-tools-26.0.2
-          - android-26
           - tools
+          - android-26
+          - build-tools-26.0.2
         before_script:
           - cd frontend-passenger/PassengerRideShare/
         script:
