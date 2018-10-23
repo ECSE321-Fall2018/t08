@@ -24,8 +24,12 @@ public class Register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        refreshErrorMessage();
     }
 
+    public String getError() {
+        return error;
+    }
 
     private void refreshErrorMessage() {
         // set the error message
@@ -40,11 +44,14 @@ public class Register extends AppCompatActivity {
 
     }
 
-    //When click login button, will attempt to login
-    //If login successful, will switch to MyTripsActivity.class
+    //When click register button, will attempt to register
+    //If registration successful, will switch to MyTripsActivity.class
     public void registerButton(View view) {
-        //Creates new intent and gets username and password from text view
+        //Creates new intent and gets information from text view
         // final Intent intent = new Intent(this, MyTripsActivity.class);
+
+        error = "";
+
         final EditText username_text = (EditText) findViewById(R.id.reg_username);
         final EditText password_text = (EditText) findViewById(R.id.reg_password1);
         final EditText confirm_pass_text = (EditText) findViewById(R.id.reg_password2);
@@ -58,31 +65,48 @@ public class Register extends AppCompatActivity {
         final String fullname = fullname_text.getText().toString();
         final String email = email_text.getText().toString();
         error = "";
+        refreshErrorMessage();
 
-        if(!password.equals(pass_confirm)) {
-            error = "Please ensure passwords match.";
-            refreshErrorMessage();
+        if(checkRegister(username, password, pass_confirm, fullname, email) == false) {
             password_text.setText("");
             confirm_pass_text.setText("");
             return;
         }
+        if(registerPost(username, password, fullname, email)) {
+            username_text.setText("");
+            password_text.setText("");
+            email_text.setText("");
+            confirm_pass_text.setText("");
+            fullname_text.setText("");
+        } else {
+            password_text.setText("");
+            confirm_pass_text.setText("");
+        }
+    }
+
+    //Checks that all registration information correct
+    public boolean checkRegister(String username, String password, String pass_confirm, String fullname, String email) {
+        if(!password.equals(pass_confirm)) {
+            error = "Please ensure passwords match.";
+            refreshErrorMessage();
+            return false;
+        }
         if(password.length() < 8) {
             error = "Password must be at least 8 characters.";
             refreshErrorMessage();
-            password_text.setText("");
-            confirm_pass_text.setText("");
-            return;
+            return false;
         }
 
         if(username == null || username.equals("") || fullname == null || fullname.equals("") || email == null || email.equals("")) {
             error = "Please fill all fields.";
             refreshErrorMessage();
-            return;
+            return false;
         }
+        return true;
+    }
 
-
-
-        refreshErrorMessage();
+    //Http Post method for registration
+    public boolean registerPost(String username, String password, String fullname, String email) {
 
         Bundle extras = new Bundle();
         extras.putString("EXTRA_USERNAME", username);
@@ -90,7 +114,6 @@ public class Register extends AppCompatActivity {
         //intent.putExtras(extras);
 
         //Creates HTTP params to authorize user according to rest model
-        error = "";
         RequestParams params = new RequestParams();
         params.add("username", username);
         params.add("email", email);
@@ -105,11 +128,7 @@ public class Register extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 refreshErrorMessage();
-                username_text.setText("");
-                password_text.setText("");
-                email_text.setText("");
-                confirm_pass_text.setText("");
-                fullname_text.setText("");
+
 
                 error = "SUCCESS";
                 // error = "";
@@ -118,8 +137,6 @@ public class Register extends AppCompatActivity {
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
-                username_text.setText("");
-                password_text.setText("");
                 error = "Failure: ";
                 Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
                 try {
@@ -130,11 +147,18 @@ public class Register extends AppCompatActivity {
                 refreshErrorMessage();
             }
         });
+        if(error != "") {
+            return false;
+        } else {
+            return true;
+        }
 
 
     }
 
     public void cancelButton(View view) {
+        error = "";
+        refreshErrorMessage();
         Intent intent = new Intent(this, Login.class);
         startActivity(intent);
     }
