@@ -52,6 +52,50 @@ public class ATripController {
         }
     }
 
+    @RequestMapping(value = "/modify", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<?> modifyTrip(
+            @RequestParam("tripid") int tripid,
+            @RequestParam(value="cost",required=false) String cost,
+            @RequestParam(value="startDate",required=false) Integer startDate,
+            @RequestParam(value="endDate",required=false) Integer endDate,
+            @RequestParam(value="startLocation",required=false) String startLocation,
+            @RequestParam(value="stops",required=false) String stops,
+            @RequestParam("driveruser") String driverUsername,
+            @RequestParam("driverpass") String driverPassword
+    ) {
+        if (cost == null) {
+            cost = "";
+        }
+        if (startDate == null) {
+            startDate = -1;
+        }
+        if (endDate == null) {
+            endDate = -1;
+        }
+        if (startLocation == null) {
+            startLocation = "";
+        }
+        if (stops == null) {
+            stops = "";
+        }
+        ATrip result = repository.modifyTrip(
+                tripid,
+                cost,
+                startDate,
+                endDate,
+                startLocation,
+                stops,
+                driverUsername,
+                driverPassword
+        );
+        if (result != null) {
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(result, HttpStatus.FORBIDDEN);
+        }
+    }
+
     // Get list of trips if you are admin
     @RequestMapping(value = "/utripslist", method = RequestMethod.POST)
     public ResponseEntity<?> getUnfilteredTripsList(

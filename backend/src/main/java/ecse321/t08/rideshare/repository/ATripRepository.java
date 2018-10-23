@@ -61,6 +61,63 @@ public class ATripRepository {
         return aTrip;
     }
 
+    @Transactional
+    public ATrip modifyTrip(
+            int tripid,
+            String cost,
+            int startdate,
+            int enddate,
+            String startloc,
+            String stops,
+            String username,
+            String password
+    ) {
+
+        int driverid = userRep.authorizeUser(username, password, "Driver");
+        if (driverid == -1) {
+            return null;
+        }
+        ATrip trip = em.find(ATrip.class, tripid);
+
+        if(trip == null) {
+            return null;
+        }
+
+        if(trip.getDriverid() != driverid) {
+            return null;
+        }
+
+        if(!(cost.equals(""))) {
+            if (!(trip.getCostPerStop().equalsIgnoreCase(cost))) {
+                trip.setCostPerStop(cost);
+            }
+        }
+        if(!(startdate == -1)) {
+            if (!(trip.getStartdate() == startdate)) {
+                trip.setStartdate(startdate);
+            }
+        }
+        if(!(enddate == -1)) {
+            if (!(trip.getEnddate() == enddate)) {
+                trip.setEnddate(enddate);
+            }
+        }
+        if(!(startloc.equals(""))) {
+            if (!(trip.getStartLocation().equalsIgnoreCase(startloc))) {
+                trip.setStartLocation(startloc);
+            }
+        }
+        if(!(stops.equals(""))) {
+            if (!(trip.getStops().equalsIgnoreCase(stops))) {
+                trip.setStops(stops);
+            }
+        }
+
+        em.merge(trip);
+        return trip;
+    }
+
+
     // If you are an admin, you get to see all the trips
     @Transactional
     public List getUnfilteredTripsList(String username, String password) {

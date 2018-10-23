@@ -82,6 +82,21 @@ public class rideshareATripAdvancedTests {
                 return new ArrayList<ATrip>();
             }
         });
+        when(repository.modifyTrip(anyInt(), anyString(), anyInt(), anyInt(), anyString(), anyString(), anyString(), anyString()))
+                .thenAnswer((InvocationOnMock invocation) -> {
+                    if (invocation.getArgument(6).equals(DRIVER_USERNAME) && invocation.getArgument(7).equals(DRIVER_PASSWORD)) {
+                        ATrip trip = new ATrip();
+                        trip.setStartLocation(START_LOCATION);
+                        trip.setStops(STOPS);
+                        trip.setCostPerStop(COST_PER_STOP);
+                        trip.setDriverid(DRIVER_ID);
+                        trip.setStartdate(START_DATE);
+                        trip.setEnddate(END_DATE);
+                        return trip;
+                    } else {
+                        return null;
+                    }
+                });
         when(repository.selectTrip(anyInt(), anyString(), anyString()))
         .thenAnswer((InvocationOnMock invocation) -> {
             if (
@@ -274,6 +289,37 @@ public class rideshareATripAdvancedTests {
         assertEquals(result.getStatusCode(), HttpStatus.FORBIDDEN);
     }
 
+    @Test
+    public void testTripModify() {
+        ResponseEntity<?> response = aTripController.modifyTrip(
+                TRIP_ID,
+                COST_PER_STOP,
+                START_DATE,
+                END_DATE,
+                START_LOCATION,
+                STOPS,
+                DRIVER_USERNAME,
+                DRIVER_PASSWORD
+        );
+
+        assertEquals(response.getStatusCode(), HttpStatus.OK);
+    }
+
+    @Test
+    public void testTripModifyFailure() {
+        ResponseEntity<?> response = aTripController.modifyTrip(
+                TRIP_ID,
+                COST_PER_STOP,
+                START_DATE,
+                END_DATE,
+                START_LOCATION,
+                STOPS,
+                DRIVER_USERNAME,
+                ADMIN_PASSWORD
+        );
+
+        assertEquals(response.getStatusCode(), HttpStatus.FORBIDDEN);
+    }
     @Test
     public void selectTrip() {
         JSONObject json = new JSONObject();
