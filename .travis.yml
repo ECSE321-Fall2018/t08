@@ -34,11 +34,11 @@ matrix:
           - 'android-sdk-license-.+'
       before_script:
         - cd frontend-passenger/PassengerRideShare
-        - echo no | android create avd --force -n test -t "android-"$EMULATOR_API_LEVEL --abi $ANDROID_ABI --tag $ANDROID_TAG        - emulator -avd test -no-audio -no-window &
-        - emulator -avd test -no-skin -no-audio -no-window &
-        - android-wait-for-emulator
+        # - echo no | android create avd --force -n test -t "android-"$EMULATOR_API_LEVEL --abi $ANDROID_ABI --tag $ANDROID_TAG        - emulator -avd test -no-audio -no-window &
+        # - emulator -avd test -no-skin -no-audio -no-window &
+        # - android-wait-for-emulator
       script:
-        - ./gradlew clean check connectedCheck
+        - ./gradlew test check
     - language: android
       jdk: oraclejdk8
       sudo: false
@@ -62,8 +62,8 @@ matrix:
           - 'android-sdk-license-.+'
       before_script:
         - cd frontend-driver/DriverRideShare
-        - echo no | android create avd --force -n test -t "android-"$EMULATOR_API_LEVEL --abi $ANDROID_ABI --tag $ANDROID_TAG        - emulator -avd test -no-audio -no-window &
-        - emulator -avd test -no-skin -no-audio -no-window &
-        - android-wait-for-emulator
+        # - echo no | android create avd --force -n test -t "android-"$EMULATOR_API_LEVEL --abi $ANDROID_ABI --tag $ANDROID_TAG        - emulator -avd test -no-audio -no-window &
+        # - emulator -avd test -no-skin -no-audio -no-window &
+        # - android-wait-for-emulator
       script:
-        - ./gradlew clean check connectedCheck
+        - ./gradlew test check
