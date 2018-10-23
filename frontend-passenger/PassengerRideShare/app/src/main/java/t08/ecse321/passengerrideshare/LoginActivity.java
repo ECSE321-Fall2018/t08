@@ -97,11 +97,10 @@ public class LoginActivity extends AppCompatActivity {
         params.add("role", ROLE);
 
         //Sends HTTP post method, if successful (response != -1, switches to MyTripsActivity view), else, displays error
-        t08.ecse321.driverrideshare.HttpUtils.post("api/user/authorize", params, new JsonHttpResponseHandler() {
+        HttpUtils.post("api/user/authorize", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 refreshErrorMessage();
-                username_text.setText("");
                 password_text.setText("");
 
                 try {
@@ -110,7 +109,8 @@ public class LoginActivity extends AppCompatActivity {
                         error = "Username or password invalid.";
                     } else {
                         error = "SUCCESS"; //Temporary after replace with start Activity
-                      //  startActivity(intent);
+                        // error = "";
+                        //  startActivity(intent);
                     }
                 } catch(Exception e) {
                     error += e.getMessage();
@@ -119,7 +119,6 @@ public class LoginActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
-                username_text.setText("");
                 password_text.setText("");
                 error = "Failure: ";
                 Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
@@ -141,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
 
     //When click register button, switch to register activity
     public void registerButton(View view) {
-      //  Intent intent = new Intent(this, RegisterActivity.class);
-       // startActivity(intent);
+        Intent intent = new Intent(this, Register.class);
+        startActivity(intent);
     }
 }
