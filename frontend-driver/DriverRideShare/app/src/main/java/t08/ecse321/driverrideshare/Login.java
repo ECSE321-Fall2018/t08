@@ -100,7 +100,6 @@ public class Login extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 refreshErrorMessage();
-                username_text.setText("");
                 password_text.setText("");
 
                 try {
@@ -109,6 +108,7 @@ public class Login extends AppCompatActivity {
                         error = "Username or password invalid.";
                     } else {
                         error = "SUCCESS"; //Temporary after replace with start Activity
+                        // error = "";
                         //  startActivity(intent);
                     }
                 } catch(Exception e) {
@@ -118,7 +118,6 @@ public class Login extends AppCompatActivity {
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
-                username_text.setText("");
                 password_text.setText("");
                 error = "Failure: ";
                 Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
@@ -140,7 +139,7 @@ public class Login extends AppCompatActivity {
 
     //When click register button, switch to register activity
     public void registerButton(View view) {
-        //  Intent intent = new Intent(this, RegisterActivity.class);
-        // startActivity(intent);
+        Intent intent = new Intent(this, Register.class);
+        startActivity(intent);
     }
 }

@@ -38,6 +38,9 @@ public class UserRepository {
         if (existingUserName.size() != 0 || existingUserEmail.size() != 0 || password.length() < 8) {
             return null;
         }
+        if(password.length() < 8) {
+            return null;
+        }
 
 
         User user = new User();
