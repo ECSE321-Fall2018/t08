@@ -21,7 +21,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register"></activity>
+        <activity android:name=".Register" />
+        <activity
+            android:name=".tripListActivity"
+            android:label="@string/title_trip_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".tripDetailActivity"
+            android:label="@string/title_trip_detail"
+            android:parentActivityName=".tripListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="t08.ecse321.passengerrideshare.tripListActivity" />
+        </activity>
+        <activity
+            android:name=".myTripListActivity"
+            android:label="@string/title_mytrip_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".myTripDetailActivity"
+            android:label="@string/title_mytrip_detail"
+            android:parentActivityName=".myTripListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="t08.ecse321.passengerrideshare.myTripListActivity" />
+        </activity>
     </application>
 
 </manifest>
