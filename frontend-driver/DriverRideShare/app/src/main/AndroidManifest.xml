@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".Register" />
-        <activity android:name=".CreateATrip" />
+        <activity android:name=".MainPageDriver" />
         <activity android:name=".CreateTrip_Details"></activity>
     </application>
 
