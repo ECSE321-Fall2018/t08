@@ -21,7 +21,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register"></activity>
+        <activity android:name=".Register" />
+        <activity android:name=".CreateATrip" />
+        <activity android:name=".CreateTrip_Details"></activity>
     </application>
 
 </manifest>
