@@ -187,8 +187,10 @@ public class ATripController {
         if(list.isEmpty()) {
             return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
         } else {
-            JSONArray array = new JSONArray(list);
-            return new ResponseEntity<>(array.toString(), HttpStatus.OK);
+            String[] arr = list.stream().toArray(String[]::new);
+            JSONObject json = new JSONObject();
+            json.put("data", arr);
+            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         }
     }
 
@@ -213,10 +215,12 @@ public class ATripController {
                                   @RequestParam("password") String password) {
         List<Integer> list = repository.userTrip(username, password);
         if(list.isEmpty()) {
-            return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
-            JSONArray array = new JSONArray(list);
-            return new ResponseEntity<>(array.toString(), HttpStatus.OK);
+            int[] arr = list.stream().mapToInt(Integer::intValue).toArray();
+            JSONObject json = new JSONObject();
+            json.put("data", arr);
+            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         }
 
     }
@@ -253,8 +257,10 @@ public class ATripController {
         if(list.isEmpty()) {
             return new ResponseEntity<>(list, HttpStatus.NOT_FOUND);
         } else {
-            JSONArray array = new JSONArray(list);
-            return new ResponseEntity<>(array.toString(), HttpStatus.OK);
+            int[] arr = list.stream().mapToInt(Integer::intValue).toArray();
+            JSONObject json = new JSONObject();
+            json.put("data", arr);
+            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         }
     }
 }
