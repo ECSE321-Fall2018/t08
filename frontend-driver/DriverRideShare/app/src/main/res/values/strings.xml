@@ -23,5 +23,6 @@
     <string name="cost1">Cost1:</string>
     <string name="cost2">Cost2:</string>
     <string name="cost3">Cost3:</string>
-    <string name="totalcost">Total cost:</string>
+    <string name="createtripagain">New Trip</string>
+    <string name="cancel">Cancel</string>
 </resources>
