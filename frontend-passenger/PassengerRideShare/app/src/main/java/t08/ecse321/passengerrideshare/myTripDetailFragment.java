@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import t08.ecse321.passengerrideshare.dummy.DummyContent;
 
 /**
  * A fragment representing a single myTrip detail screen.
@@ -60,7 +59,7 @@ public class myTripDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.mytrip_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
+        // Show the trip content as text in a TextView.
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.mytrip_detail)).setText(mItem.details);
         }

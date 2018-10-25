@@ -15,7 +15,6 @@ import android.widget.TextView;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
