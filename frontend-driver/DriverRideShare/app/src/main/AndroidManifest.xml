@@ -22,8 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Register" />
-        <activity android:name=".MainPageDriver" />
-        <activity android:name=".CreateTrip_Details"></activity>
+        <activity android:name=".CreateTrip_Details" />
+        <activity android:name=".MainDriver"></activity>
     </application>
 
 </manifest>

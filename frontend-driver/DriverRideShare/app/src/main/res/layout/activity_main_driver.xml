@@ -4,14 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainPageDriver">
+    tools:context=".MainDriver">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/createyourtriphere"
         android:layout_width="187dp"
         android:layout_height="51dp"
         android:layout_marginTop="16dp"
         android:background="@color/design_default_color_primary"
+        android:onClick="openTripDetails"
         android:text="@string/Button_start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
+        app:layout_constraintTop_toBottomOf="@+id/createyourtriphere" />
 
     <Button
         android:id="@+id/button3"
