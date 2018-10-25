@@ -128,7 +128,7 @@ public class ATripController {
         @RequestParam("password") String password
     ) {
         String result = repository.selectTrip(ATripID, username, password);
-        if(result.equals("")) {
+        if(!result.equals("")) {
             JSONObject json = new JSONObject();
             json.put("data", result);
             return new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST);
@@ -148,7 +148,7 @@ public class ATripController {
         @RequestParam("password") String password
     ) {
         String result = repository.cancelATrip(ATripID, username, password);
-        if(result.equals("")) {
+        if(!result.equals("")) {
             JSONObject json = new JSONObject();
             json.put("data", result);
             return new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST);
@@ -168,7 +168,7 @@ public class ATripController {
         @RequestParam("tripstatus") Integer status
     ) {
         String result = repository.changeTripStatus(ATripID, username, password, status); // 0 for ongoing, 1 for planned, 2 for completed
-        if(result.equals("")) {
+        if(!result.equals("")) {
             JSONObject json = new JSONObject();
             json.put("data", result);
             return new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST);

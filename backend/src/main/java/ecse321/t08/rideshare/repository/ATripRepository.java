@@ -142,21 +142,21 @@ public class ATripRepository {
 
         // Make sure user and trip exist
         if (user.size() != 1 || trip == null) {
-            return "";
+            return "Trip does not exist.";
         }
         // password is correct
         if (!(user.get(0).getPassword().equals(password))) {
-            return "";
+            return "User password incorrect.";
         }
 
         if (!("Passenger".equalsIgnoreCase(user.get(0).getRole()))) {
-            return "";
+            return "User is not a passenger.";
         }
         if(trip.getPassengerid() != null && !(trip.getPassengerid().equals(""))) {
             List<String> passengerIds = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
             for (String id : passengerIds) {
                 if (id.equalsIgnoreCase(String.valueOf(user.get(0).getUserID()))) {
-                    return "";
+                    return "Passenger already selected this trip.";
                 }
             }
         }
@@ -168,7 +168,7 @@ public class ATripRepository {
         user.get(0).setTripnumber(user.get(0).getTripnumber() + 1);
         em.merge(user.get(0));
         em.merge(trip);
-        return ("Passenger " + username + " selected this trip.");
+        return ("");
 
     }
 
@@ -182,10 +182,10 @@ public class ATripRepository {
         // Let's make sure user and trip exist, and user password is correct.
 
         if (user.size() != 1 || trip == null) {
-            return "";
+            return "Trip does not exist.";
         }
         if (!(user.get(0).getPassword().equals(password))) {
-            return "";
+            return "User password incorrect.";
         }
         // If user is driver, delete entire trip
         if ("Driver".equalsIgnoreCase(user.get(0).getRole())) {
@@ -203,7 +203,7 @@ public class ATripRepository {
                 }
                 em.merge(user.get(0));
                 em.remove(trip);
-                return "Trip " + aTripID + " deleted";
+                return "";
             }
         }
         // Is user is passenger, just remove passenger ID
@@ -221,11 +221,11 @@ public class ATripRepository {
                 ids = newIds;
                 trip.setPassengerid(rideshareHelper.concatenator(ids, ";"));
                 em.merge(trip);
-                return "Passenger " + username + " removed from trip " + aTripID + ".";
+                return "";
             }
         }
 
-        return "";
+        return "Unknown error.";
     }
 
     @Transactional
@@ -236,22 +236,22 @@ public class ATripRepository {
         // Let's make sure user and trip exist, and user password is correct.
 
         if (user.size() != 1 || trip == null) {
-            return "";
+            return "Trip does not exist.";
         }
         if (!(user.get(0).getPassword().equals(password))) {
-            return "";
+            return "User password incorrect.";
         }
         // Check if user is driver
         if (!("Driver".equalsIgnoreCase(user.get(0).getRole()))) {
-            return "";
+            return "User is not a driver.";
         }
         if (trip.getDriverid() != user.get(0).getUserID()) {
-            return "";
+            return "Driver is not assigned to this trip.";
         }
 
         trip.setStatus(status);
         em.merge(trip);
-        return "Trip status changed successfully.";
+        return "";
     }
 
     @Transactional
