@@ -106,7 +106,7 @@ public class rideshareATripAdvancedTests {
             ) {
                 return "Passenger " + PASSENGER_USERNAME + " selected this trip.";
             } else {
-                return "";
+                return "Failure";
             }
         });
         when(repository.cancelATrip(anyInt(), anyString(), anyString()))
@@ -120,7 +120,7 @@ public class rideshareATripAdvancedTests {
             } else if (invocation.getArgument(0).equals(TRIP_ID) && invocation.getArgument(1).equals(DRIVER_USERNAME) && invocation.getArgument(2).equals(DRIVER_PASSWORD)) {
                 return "Trip " + TRIP_ID + "deleted";
             } else {
-                return "";
+                return "Failure";
             }
         });
         when(repository.changeTripStatus(anyInt(), anyString(), anyString(), anyInt()))
@@ -132,7 +132,7 @@ public class rideshareATripAdvancedTests {
             ) {
                 return "Trip status changed successfully";
             } else {
-                return "";
+                return "Failure";
             }
         });
         when(repository.findPassengerOnTrip(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
