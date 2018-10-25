@@ -57,6 +57,9 @@ public class RegisterVehicle extends AppCompatActivity{
         final EditText vehicle_colour_text = (EditText) findViewById(R.id.vehicle_colour);
         final EditText vehicle_nb_of_seats_text = (EditText) findViewById(R.id.vehicle_nb_of_seats);
 
+        final String driverUsername = ((EditText) findViewById(R.id.reg_username)).getText().toString();
+        final String driverPassword = ((EditText) findViewById(R.id.reg_username)).getText().toString();
+
         final String vehicleType = vehicle_type_text.getText().toString();
         final String vehicleModel = vehicle_model_text.getText().toString();
         final String vehicleColour = vehicle_colour_text.getText().toString();
@@ -82,7 +85,7 @@ public class RegisterVehicle extends AppCompatActivity{
             return;
         }
 
-        if(registerVehiclePost(vehicleType, vehicleModel, vehicleColour, vehicleNbOfSeats)) {
+        if(registerVehiclePost(driverUsername, driverPassword, vehicleNbOfSeats, vehicleColour, vehicleModel, vehicleType)) {
             vehicle_type_text.setText("");
             vehicle_model_text.setText("");
             vehicle_colour_text.setText("");
