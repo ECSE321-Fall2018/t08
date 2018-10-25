@@ -129,13 +129,20 @@ public class RegisterVehicle extends AppCompatActivity{
     }
 
     //Http Post method for registration
-    public boolean registerVehiclePost(String vehicleType, String vehicleModel, String vehicleColour, String vehicleNbOfSeats) {
+    public boolean registerVehiclePost(String driveruser, String driverpass, String nbOfSeats, String colour, String model, String vehicleType) {
+
+        Bundle extras = new Bundle();
+        extras.putString("EXTRA_DRIVERUSER", driveruser);
+        extras.putString("EXTRA_DRIVERPASS", driverpass);
+
         //Creates HTTP params to authorize user according to rest model
         RequestParams params = new RequestParams();
+        params.add("driveruser", driveruser);
+        params.add("driverpass", driverpass);
+        params.add("vehiclenumberofseats", nbOfSeats);
+        params.add("colour", colour);
+        params.add("model", model);
         params.add("vehicletype", vehicleType);
-        params.add("vehiclemodel", vehicleModel);
-        params.add("vehiclecolour", vehicleColour);
-        params.add("vehiclenumberofseats", vehicleNbOfSeats);
         params.add("role", ROLE);
 
         //Sends HTTP post method, if successful (response HTTP 200), switches to MyTripsActivity view), else, displays error
