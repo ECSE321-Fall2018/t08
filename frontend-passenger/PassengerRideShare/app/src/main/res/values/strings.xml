@@ -10,8 +10,9 @@
     <string name="strfull_name">Full Name</string>
     <string name="str_email">Email Address</string>
     <string name="strconfirm_password">Confirm Password</string>
-    <string name="title_trip_list">trips</string>
-    <string name="title_trip_detail">trip Detail</string>
-    <string name="title_mytrip_list">myTrips</string>
-    <string name="title_mytrip_detail">myTrip Detail</string>
+    <string name="title_trip_list">Trips</string>
+    <string name="title_trip_detail">Trip Detail</string>
+    <string name="title_mytrip_list">My Trips</string>
+    <string name="title_mytrip_detail">My Trip Detail</string>
+    <string name="cancel_trip">Cancel Trip</string>
 </resources>

@@ -41,14 +41,12 @@ public class Register extends AppCompatActivity {
         } else {
             tvError.setVisibility(View.VISIBLE);
         }
-
     }
 
     //When click register button, will attempt to register
-    //If registration successful, will switch to MyTripsActivity.class
+    //If registration successful, will switch to myTripListActivity.class
     public void registerButton(View view) {
-        //Creates new intent and gets information from text view
-        // final Intent intent = new Intent(this, MyTripsActivity.class);
+        //Gets information from text view
 
         error = "";
 
@@ -57,7 +55,6 @@ public class Register extends AppCompatActivity {
         final EditText confirm_pass_text = (EditText) findViewById(R.id.reg_password2);
         final EditText fullname_text = (EditText) findViewById(R.id.reg_fullname);
         final EditText email_text = (EditText) findViewById(R.id.reg_email);
-
 
         final String username = username_text.getText().toString();
         final String password = password_text.getText().toString();
@@ -108,10 +105,11 @@ public class Register extends AppCompatActivity {
     //Http Post method for registration
     public boolean registerPost(String username, String password, String fullname, String email) {
 
+        final Intent intent = new Intent(this, myTripListActivity.class);
         Bundle extras = new Bundle();
         extras.putString("EXTRA_USERNAME", username);
         extras.putString("EXTRA_PASSWORD", password);
-        //intent.putExtras(extras);
+        intent.putExtras(extras);
 
         //Creates HTTP params to authorize user according to rest model
         RequestParams params = new RequestParams();
@@ -121,19 +119,13 @@ public class Register extends AppCompatActivity {
         params.add("role", ROLE);
         params.add("password", password);
 
-
-
         //Sends HTTP post method, if successful (response HTTP 200), switches to MyTripsActivity view), else, displays error
         HttpUtils.post("api/user/create", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                refreshErrorMessage();
-
-
-                error = "SUCCESS";
-                // error = "";
-                //  startActivity(intent);
-                refreshErrorMessage();
+                error = "";
+                myTripContent.clear(); //clears myTrip everytime login to avoid double counting
+                startActivity(intent);
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
@@ -152,14 +144,11 @@ public class Register extends AppCompatActivity {
         } else {
             return true;
         }
-
-
     }
 
     public void cancelButton(View view) {
         error = "";
         refreshErrorMessage();
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+        finish();
     }
 }

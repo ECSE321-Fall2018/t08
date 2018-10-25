@@ -33,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         refreshErrorMessage();
-
     }
 
     private void refreshErrorMessage() {
@@ -46,9 +45,7 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             tvError.setVisibility(View.VISIBLE);
         }
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,14 +65,12 @@ public class LoginActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     //When click login button, will attempt to login
     //If login successful, will switch to MyTripsActivity.class
     public void loginButton(View view) {
-
         final EditText username_text = (EditText) findViewById(R.id.username_text);
         final EditText password_text = (EditText) findViewById(R.id.password_text);
         final String username = username_text.getText().toString();
@@ -102,7 +97,6 @@ public class LoginActivity extends AppCompatActivity {
         params.add("password", password);
         params.add("role", ROLE);
 
-
         //Sends HTTP post method, if successful (response != -1, switches to MyTripsActivity view), else, displays error
         HttpUtils.post("api/user/authorize", params, new JsonHttpResponseHandler() {
             @Override
@@ -112,8 +106,8 @@ public class LoginActivity extends AppCompatActivity {
                     if(result == -1) {
                         error = "Username or password invalid.";
                     } else {
-                        error = "SUCCESS"; //Temporary after replace with start Activity
-                         error = "";
+                        error = "";
+                        myTripContent.clear(); //clears myTrip everytime login to avoid double counting
                         startActivity(intent);
                     }
                 } catch(Exception e) {
