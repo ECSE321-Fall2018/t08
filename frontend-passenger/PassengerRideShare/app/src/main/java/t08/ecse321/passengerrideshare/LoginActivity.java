@@ -84,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
         refreshErrorMessage();
 
         //Creates new intent and gets username and password from text view
-        final Intent intent = new Intent(this, myTripListActivity.class);
+        final Intent intent = new Intent(this, MainMenu.class);
         Bundle extras = new Bundle();
         extras.putString("EXTRA_USERNAME", username);
         extras.putString("EXTRA_PASSWORD", password);
@@ -96,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
         params.add("password", password);
         params.add("role", ROLE);
 
-        //Sends HTTP post method, if successful (response != -1, switches to MyTripsActivity view), else, displays error
+        //Sends HTTP post method, if successful (response != -1, switches to MainMenu view), else, displays error
         HttpUtils.post("api/user/authorize", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -106,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
                         error = "Username or password invalid.";
                     } else {
                         error = "";
-                        myTripContent.clear(); //clears myTrip everytime login to avoid double counting
                         startActivity(intent);
                     }
                 } catch(Exception e) {

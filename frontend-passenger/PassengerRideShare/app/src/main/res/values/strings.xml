@@ -15,4 +15,8 @@
     <string name="title_mytrip_list">My Trips</string>
     <string name="title_mytrip_detail">My Trip Detail</string>
     <string name="cancel_trip">Cancel Trip</string>
+    <string name="my_trips">My Trips</string>
+    <string name="find_trip">Find Trip</string>
+    <string name="update_user">Update User</string>
+    <string name="sign_out">Sign Out</string>
 </resources>

@@ -44,7 +44,7 @@ public class Register extends AppCompatActivity {
     }
 
     //When click register button, will attempt to register
-    //If registration successful, will switch to myTripListActivity.class
+    //If registration successful, will switch to MainMenu.class
     public void registerButton(View view) {
         //Gets information from text view
 
@@ -105,7 +105,7 @@ public class Register extends AppCompatActivity {
     //Http Post method for registration
     public boolean registerPost(String username, String password, String fullname, String email) {
 
-        final Intent intent = new Intent(this, myTripListActivity.class);
+        final Intent intent = new Intent(this, MainMenu.class);
         Bundle extras = new Bundle();
         extras.putString("EXTRA_USERNAME", username);
         extras.putString("EXTRA_PASSWORD", password);
