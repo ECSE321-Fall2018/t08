@@ -75,8 +75,7 @@ public class LoginActivity extends AppCompatActivity {
     //When click login button, will attempt to login
     //If login successful, will switch to MyTripsActivity.class
     public void loginButton(View view) {
-        //Creates new intent and gets username and password from text view
-       // final Intent intent = new Intent(this, MyTripsActivity.class);
+
         final EditText username_text = (EditText) findViewById(R.id.username_text);
         final EditText password_text = (EditText) findViewById(R.id.password_text);
         final String username = username_text.getText().toString();
@@ -90,10 +89,12 @@ public class LoginActivity extends AppCompatActivity {
         error = "";
         refreshErrorMessage();
 
+        //Creates new intent and gets username and password from text view
+        final Intent intent = new Intent(this, myTripListActivity.class);
         Bundle extras = new Bundle();
         extras.putString("EXTRA_USERNAME", username);
         extras.putString("EXTRA_PASSWORD", password);
-        //intent.putExtras(extras);
+        intent.putExtras(extras);
 
         //Creates HTTP params to authorize user according to rest model
         RequestParams params = new RequestParams();
@@ -112,8 +113,8 @@ public class LoginActivity extends AppCompatActivity {
                         error = "Username or password invalid.";
                     } else {
                         error = "SUCCESS"; //Temporary after replace with start Activity
-                        // error = "";
-                        //  startActivity(intent);
+                         error = "";
+                        startActivity(intent);
                     }
                 } catch(Exception e) {
                     error += e.getMessage();
