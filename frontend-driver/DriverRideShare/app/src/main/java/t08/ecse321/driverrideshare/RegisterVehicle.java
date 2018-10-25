@@ -168,9 +168,7 @@ public class RegisterVehicle extends AppCompatActivity{
     public void cancelButton(View view) {
         error = "";
         refreshErrorMessage();
-        //no page to fall back to yet, temporary pieceholder
-        Intent intent = new Intent(this, Register.class);
-        startActivity(intent);
+        finish();
 
     }
 
