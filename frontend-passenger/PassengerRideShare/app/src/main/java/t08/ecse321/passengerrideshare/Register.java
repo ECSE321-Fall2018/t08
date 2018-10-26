@@ -48,8 +48,6 @@ public class Register extends AppCompatActivity {
     public void registerButton(View view) {
         //Gets information from text view
 
-        error = "";
-
         final EditText username_text = (EditText) findViewById(R.id.reg_username);
         final EditText password_text = (EditText) findViewById(R.id.reg_password1);
         final EditText confirm_pass_text = (EditText) findViewById(R.id.reg_password2);
@@ -119,7 +117,7 @@ public class Register extends AppCompatActivity {
         params.add("role", ROLE);
         params.add("password", password);
 
-        //Sends HTTP post method, if successful (response HTTP 200), switches to MyTripsActivity view), else, displays error
+        //Sends HTTP post method, if successful (response HTTP 200), switches to MainMenu view), else, displays error
         HttpUtils.post("api/user/create", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
