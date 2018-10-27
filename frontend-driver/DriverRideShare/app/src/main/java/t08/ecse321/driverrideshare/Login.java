@@ -75,44 +75,40 @@ public class Login extends AppCompatActivity {
     //If login successful, will switch to MyTripsActivity.class
     public void loginButton(View view) {
         //Creates new intent and gets username and password from text view
-        // final Intent intent = new Intent(this, MyTripsActivity.class);
+        final Intent intent = new Intent(this, MainDriver.class);
         final EditText username_text = (EditText) findViewById(R.id.username_text);
         final EditText password_text = (EditText) findViewById(R.id.password_text);
         final String username = username_text.getText().toString();
         final String password = password_text.getText().toString();
 
-        login(username, password);
-        password_text.setText("");
-    }
-
-    public boolean login(String username, String password) {
-        error = "";
         refreshErrorMessage();
 
         Bundle extras = new Bundle();
         extras.putString("EXTRA_USERNAME", username);
         extras.putString("EXTRA_PASSWORD", password);
-        //intent.putExtras(extras);
+        intent.putExtras(extras);
 
         //Creates HTTP params to authorize user according to rest model
+        error = "";
         RequestParams params = new RequestParams();
         params.add("username", username);
         params.add("password", password);
         params.add("role", ROLE);
 
-
         //Sends HTTP post method, if successful (response != -1, switches to MyTripsActivity view), else, displays error
-        HttpUtils.post("api/user/authorize", params, new JsonHttpResponseHandler() {
+        t08.ecse321.driverrideshare.HttpUtils.post("api/user/authorize", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                refreshErrorMessage();
+               //password_text.setText("");
+
                 try {
                     int result = response.getInt("data");
                     if(result == -1) {
                         error = "Username or password invalid.";
                     } else {
-                        error = "SUCCESS"; //Temporary after replace with start Activity
-                        // error = "";
-                        //  startActivity(intent);
+                        //error = "";
+                        startActivity(intent);
                     }
                 } catch(Exception e) {
                     error += e.getMessage();
@@ -121,6 +117,7 @@ public class Login extends AppCompatActivity {
             }
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
+                password_text.setText("");
                 error = "Failure: ";
                 Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
                 try {
@@ -135,18 +132,12 @@ public class Login extends AppCompatActivity {
                 refreshErrorMessage();
             }
         });
-        if(error != "") {
-            return false;
-        } else {
-            return true;
-        }
+
+
     }
 
     //When click register button, switch to register activity
     public void registerButton(View view) {
-        error = "";
-        refreshErrorMessage();
-        Intent intent = new Intent(this, Register.class);
-        startActivity(intent);
+
     }
 }
