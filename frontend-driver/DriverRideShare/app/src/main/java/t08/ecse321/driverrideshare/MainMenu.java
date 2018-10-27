@@ -48,13 +48,13 @@ public class MainMenu extends AppCompatActivity {
 
     //When click Create Trip button, goes to findTrip Activity
     public void createTrip(View view) {
-       /* final Intent intent = new Intent(this, myTripListActivity.class);
+        final Intent intent = new Intent(this, CreateTrip.class);
         Bundle extras = new Bundle();
         extras.putString("EXTRA_USERNAME", eusername);
         extras.putString("EXTRA_PASSWORD", epassword);
         intent.putExtras(extras);
 
-        startActivity(intent); */
+        startActivity(intent);
     }
 
     //When click Update User button, goes to UpdaterUser Activity

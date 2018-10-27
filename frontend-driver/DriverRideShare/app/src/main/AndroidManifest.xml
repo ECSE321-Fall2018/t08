@@ -24,6 +24,8 @@
         <activity android:name=".Register" />
         <activity android:name=".MainMenu" />
         <activity android:name=".RegisterVehicle" />
+        <activity android:name=".CreateTrip" />
+
         <activity
             android:name=".myTripListActivity"
             android:label="@string/title_mytrip_list"
