@@ -19,7 +19,7 @@ import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
-public class CreateTrip_Details extends AppCompatActivity {
+public class CreateTrip extends AppCompatActivity {
     private String error = null;
 
     @Override
@@ -41,7 +41,6 @@ public class CreateTrip_Details extends AppCompatActivity {
     }
 
     public void createATripButton(View view) {
-        final Intent intent = new Intent(this, MainDriver.class);
 
         final EditText cost1_text = (EditText) findViewById(R.id.cost1);
         final EditText cost2_text = (EditText) findViewById(R.id.cost2);
