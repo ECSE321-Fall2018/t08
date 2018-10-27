@@ -21,8 +21,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Register"></activity>
-        <activity android:name=".MainMenu"></activity>
+        <activity android:name=".Register" />
+        <activity android:name=".MainMenu" />
+        <activity
+            android:name=".myTripListActivity"
+            android:label="@string/title_mytrip_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".myTripDetailActivity"
+            android:label="@string/title_mytrip_detail"
+            android:parentActivityName=".myTripListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="t08.ecse321.driverrideshare.myTripListActivity" />
+        </activity>
     </application>
 
 </manifest>

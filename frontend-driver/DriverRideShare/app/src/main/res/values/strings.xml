@@ -25,4 +25,10 @@
     <string name="cost3">Cost3:</string>
     <string name="createtripagain">New Trip</string>
     <string name="cancel">Cancel</string>
+    <string name="create_trip">Create Trip</string>
+    <string name="my_trips">My Trips</string>
+    <string name="update_user">Update User</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="title_mytrip_list">Trips</string>
+    <string name="title_mytrip_detail">myTrip Detail</string>
 </resources>

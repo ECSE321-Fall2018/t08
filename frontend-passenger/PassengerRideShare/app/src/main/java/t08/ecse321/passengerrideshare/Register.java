@@ -122,7 +122,6 @@ public class Register extends AppCompatActivity {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 error = "";
-                myTripContent.clear(); //clears myTrip everytime login to avoid double counting
                 startActivity(intent);
             }
             @Override
