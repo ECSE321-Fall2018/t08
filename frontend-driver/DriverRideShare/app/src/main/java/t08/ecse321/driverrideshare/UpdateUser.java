@@ -162,6 +162,15 @@ public class UpdateUser extends AppCompatActivity {
         }
     }
 
+    public void createVehicle(View view) {
+        final Intent intent = new Intent(this, RegisterVehicle.class);
+        Bundle extras = new Bundle();
+        extras.putString("EXTRA_USERNAME", eusername);
+        extras.putString("EXTRA_PASSWORD", epassword);
+        intent.putExtras(extras);
+        startActivity(intent);
+    }
+
     public void cancelButton(View view) {
         error = "";
         refreshErrorMessage();
