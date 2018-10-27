@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 
@@ -35,12 +36,13 @@ public class myTripDetailFragment extends Fragment {
     public myTripDetailFragment() {
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
+            // Load the trip content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
             String id = getArguments().getString(ARG_ITEM_ID);
@@ -59,11 +61,25 @@ public class myTripDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.mytrip_detail, container, false);
 
-        // Show the trip content as text in a TextView.
         if (mItem != null) {
+            //Show the trip content as text in a TextView.
             ((TextView) rootView.findViewById(R.id.mytrip_detail)).setText(mItem.details);
-        }
 
+            //This sets the radio button for trip status to the current setting
+            int status = mItem.tripStatus;
+            switch (status) {
+                case 0:
+                    ((RadioButton) rootView.findViewById(R.id.rb_ongoing)).setChecked(true);
+                    break;
+                case 1:
+                    ((RadioButton) rootView.findViewById(R.id.rb_plan)).setChecked(true);
+                    break;
+                case 2:
+                    ((RadioButton) rootView.findViewById(R.id.rb_completed)).setChecked(true);
+                    break;
+
+            }
+        }
         return rootView;
     }
 }
