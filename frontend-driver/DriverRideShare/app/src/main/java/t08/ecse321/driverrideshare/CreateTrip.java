@@ -101,7 +101,7 @@ public class CreateTrip extends AppCompatActivity {
                 cost2_text.setText("");
                 cost3_text.setText("");
 
-                startActivity(intent);
+                finish();
                 refreshErrorMessage();
             }
 
@@ -131,8 +131,8 @@ public class CreateTrip extends AppCompatActivity {
     }
 
     public void cancelButton(View view) {
-
-        Intent intent = new Intent(this, MainDriver.class);
-        startActivity(intent);
+        error = "";
+        refreshErrorMessage();
+        finish();
     }
 }

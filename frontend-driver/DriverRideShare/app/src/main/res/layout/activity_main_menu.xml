@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainMenu">
+
+    <Button
+        android:id="@+id/signout"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="275dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/mybuttongray"
+        android:onClick="signOut"
+        android:text="@string/sign_out"
+        android:textColor="@android:color/background_light"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/UpdateUser"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="275dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/mybuttongray"
+        android:onClick="updateUser"
+        android:text="@string/update_user"
+        android:textColor="@android:color/background_light"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/signout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/FindTrip"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="275dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/mybuttongray"
+        android:onClick="createTrip"
+        android:text="@string/create_trip"
+        android:textColor="@android:color/background_light"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/UpdateUser"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/MyTrips"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="275dp"
+        android:layout_height="53dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/mybuttongray"
+        android:onClick="myTrips"
+        android:text="@string/my_trips"
+        android:textColor="@android:color/background_light"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/FindTrip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="404dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/FindTrip"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ridesharedriver" />
+
+</android.support.constraint.ConstraintLayout>

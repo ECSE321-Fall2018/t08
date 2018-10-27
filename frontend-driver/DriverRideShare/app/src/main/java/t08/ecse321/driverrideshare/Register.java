@@ -24,10 +24,12 @@ public class Register extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        error = "";
         refreshErrorMessage();
     }
 
+    public String getError() {
+        return error;
+    }
 
     private void refreshErrorMessage() {
         // set the error message
@@ -39,15 +41,12 @@ public class Register extends AppCompatActivity {
         } else {
             tvError.setVisibility(View.VISIBLE);
         }
-
     }
 
     //When click register button, will attempt to register
     //If registration successful, will switch to MainMenu.class
     public void registerButton(View view) {
         //Gets information from text view
-
-        error = "";
 
         final EditText username_text = (EditText) findViewById(R.id.reg_username);
         final EditText password_text = (EditText) findViewById(R.id.reg_password1);
@@ -118,7 +117,7 @@ public class Register extends AppCompatActivity {
         params.add("role", ROLE);
         params.add("password", password);
 
-        //Sends HTTP post method, if successful (response HTTP 200), switches to MyTripsActivity view), else, displays error
+        //Sends HTTP post method, if successful (response HTTP 200), switches to MainMenu view), else, displays error
         HttpUtils.post("api/user/create", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

@@ -1,4 +1,4 @@
-package t08.ecse321.passengerrideshare;
+package t08.ecse321.driverrideshare;
 
 import android.content.Context;
 import android.content.Intent;
@@ -99,9 +99,10 @@ public class myTripListActivity extends AppCompatActivity {
                         String startLoc = response.getString("startLocation");
                         String stops = response.getString("stops");
                         int status = response.getInt("status");
+                        String passengerid = response.getString("passengerid");
 
                         //creates new TripItem and adds it to map
-                        myTripContent.TripItem item = new myTripContent.TripItem(el, status, cost, startdate, enddate, startLoc, stops);
+                        myTripContent.TripItem item = new myTripContent.TripItem(el, status, cost, startdate, enddate, startLoc, stops, passengerid);
                         myTripContent.addItem(item);
 
                         View recyclerView = findViewById(R.id.mytrip_list);
@@ -167,7 +168,7 @@ public class myTripListActivity extends AppCompatActivity {
                 try {
                     error +=  "Error retrieving data. Status " + String.valueOf(statusCode); //This case should not happen, may occur if backend server does not create json correctly
                 }
-                 catch (Exception e) {
+                catch (Exception e) {
                     error += e.getMessage();
                 }
                 refreshErrorMessage();
