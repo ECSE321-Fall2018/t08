@@ -3,93 +3,100 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    tools:context=".RegisterVehicle"
+    tools:layout_editor_absoluteY="81dp">
 
     <EditText
         android:id="@+id/vehicle_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="30dp"
         android:ems="10"
-        android:hint="Vehicle Type"
+        android:hint="@string/vehicle_type"
         android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/vehicle_model"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread_inside" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/vehicle_model"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="30dp"
         android:ems="10"
-        android:hint="Model"
+        android:hint="@string/model"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/vehicle_colour"
+        app:layout_constraintEnd_toEndOf="@+id/vehicle_type"
         app:layout_constraintTop_toBottomOf="@+id/vehicle_type" />
 
     <EditText
         android:id="@+id/vehicle_colour"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="31dp"
         android:ems="10"
-        android:hint="Colour"
+        android:hint="@string/colour"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/vehicle_nb_of_seats"
+        app:layout_constraintStart_toStartOf="@+id/vehicle_model"
         app:layout_constraintTop_toBottomOf="@+id/vehicle_model" />
 
     <EditText
         android:id="@+id/vehicle_nb_of_seats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginBottom="20dp"
         android:ems="10"
-        android:hint="Number of seats"
+        android:hint="@string/number_of_seats"
         android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/error"
+        app:layout_constraintStart_toStartOf="@+id/vehicle_colour"
         app:layout_constraintTop_toBottomOf="@+id/vehicle_colour" />
 
     <Button
         android:id="@+id/register_vehicle"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:background="@color/colorAccent"
-        android:text="Register Vehicle"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/mybutton"
+        android:onClick="registerVehicleButton"
+        android:text="@string/create_vehicle"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toTopOf="@+id/cancel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vehicle_nb_of_seats"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/error" />
 
     <Button
         android:id="@+id/cancel"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@color/colorAccent"
-        android:text="Cancel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginBottom="88dp"
+        android:background="@drawable/mybutton"
+        android:onClick="cancelCreateVehicle"
+        android:text="@string/cancel"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/register_vehicle"
+        app:layout_constraintStart_toStartOf="@+id/register_vehicle"
         app:layout_constraintTop_toBottomOf="@+id/register_vehicle" />
 
     <TextView
         android:id="@+id/error"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="41dp"
+        android:text=""
+        android:textColor="@color/colorAccent"
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/register_vehicle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vehicle_nb_of_seats" />
 

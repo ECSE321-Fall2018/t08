@@ -39,4 +39,9 @@
     <string name="completed_trip">Completed</string>
     <string name="ongoing_trip">Ongoing</string>
     <string name="planned_trip">Planned</string>
+    <string name="create_vehicle">Create Vehicle</string>
+    <string name="colour">Colour</string>
+    <string name="model">Model</string>
+    <string name="vehicle_type">Vehicle Type</string>
+    <string name="number_of_seats">Number of Seats</string>
 </resources>
