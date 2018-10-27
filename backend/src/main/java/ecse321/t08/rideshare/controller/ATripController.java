@@ -22,8 +22,8 @@ public class ATripController {
     public ResponseEntity<?> createTrip(
         @RequestParam("status") Integer status,
         @RequestParam("cost") String cost,
-        @RequestParam("startDate") Integer startDate,
-        @RequestParam("endDate") Integer endDate,
+        @RequestParam("startDate") Long startDate,
+        @RequestParam("endDate") Long endDate,
         @RequestParam("startLocation") String startLocation,
         @RequestParam("stops") String stops,
         @RequestParam("vehicleid") Integer vehicleId,
@@ -57,8 +57,8 @@ public class ATripController {
     public ResponseEntity<?> modifyTrip(
             @RequestParam("tripid") int tripid,
             @RequestParam(value="cost",required=false) String cost,
-            @RequestParam(value="startDate",required=false) Integer startDate,
-            @RequestParam(value="endDate",required=false) Integer endDate,
+            @RequestParam(value="startDate",required=false) Long startDate,
+            @RequestParam(value="endDate",required=false) Long endDate,
             @RequestParam(value="startLocation",required=false) String startLocation,
             @RequestParam(value="stops",required=false) String stops,
             @RequestParam("driveruser") String driverUsername,
@@ -68,10 +68,10 @@ public class ATripController {
             cost = "";
         }
         if (startDate == null) {
-            startDate = -1;
+            startDate = -1L;
         }
         if (endDate == null) {
-            endDate = -1;
+            endDate = -1L;
         }
         if (startLocation == null) {
             startLocation = "";
@@ -229,8 +229,8 @@ public class ATripController {
     public ResponseEntity<?> findTrip(
         @RequestParam(value = "startloc", required = false) String startLocation,
         @RequestParam(value = "stop", required = false) String stop,
-        @RequestParam(value = "startdate", required = false, defaultValue = "-1") Integer startdate,
-        @RequestParam(value = "enddate", required = false, defaultValue = "-1") Integer enddate,
+        @RequestParam(value = "startdate", required = false, defaultValue = "-1") Long startdate,
+        @RequestParam(value = "enddate", required = false, defaultValue = "-1") Long enddate,
         @RequestParam(value = "vehtype", required = false) String vehtype,
         @RequestParam(value = "maxcost", required = false, defaultValue = "-1.0") Double maxcost
     ) {
@@ -241,10 +241,10 @@ public class ATripController {
             stop = "";
         }
         if (startdate == null) {
-            startdate = -1;
+            startdate = -1L;
         }
         if (enddate == null) {
-            enddate = -1;
+            enddate = -1L;
         }
         if (vehtype == null) {
             vehtype = "";
