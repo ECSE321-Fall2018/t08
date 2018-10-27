@@ -41,8 +41,8 @@ public class myTripContent {
 
         public final int tripStatus; // 0 for ongoing, 1 for planned, 2 for completed
         public final String costPerStop; // Contains all costs per stop, in order, separated by delimiter ';'
-        public final int startdate; // Implemented as Unix Time Stamp
-        public final int enddate;
+        public final long startdate; // Implemented as Unix Time Stamp
+        public final long enddate;
         public final String startLocation;
         public final String stops; // Contains all stops, separated by delimiter ';'
 
@@ -50,7 +50,7 @@ public class myTripContent {
         public final String details;
         public final String passengerid;
 
-        public TripItem(int tripid, int tripStatus, String costPerStop, int startdate, int enddate, String startLocation, String stops, String passengerid) {
+        public TripItem(int tripid, int tripStatus, String costPerStop, long startdate, long enddate, String startLocation, String stops, String passengerid) {
             this.tripid = String.valueOf(tripid);
             this.tripStatus = tripStatus;
             this.costPerStop = costPerStop;
@@ -63,7 +63,7 @@ public class myTripContent {
             this.details = createDetails(tripid, tripStatus, costPerStop, startdate, enddate, startLocation, stops, passengerid); //This will be displayed in the content
         }
 
-        public String createDetails(int tripid, int tripStatus, String costPerStop, int startdate, int enddate, String startLocation, String stops, String passengerid) {
+        public String createDetails(int tripid, int tripStatus, String costPerStop, long startdate, long enddate, String startLocation, String stops, String passengerid) {
             String tripStatusStr;
             switch(tripStatus) {
                 case 0:
@@ -78,13 +78,13 @@ public class myTripContent {
                 default:
                     tripStatusStr = "Unknown";
             }
-            java.util.Date startDate=new java.util.Date((long)startdate*1000);
-            java.util.Date endDate=new java.util.Date((long)enddate*1000);
+            java.util.Date startDate=new java.util.Date(startdate*1000);
+            java.util.Date endDate=new java.util.Date(enddate*1000);
             List<String> stopList = ConcatToken.tokenizer(stops, ";");
             List<String> costList = ConcatToken.tokenizer(costPerStop, ";");
             List<String> passengeridlist = ConcatToken.tokenizer(passengerid, ";");
 
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
             String text = "";
             text = text + "Trip ID: " + String.valueOf(tripid) +"\n";

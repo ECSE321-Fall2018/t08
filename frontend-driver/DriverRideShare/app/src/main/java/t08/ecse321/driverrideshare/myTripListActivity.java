@@ -94,8 +94,8 @@ public class myTripListActivity extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     try {
                         String cost = response.getString("costPerStop");
-                        int startdate = response.getInt("startdate");
-                        int enddate = response.getInt("enddate");
+                        long startdate = response.getInt("startdate");
+                        long enddate = response.getInt("enddate");
                         String startLoc = response.getString("startLocation");
                         String stops = response.getString("stops");
                         int status = response.getInt("status");

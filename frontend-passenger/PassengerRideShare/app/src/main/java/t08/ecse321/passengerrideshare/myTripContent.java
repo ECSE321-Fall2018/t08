@@ -41,15 +41,15 @@ public class myTripContent {
 
         public final int tripStatus; // 0 for ongoing, 1 for planned, 2 for completed
         public final String costPerStop; // Contains all costs per stop, in order, separated by delimiter ';'
-        public final int startdate; // Implemented as Unix Time Stamp
-        public final int enddate;
+        public final long startdate; // Implemented as Unix Time Stamp
+        public final long enddate;
         public final String startLocation;
         public final String stops; // Contains all stops, separated by delimiter ';'
 
         public final String content; //WHAT WILL BE DISPLAYED ON THE MENU, CAN LATER ADD OTHER STRINGS
         public final String details;
 
-        public TripItem(int tripid, int tripStatus, String costPerStop, int startdate, int enddate, String startLocation, String stops) {
+        public TripItem(int tripid, int tripStatus, String costPerStop, long startdate, long enddate, String startLocation, String stops) {
             this.tripid = String.valueOf(tripid);
             this.tripStatus = tripStatus;
             this.costPerStop = costPerStop;
@@ -61,7 +61,7 @@ public class myTripContent {
             this.details = createDetails(tripid, tripStatus, costPerStop, startdate, enddate, startLocation, stops); //This will be displayed in the content
         }
 
-        public String createDetails(int tripid, int tripStatus, String costPerStop, int startdate, int enddate, String startLocation, String stops) {
+        public String createDetails(int tripid, int tripStatus, String costPerStop, long startdate, long enddate, String startLocation, String stops) {
             String tripStatusStr;
             switch(tripStatus) {
                 case 0:
@@ -81,7 +81,7 @@ public class myTripContent {
             List<String> stopList = ConcatToken.tokenizer(stops, ";");
             List<String> costList = ConcatToken.tokenizer(costPerStop, ";");
 
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy hh:mm");
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
 
             String text = "";
             text = text + "Trip ID: " + String.valueOf(tripid) +"\n";
