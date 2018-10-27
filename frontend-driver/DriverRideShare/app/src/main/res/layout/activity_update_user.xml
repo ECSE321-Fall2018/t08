@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UpdateUser"
+    tools:layout_editor_absoluteY="81dp">
+
+    <EditText
+        android:id="@+id/up_newpass2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="41dp"
+        android:ems="10"
+        android:hint="@string/confirm_new_password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/error"
+        app:layout_constraintStart_toStartOf="@+id/up_newpass1"
+        app:layout_constraintTop_toBottomOf="@+id/up_newpass1" />
+
+    <EditText
+        android:id="@+id/up_newpass1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
+        android:ems="10"
+        android:hint="@string/new_password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/up_newpass2"
+        app:layout_constraintStart_toStartOf="@+id/up_curpass"
+        app:layout_constraintTop_toBottomOf="@+id/up_curpass" />
+
+    <EditText
+        android:id="@+id/up_curpass"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
+        android:ems="10"
+        android:hint="@string/current_password"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/up_newpass1"
+        app:layout_constraintStart_toStartOf="@+id/up_fullname"
+        app:layout_constraintTop_toBottomOf="@+id/up_fullname" />
+
+    <EditText
+        android:id="@+id/up_fullname"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
+        android:ems="10"
+        android:hint="@string/new_full_name"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/up_curpass"
+        app:layout_constraintStart_toStartOf="@+id/up_email"
+        app:layout_constraintTop_toBottomOf="@+id/up_email" />
+
+    <EditText
+        android:id="@+id/up_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="46dp"
+        android:layout_marginBottom="24dp"
+        android:ems="10"
+        android:hint="@string/new_email_address"
+        android:inputType="textEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/up_fullname"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_register"
+        android:layout_width="111dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="23dp"
+        android:background="@drawable/mybutton"
+        android:onClick="updateButton"
+        android:text="@string/update_user"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toTopOf="@+id/button_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/error" />
+
+    <Button
+        android:id="@+id/button_cancel"
+        android:layout_width="111dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="33dp"
+        android:background="@drawable/mybutton"
+        android:onClick="cancelButton"
+        android:text="@string/cancelStr"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_register" />
+
+    <TextView
+        android:id="@+id/error"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="41dp"
+        android:text=""
+        android:textColor="@color/colorAccent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/button_register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/up_newpass2" />
+
+</android.support.constraint.ConstraintLayout>

@@ -59,14 +59,14 @@ public class MainMenu extends AppCompatActivity {
 
     //When click Update User button, goes to UpdaterUser Activity
     public void updateUser(View view) {
-       /* final Intent intent = new Intent(this, UpdateUser.class);
+        final Intent intent = new Intent(this, UpdateUser.class);
         Bundle extras = new Bundle();
         extras.putString("EXTRA_USERNAME", eusername);
         extras.putString("EXTRA_PASSWORD", epassword);
         intent.putExtras(extras);
 
         startActivityForResult(intent, 1);
-        */
+
     }
 
     //When click sign out, finishes activity
