@@ -31,7 +31,7 @@ public class VehicleController {
             return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         } else {
             JSONObject json = new JSONObject();
-            json.put("data","Vehicle could not be created. Please verify credentials.");
+            json.put("data","Vehicle could not be created. Driver may already have vehicle.");
             return new ResponseEntity<>(json.toString(), HttpStatus.BAD_REQUEST);
         }
     }

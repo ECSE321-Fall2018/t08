@@ -33,6 +33,14 @@ public class VehicleRepository {
             return null;
         }
 
+        List<Vehicle> vehList = em.createNamedQuery("Vehicle.findAll").getResultList();
+        vehList = vehList.stream().filter(u -> u.getDriverId() == driverId).collect(Collectors.toList());
+        if(vehList.size() != 0) {
+            return null;
+        }
+
+
+
         Vehicle aVehicle = new Vehicle();
         aVehicle.setDriverId(driverId);
         aVehicle.setNbOfSeats(nbOfSeats);
