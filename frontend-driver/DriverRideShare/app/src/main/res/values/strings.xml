@@ -36,4 +36,7 @@
     <string name="current_password">Current Password</string>
     <string name="new_full_name">New Full Name</string>
     <string name="new_email_address">New Email Address</string>
+    <string name="completed_trip">Completed</string>
+    <string name="ongoing_trip">Ongoing</string>
+    <string name="planned_trip">Planned</string>
 </resources>

@@ -9,6 +9,8 @@ import android.view.View;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.ActionBar;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -85,7 +87,7 @@ public class myTripDetailActivity extends AppCompatActivity {
         myTripDetailFragment fragment = new myTripDetailFragment();
         fragment.setArguments(arguments);
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.mytrip_detail_container, fragment)
+                .replace(R.id.mytrip_detail_container, fragment)
                 .commit();
     }
 
@@ -111,6 +113,7 @@ public class myTripDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     public void cancelTrip(String username, String password, String tripid) {
         RequestParams params = new RequestParams();
         params.add("tripid", tripid);
@@ -124,6 +127,71 @@ public class myTripDetailActivity extends AppCompatActivity {
                 try {
                     error = "";
                     finish();
+
+                } catch(Exception e) {
+                    error += e.getMessage();
+                }
+                refreshErrorMessage();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
+                error = "Failure: ";
+                Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
+                try {
+                    error = json.getString("data");
+                } catch (JSONException e1) {
+                    error += e1.getMessage() + tripid;
+                }
+                refreshErrorMessage();
+            }
+        });
+    }
+
+    //This is called when a radio button is clicked, it changes the status of the trip
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.rb_plan:
+                if (checked)
+                    postStatus(1, eusername, epassword, tripid);
+                    break;
+            case R.id.rb_ongoing:
+                if (checked)
+                    postStatus(0, eusername, epassword, tripid);
+                    break;
+            case R.id.rb_completed:
+                if (checked)
+                    postStatus(2, eusername, epassword, tripid);
+                    break;
+        }
+    }
+
+    //Method to change the status of the trip
+    public void postStatus(int status, String username, String password, String tripid) {
+        RequestParams params = new RequestParams();
+        params.add("tripstatus", String.valueOf(status));
+        params.add("tripid", tripid);
+        params.add("username", username);
+        params.add("password", password);
+
+        //If change trip status successful, want to temporarily update TripItem in myTripContent
+        //After returning to main page, it will do a true reload and get info from the server
+        HttpUtils.post("api/trip/status", params, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                try {
+                    error = "";
+
+                    //Resets Trip Item with new status
+                    myTripContent.TripItem tempItem = myTripContent.ITEM_MAP.remove(tripid);
+                    myTripContent.TripItem newItem = new myTripContent.TripItem(Integer.valueOf(tripid), status, tempItem.costPerStop, tempItem.startdate, tempItem.enddate, tempItem.startLocation, tempItem.stops, tempItem.passengerid);
+                    myTripContent.ITEM_MAP.put(tripid, newItem);
+
+                    //Refreshes details
+                    setDetails();
 
                 } catch(Exception e) {
                     error += e.getMessage();
