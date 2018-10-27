@@ -10,4 +10,19 @@
     <string name="strfull_name">Full Name</string>
     <string name="str_email">Email Address</string>
     <string name="strconfirm_password">Confirm Password</string>
+    <string name="Button_start">Create your trip here</string>
+    <string name="createvehicle">Create vehicle here</string>
+    <string name="cancletrip">Cancle trip</string>
+    <string name="startlocation">Start Location:</string>
+    <string name="startdate">Start time:</string>
+    <string name="enddate">Finished at:</string>
+    <string name="yourtripdetails">Your trip details</string>
+    <string name="stop1">Stop1:</string>
+    <string name="stop2">Stop2:</string>
+    <string name="stop3">Stop3:</string>
+    <string name="cost1">Cost1:</string>
+    <string name="cost2">Cost2:</string>
+    <string name="cost3">Cost3:</string>
+    <string name="createtripagain">New Trip</string>
+    <string name="cancel">Cancel</string>
 </resources>

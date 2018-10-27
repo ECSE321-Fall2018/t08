@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
@@ -75,7 +74,6 @@ public class Login extends AppCompatActivity {
     //If login successful, will switch to MyTripsActivity.class
     public void loginButton(View view) {
         //Creates new intent and gets username and password from text view
-        // final Intent intent = new Intent(this, MyTripsActivity.class);
         final EditText username_text = (EditText) findViewById(R.id.username_text);
         final EditText password_text = (EditText) findViewById(R.id.password_text);
         final String username = username_text.getText().toString();
@@ -89,10 +87,12 @@ public class Login extends AppCompatActivity {
         error = "";
         refreshErrorMessage();
 
+        //Creates new intent and gets username and password from text view
+        final Intent intent = new Intent(this, MainMenu.class);
         Bundle extras = new Bundle();
         extras.putString("EXTRA_USERNAME", username);
         extras.putString("EXTRA_PASSWORD", password);
-        //intent.putExtras(extras);
+        intent.putExtras(extras);
 
         //Creates HTTP params to authorize user according to rest model
         RequestParams params = new RequestParams();
@@ -100,8 +100,7 @@ public class Login extends AppCompatActivity {
         params.add("password", password);
         params.add("role", ROLE);
 
-
-        //Sends HTTP post method, if successful (response != -1, switches to MyTripsActivity view), else, displays error
+        //Sends HTTP post method, if successful (response != -1, switches to MainMenu view), else, displays error
         HttpUtils.post("api/user/authorize", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -110,9 +109,8 @@ public class Login extends AppCompatActivity {
                     if(result == -1) {
                         error = "Username or password invalid.";
                     } else {
-                        error = "SUCCESS"; //Temporary after replace with start Activity
-                        // error = "";
-                        //  startActivity(intent);
+                        error = "";
+                        startActivity(intent);
                     }
                 } catch(Exception e) {
                     error += e.getMessage();
