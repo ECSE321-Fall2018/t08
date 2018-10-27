@@ -38,8 +38,8 @@ public class rideshareATripAdvancedTests {
     private static final int TRIP_STATUS = 1;
     private static final Double MAX_COST = 5.00;
     private static final String COST_PER_STOP = "5.00;8.00";
-    private static final int START_DATE = 934238908;
-    private static final int END_DATE = 934238918;
+    private static final long START_DATE = 934238908;
+    private static final long END_DATE = 934238918;
     private static final String START_LOCATION = "Montreal";
     private static final String STOPS = "Ottawa;Toronto";
     private static final String TEST_STOP = "Ottawa";
@@ -82,7 +82,7 @@ public class rideshareATripAdvancedTests {
                 return new ArrayList<ATrip>();
             }
         });
-        when(repository.modifyTrip(anyInt(), anyString(), anyInt(), anyInt(), anyString(), anyString(), anyString(), anyString()))
+        when(repository.modifyTrip(anyInt(), anyString(), anyLong(), anyLong(), anyString(), anyString(), anyString(), anyString()))
                 .thenAnswer((InvocationOnMock invocation) -> {
                     if (invocation.getArgument(6).equals(DRIVER_USERNAME) && invocation.getArgument(7).equals(DRIVER_PASSWORD)) {
                         ATrip trip = new ATrip();
@@ -210,7 +210,7 @@ public class rideshareATripAdvancedTests {
             return new ArrayList<Integer>();
         });
         when(repository.findtrip(
-            anyString(), anyString(), anyInt(), anyInt(), anyString(), anyDouble()
+            anyString(), anyString(), anyLong(), anyLong(), anyString(), anyDouble()
         ))
         .thenAnswer((InvocationOnMock invocation) -> {
             ATrip trip1 = new ATrip();

@@ -29,8 +29,8 @@ public class ATripRepository {
     public ATrip createATrip(
         int status,
         String cost,
-        int startDate,
-        int endDate,
+        long startDate,
+        long endDate,
         String startLocation,
         String stops,
         int vehicleId,
@@ -65,8 +65,8 @@ public class ATripRepository {
     public ATrip modifyTrip(
             int tripid,
             String cost,
-            int startdate,
-            int enddate,
+            long startdate,
+            long enddate,
             String startloc,
             String stops,
             String username,
@@ -311,7 +311,7 @@ public class ATripRepository {
     }
 
     @Transactional
-    public List<Integer> findtrip(String startLocation, String stop, int startdate, int enddate, String vehtype, Double maxcost) {
+    public List<Integer> findtrip(String startLocation, String stop, long startdate, long enddate, String vehtype, Double maxcost) {
         List<ATrip> trips = em.createNamedQuery("ATrip.findAll").getResultList();
         if(trips != null && !(trips.isEmpty())) {
             List<ATrip> newList = new ArrayList<ATrip>();
