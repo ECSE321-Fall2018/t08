@@ -15,13 +15,6 @@ public class MainMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        //Loads username and password every time resumes page in the case that the intent is updated
         Intent intent = getIntent();
         eusername = intent.getStringExtra("EXTRA_USERNAME");
         epassword = intent.getStringExtra("EXTRA_PASSWORD");
@@ -40,7 +33,6 @@ public class MainMenu extends AppCompatActivity {
             }
         }
     }
-
 
     //When click My Trips button, goes to myTripListActivity
     public void myTrips(View view) {
