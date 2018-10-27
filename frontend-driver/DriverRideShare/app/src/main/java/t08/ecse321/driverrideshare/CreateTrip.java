@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -184,6 +185,7 @@ public class CreateTrip extends AppCompatActivity {
     //Returns unix time stamp in milliseconds
     public long getUnixStamp(String date, String time) {
         SimpleDateFormat datetimeFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm");
+        datetimeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
         String convert = date + " " + time;
         try {
             Date dateObj = datetimeFormat.parse(convert);

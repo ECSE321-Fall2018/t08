@@ -24,7 +24,7 @@ public class TestCreateTrip {
     private String DATE_INVALID = "01/02/2017";
     private String TIME = "02:30";
     private String TIME_INVALID = "02-30:30";
-    private long TIME_STAMP_MILLI = 1483342200000L;
+    private long TIME_STAMP_MILLI = 1483324200000L;
 
     @Test
     public void testCheckCost() {
