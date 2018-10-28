@@ -34,6 +34,7 @@ public class myTripContent {
         ITEM_MAP.clear();
     }
 
+
     /**
      * A trip item representing a piece of content.
      */

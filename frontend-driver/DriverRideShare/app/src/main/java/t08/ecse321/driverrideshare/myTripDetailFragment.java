@@ -28,6 +28,8 @@ public class myTripDetailFragment extends Fragment {
      * The trip content this fragment is presenting.
      */
     private myTripContent.TripItem mItem;
+    private LayoutInflater inflater;
+    private ViewGroup container;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -61,6 +63,9 @@ public class myTripDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.mytrip_detail, container, false);
 
+        this.inflater = inflater;
+        this.container = container;
+
         if (mItem != null) {
             //Show the trip content as text in a TextView.
             ((TextView) rootView.findViewById(R.id.mytrip_detail)).setText(mItem.details);
@@ -81,5 +86,22 @@ public class myTripDetailFragment extends Fragment {
             }
         }
         return rootView;
+    }
+
+    //Updates the details when resumes view
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getArguments().containsKey(ARG_ITEM_ID)) {
+            // Load the trip content specified by the fragment
+            // arguments. In a real-world scenario, use a Loader
+            // to load content from a content provider.
+            String id = getArguments().getString(ARG_ITEM_ID);
+            mItem = myTripContent.ITEM_MAP.get(id);
+        }
+        View rootView = inflater.inflate(R.layout.mytrip_detail, container, false);
+        if(mItem != null) {
+            ((TextView) rootView.findViewById(R.id.mytrip_detail)).setText(mItem.details);
+        }
     }
 }

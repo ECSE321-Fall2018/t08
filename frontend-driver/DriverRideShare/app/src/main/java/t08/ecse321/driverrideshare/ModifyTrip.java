@@ -368,11 +368,11 @@ public class ModifyTrip extends AppCompatActivity{
 
 
         //Posts the modified trip
-        modifyTripPost(costStr, unixStart, unixEnd, startlocation, stopStr);
+        modifyTripPost(costStr, unixStart, unixEnd, startlocation, stopStr, unixStartMilli/1000, unixEndMilli/1000);
     }
 
     //Posts the modified trip to the server, if successful, returns to main view, if failure, refreshes and displays error
-    public void modifyTripPost(String costStr, String unixStart, String unixEnd, String startlocation, String stopStr) {
+    public void modifyTripPost(String costStr, String unixStart, String unixEnd, String startlocation, String stopStr, long unixStartLo, long unixEndLo) {
         //Creates HTTP params to authorize user according to rest model
         RequestParams params = new RequestParams();
         params.add("tripid", tripid);
@@ -388,6 +388,9 @@ public class ModifyTrip extends AppCompatActivity{
         HttpUtils.post("api/trip/modify", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                myTripContent.TripItem newItem = new myTripContent.TripItem(Integer.valueOf(tripid), mItem.tripStatus, costStr, unixStartLo, unixEndLo, startlocation, stopStr, mItem.passengerid);
+                myTripContent.ITEM_MAP.remove(tripid);
+                myTripContent.addItem(newItem);
                 error = "";
                 finish();
             }

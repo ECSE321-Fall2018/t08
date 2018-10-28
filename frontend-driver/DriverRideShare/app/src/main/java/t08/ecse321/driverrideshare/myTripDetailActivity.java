@@ -75,6 +75,12 @@ public class myTripDetailActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setDetails();
+    }
+
     public void setDetails() {
         // Create the detail fragment and add it to the activity
         // using a fragment transaction.
