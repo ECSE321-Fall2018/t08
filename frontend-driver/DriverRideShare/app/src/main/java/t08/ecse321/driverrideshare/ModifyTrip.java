@@ -22,19 +22,27 @@ import java.util.TimeZone;
 
 import cz.msebera.android.httpclient.Header;
 
-public class CreateTrip extends AppCompatActivity {
-    private String error = null;
+public class ModifyTrip extends AppCompatActivity{
+
     private String eusername;
     private String epassword;
+    private String tripid;
+    private myTripContent.TripItem mItem;
+    private String error;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_trip);
+        setContentView(R.layout.activity_modify_trip);
 
         Intent intent = getIntent();
         eusername = intent.getStringExtra("EXTRA_USERNAME");
         epassword = intent.getStringExtra("EXTRA_PASSWORD");
+        tripid = intent.getStringExtra(myTripDetailFragment.ARG_ITEM_ID);
+        error = "";
+        refreshErrorMessage();
+        mItem = myTripContent.ITEM_MAP.get(tripid);
+        resetView(mItem);
     }
 
     private void refreshErrorMessage() {
@@ -90,8 +98,7 @@ public class CreateTrip extends AppCompatActivity {
         TextView tf = (TextView) v;
         Bundle args = getTimeFromLabel(tf.getText().toString());
         args.putInt("id", v.getId());
-        args.putInt("viewid", R.layout.activity_create_trip);
-
+        args.putInt("viewid", R.layout.activity_modify_trip);
 
         TimePickerFragment newFragment = new TimePickerFragment();
         newFragment.setArguments(args);
@@ -102,7 +109,7 @@ public class CreateTrip extends AppCompatActivity {
         TextView tf = (TextView) v;
         Bundle args = getDateFromLabel(tf.getText().toString());
         args.putInt("id", v.getId());
-        args.putInt("viewid", R.layout.activity_create_trip);
+        args.putInt("viewid", R.layout.activity_modify_trip);
 
         DatePickerFragment newFragment = new DatePickerFragment();
         newFragment.setArguments(args);
@@ -117,6 +124,16 @@ public class CreateTrip extends AppCompatActivity {
     public void setDate(int id, int d, int m, int y) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(String.format("%02d-%02d-%04d", m + 1, d, y));
+    }
+
+    public void setTime(int id, String label) {
+        TextView tv = (TextView) findViewById(id);
+        tv.setText(label);
+    }
+
+    public void setDate(int id, String label) {
+        TextView tv = (TextView) findViewById(id);
+        tv.setText(label);
     }
 
     //Ensures no errors in entering costs
@@ -207,17 +224,64 @@ public class CreateTrip extends AppCompatActivity {
         return true;
     }
 
-    public void resetView() {
-        ((EditText)findViewById(R.id.cost1)).setText("");
-        ((EditText)findViewById(R.id.cost2)).setText("");
-        ((EditText)findViewById(R.id.cost3)).setText("");
-        ((EditText)findViewById(R.id.stop1)).setText("");
-        ((EditText)findViewById(R.id.stop2)).setText("");
-        ((EditText)findViewById(R.id.stop3)).setText("");
-        ((EditText)findViewById(R.id.startlocation)).setText("");
+    public void resetView(myTripContent.TripItem item) {
+        //Checks number of costs and sets view accordingly
+        List<String> costList = ConcatToken.tokenizer(item.costPerStop, ";");
+        switch(costList.size()) {
+            case 0:
+                break;
+            case 1:
+                ((EditText)findViewById(R.id.cost1)).setText(costList.get(0));
+                break;
+            case 2:
+                ((EditText)findViewById(R.id.cost1)).setText(costList.get(0));
+                ((EditText)findViewById(R.id.cost2)).setText(costList.get(1));
+                break;
+            case 3:
+                ((EditText)findViewById(R.id.cost1)).setText(costList.get(0));
+                ((EditText)findViewById(R.id.cost2)).setText(costList.get(1));
+                ((EditText)findViewById(R.id.cost3)).setText(costList.get(2));
+                break;
+
+        }
+        //Checks number of stops and sets view accordingly
+        List<String> stopList = ConcatToken.tokenizer(item.stops, ";");
+        switch(stopList.size()) {
+            case 0:
+                break;
+            case 1:
+                ((EditText)findViewById(R.id.stop1)).setText(stopList.get(0));
+                break;
+            case 2:
+                ((EditText)findViewById(R.id.stop1)).setText(stopList.get(0));
+                ((EditText)findViewById(R.id.stop2)).setText(stopList.get(1));
+                break;
+            case 3:
+                ((EditText)findViewById(R.id.stop1)).setText(stopList.get(0));
+                ((EditText)findViewById(R.id.stop2)).setText(stopList.get(1));
+                ((EditText)findViewById(R.id.stop3)).setText(stopList.get(2));
+                break;
+
+        }
+        ((EditText)findViewById(R.id.startlocation)).setText(item.startLocation);
+
+
+        //Sets the labels to the start date and time
+        java.util.Date startDate=new java.util.Date(item.startdate*1000);
+        java.util.Date endDate=new java.util.Date(item.enddate*1000);
+
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy");
+        SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm");
+        dateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+        timeFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        setDate(R.id.startdatetv, dateFormatter.format(startDate));
+        setDate(R.id.enddatetv, dateFormatter.format(endDate));
+        setTime(R.id.starttimetv, timeFormatter.format(startDate));
+        setTime(R.id.endtimetv, timeFormatter.format(endDate));
     }
 
-    public void createTripButton(View view) {
+    public void modifyTripButton(View view) {
 
         error = "";
         refreshErrorMessage();
@@ -303,72 +367,25 @@ public class CreateTrip extends AppCompatActivity {
         String unixEnd = String.format("%.0f", Double.valueOf(unixEndMilli/1000));
 
 
-        //Finds the vehicle id for the driver
-        findDriverPost(costStr, unixStart, unixEnd, startlocation, stopStr);
+        //Posts the modified trip
+        modifyTripPost(costStr, unixStart, unixEnd, startlocation, stopStr);
     }
 
-
-    //First gets vehicle id according to driver, then posts trip
-    public void findDriverPost(String costStr, String unixStart, String unixEnd, String startlocation, String stopStr) {
+    //Posts the modified trip to the server, if successful, returns to main view, if failure, refreshes and displays error
+    public void modifyTripPost(String costStr, String unixStart, String unixEnd, String startlocation, String stopStr) {
         //Creates HTTP params to authorize user according to rest model
         RequestParams params = new RequestParams();
-        params.add("driverusername", eusername);
-        params.add("driverpassword", epassword);
-
-
-        //Sends HTTP post method, if successful (response != -1, continues to post trip), else, displays error
-        HttpUtils.post("api/vehicle/finddriver", params, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                try {
-                    int result = response.getInt("data");
-                    if(result == -1) {
-                        error = "Please create a vehicle before creating a trip.";
-                    } else {
-                        createTripPost(costStr, unixStart, unixEnd, startlocation, stopStr, result);
-                    }
-                } catch(Exception e) {
-                    error += e.getMessage();
-                }
-                refreshErrorMessage();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
-                error = "Failure: trip data cannot be presented";
-                Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
-                try {
-                    int result = json.getInt("data");
-                    if(result == -1) {
-                        error = "Please create a vehicle before creating a trip.";
-                    } else {
-                        error = "Internal Server Error.";
-                    }
-                } catch (Exception e) {
-                    error += e.getMessage();
-                }
-                refreshErrorMessage();
-                resetView();
-            }
-        });
-    }
-
-    //Posts the trip to the server, if successful, returns to main view, if failure, refreshes and displays error
-    public void createTripPost(String costStr, String unixStart, String unixEnd, String startlocation, String stopStr, int vehicleid) {
-        //Creates HTTP params to authorize user according to rest model
-        RequestParams params = new RequestParams();
-        params.add("status", "1");
+        params.add("tripid", tripid);
         params.add("cost", costStr);
         params.add("startDate", unixStart);
         params.add("endDate", unixEnd);
         params.add("startLocation", startlocation);
         params.add("stops", stopStr);
-        params.add("vehicleid", String.valueOf(vehicleid));
         params.add("driveruser", eusername);
         params.add("driverpass", epassword);
 
-        //Sends HTTP post method, if successful (response != -1, continues to post trip), else, displays error
-        HttpUtils.post("api/trip/create", params, new JsonHttpResponseHandler() {
+        //Sends HTTP post method, if successful (response != -1, continues to modify trip), else, displays error
+        HttpUtils.post("api/trip/modify", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 error = "";
@@ -380,7 +397,7 @@ public class CreateTrip extends AppCompatActivity {
                 error = "Failure: Unable to create trip.";
                 Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
                 refreshErrorMessage();
-                resetView();
+                resetView(mItem);
             }
         });
     }

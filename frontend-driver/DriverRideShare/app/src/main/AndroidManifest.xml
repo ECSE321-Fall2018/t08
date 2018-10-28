@@ -25,7 +25,6 @@
         <activity android:name=".MainMenu" />
         <activity android:name=".RegisterVehicle" />
         <activity android:name=".CreateTrip" />
-
         <activity
             android:name=".myTripListActivity"
             android:label="@string/title_mytrip_list"
@@ -39,7 +38,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="t08.ecse321.driverrideshare.myTripListActivity" />
         </activity>
-        <activity android:name=".UpdateUser"></activity>
+        <activity android:name=".UpdateUser" />
+        <activity android:name=".ModifyTrip"></activity>
     </application>
 
 </manifest>

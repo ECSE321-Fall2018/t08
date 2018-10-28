@@ -211,6 +211,18 @@ public class myTripDetailActivity extends AppCompatActivity {
         });
     }
 
+    //Opens page modify trip, sets intents
+    public void modifyTrip(View view) {
+        Bundle arguments = new Bundle();
+        Intent intent = new Intent(this, ModifyTrip.class);
+
+        arguments.putString(myTripDetailFragment.ARG_ITEM_ID, String.valueOf(tripid));
+        arguments.putString("EXTRA_USERNAME", eusername);
+        arguments.putString("EXTRA_PASSWORD", epassword);
+        intent.putExtras(arguments);
+        startActivity(intent);
+    }
+
     private void refreshErrorMessage() {
         // set the error message
         TextView tvError = (TextView) findViewById(R.id.error);

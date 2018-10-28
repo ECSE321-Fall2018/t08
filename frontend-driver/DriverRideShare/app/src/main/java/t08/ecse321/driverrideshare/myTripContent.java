@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 /**
  * Helper class for providing sample content for user interfaces created by
@@ -85,6 +86,7 @@ public class myTripContent {
             List<String> passengeridlist = ConcatToken.tokenizer(passengerid, ";");
 
             SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+            dateFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
 
             String text = "";
             text = text + "Trip ID: " + String.valueOf(tripid) +"\n";
