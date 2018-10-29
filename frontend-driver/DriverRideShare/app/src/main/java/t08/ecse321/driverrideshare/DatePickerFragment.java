@@ -32,7 +32,15 @@ public class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        CreateTrip myActivity = (CreateTrip)getActivity();
-        myActivity.setDate(getArguments().getInt("id"), day, month, year);
+
+        //Check which activity it came from
+        if(getArguments().getInt("viewid") == R.layout.activity_create_trip) {
+            CreateTrip myActivity = (CreateTrip) getActivity();
+            myActivity.setDate(getArguments().getInt("id"), day, month, year);
+        }
+        if(getArguments().getInt("viewid") == R.layout.activity_modify_trip) {
+            ModifyTrip myActivity = (ModifyTrip) getActivity();
+            myActivity.setDate(getArguments().getInt("id"), day, month, year);
+        }
     }
 }

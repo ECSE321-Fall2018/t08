@@ -75,6 +75,12 @@ public class myTripDetailActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setDetails();
+    }
+
     public void setDetails() {
         // Create the detail fragment and add it to the activity
         // using a fragment transaction.
@@ -209,6 +215,18 @@ public class myTripDetailActivity extends AppCompatActivity {
                 refreshErrorMessage();
             }
         });
+    }
+
+    //Opens page modify trip, sets intents
+    public void modifyTrip(View view) {
+        Bundle arguments = new Bundle();
+        Intent intent = new Intent(this, ModifyTrip.class);
+
+        arguments.putString(myTripDetailFragment.ARG_ITEM_ID, String.valueOf(tripid));
+        arguments.putString("EXTRA_USERNAME", eusername);
+        arguments.putString("EXTRA_PASSWORD", epassword);
+        intent.putExtras(arguments);
+        startActivity(intent);
     }
 
     private void refreshErrorMessage() {

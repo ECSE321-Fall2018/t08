@@ -30,7 +30,14 @@ public class TimePickerFragment extends DialogFragment
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        CreateTrip myActivity = (CreateTrip)getActivity();
-        myActivity.setTime(getArguments().getInt("id"), hourOfDay, minute);
+        //Check which activity it came from
+        if(getArguments().getInt("viewid") == R.layout.activity_create_trip) {
+            CreateTrip myActivity = (CreateTrip) getActivity();
+            myActivity.setTime(getArguments().getInt("id"), hourOfDay, minute);
+        }
+        if(getArguments().getInt("viewid") == R.layout.activity_modify_trip) {
+            ModifyTrip myActivity = (ModifyTrip) getActivity();
+            myActivity.setTime(getArguments().getInt("id"), hourOfDay, minute);
+        }
     }
 }
