@@ -343,6 +343,7 @@ public class ATripRepository {
                 for (String end : stops) {
                     if (end.toUpperCase().contains(stop.toUpperCase())) {
                         newList.add(trip);
+                        break; //If found one trip, moves to next trip so that does not add same trip multiple times
                     }
                 }
             }
@@ -373,19 +374,28 @@ public class ATripRepository {
             trips = newList.stream().collect(Collectors.toList());
         }
 
-        if (!(vehtype.equals(""))) {
-            List<ATrip> newList = new ArrayList<ATrip>();
-            for (ATrip trip : trips) {
-                Vehicle veh = vehRep.getVehicle(trip.getVehicleid());
-                if (veh != null) {
-                    if (veh.getVehicleType().toUpperCase().contains(vehtype.toUpperCase())) {
-                        newList.add(trip);
-                    }
+        List<ATrip> newVList = new ArrayList<ATrip>();
+        for (ATrip trip : trips) {
+            Vehicle veh = vehRep.getVehicle(trip.getVehicleid());
+            if (veh != null) {
+                List<String> idlist = rideshareHelper.tokenizer(trip.getPassengerid(), ";"); //get passengers on trip
+                if(idlist.size() >= veh.getNbOfSeats()) { //Checks to make sure that there are enough seats
+                    continue; //If not enough seats, breaks and goes to next trip
                 }
+                if (!(vehtype.equals(""))) {
+                    if (veh.getVehicleType().toUpperCase().contains(vehtype.toUpperCase())) {
+                        newVList.add(trip);
+                    }
+                } else {
+                    newVList.add(trip); //Case where no vehicle type specified, adds trip automatically if enough space
+                }
+            } else {
+                newVList.add(trip); //Case where no vehicle exists, theoretically should not happen if DB in sync
             }
-            trips.clear();
-            trips = newList.stream().collect(Collectors.toList());
         }
+        trips.clear();
+        trips = newVList.stream().collect(Collectors.toList());
+
 
         if (maxcost != -1.0) {
             List<ATrip> newList = new ArrayList<ATrip>();
@@ -394,6 +404,7 @@ public class ATripRepository {
                 for (String cost : costs) {
                     if (Double.parseDouble(cost) <= maxcost) {
                         newList.add(trip);
+                        break; //If found one trip, moves to next trip so that does not add same trip multiple times
                     }
                 }
             }
