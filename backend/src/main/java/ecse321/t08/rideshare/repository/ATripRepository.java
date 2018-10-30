@@ -354,7 +354,7 @@ public class ATripRepository {
         if (startdate != -1) {
             List<ATrip> newList = new ArrayList<ATrip>();
             for (ATrip trip : trips) {
-                if (trip.getStartdate() - 3600 <= startdate && startdate <= trip.getStartdate() + 3600) {
+                if (trip.getStartdate() - 43200 <= startdate && startdate <= trip.getStartdate() + 43200) {
                     newList.add(trip);
                 }
             }
@@ -365,7 +365,7 @@ public class ATripRepository {
         if (enddate != -1) {
             List<ATrip> newList = new ArrayList<ATrip>();
             for (ATrip trip : trips) {
-                if (trip.getEnddate() - 7200 <= enddate && enddate <= trip.getEnddate() + 7200) {
+                if (trip.getEnddate() - 43200 <= enddate && enddate <= trip.getEnddate() + 43200) {
                     newList.add(trip);
                 }
             }
