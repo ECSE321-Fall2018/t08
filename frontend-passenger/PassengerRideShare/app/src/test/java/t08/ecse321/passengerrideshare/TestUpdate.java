@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestUpdate {
+
     @Mock
     UpdateUser activity = new UpdateUser();
 
@@ -28,9 +29,6 @@ public class TestUpdate {
     final String SHORT_PASSWORD_CONFIRM = "short";
     final String FULLNAME = "FULLNAME";
     final String EMAIL = "EMAIL";
-
-
-
 
     @Before
     public void setMockOutput() {

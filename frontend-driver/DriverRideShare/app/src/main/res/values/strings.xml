@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DriverRideShare</string>
+    <string name="app_name">RideShare Driver</string>
     <string name="action_settings">Settings</string>
     <string name="login_username">Username</string>
     <string name="login_password">Password</string>

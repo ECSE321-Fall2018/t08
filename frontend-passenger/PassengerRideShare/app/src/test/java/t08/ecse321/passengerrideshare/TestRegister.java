@@ -28,10 +28,7 @@ public class TestRegister {
     final String FULLNAME = "FULLNAME";
     final String EMAIL = "EMAIL";
 
-
-
-
-    @Before
+ @Before
     public void setMockOutput() {
         when(activity.registerPost(anyString(), anyString(), anyString(), anyString()))
                 .thenAnswer((InvocationOnMock invocation) -> {
@@ -73,6 +70,4 @@ public class TestRegister {
         boolean success = activity.checkRegister(USERNAME, SHORT_PASSWORD, SHORT_PASSWORD_CONFIRM, FULLNAME, EMAIL);
         assertFalse(success);
     }
-
-
 }
