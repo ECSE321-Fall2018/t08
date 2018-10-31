@@ -367,7 +367,7 @@ public class CreateTrip extends AppCompatActivity {
         params.add("driveruser", eusername);
         params.add("driverpass", epassword);
 
-        //Sends HTTP post method, if successful (response != -1, continues to post trip), else, displays error
+        //Sends HTTP post method, if successful, continues to post trip), else, displays error
         HttpUtils.post("api/trip/create", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

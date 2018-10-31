@@ -15,6 +15,7 @@ import static org.mockito.Mockito.when;
 
     @RunWith(MockitoJUnitRunner.class)
     public class TestRegisterVehicle {
+
         @Mock
         RegisterVehicle activity = new RegisterVehicle();
 
@@ -78,7 +79,4 @@ import static org.mockito.Mockito.when;
             boolean success = activity.checkRegisterVehicleNbOfSeats(VEHICLENBOFSEATSBAD);
             assertFalse(success);
         }
-
     }
-
-

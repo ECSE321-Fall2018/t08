@@ -19,7 +19,6 @@ public class Register extends AppCompatActivity {
     private String error = null;
     private final String ROLE = "Passenger";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -15,9 +15,9 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestRegister {
+
     @Mock
     Register activity = new Register();
-
 
     final String USERNAME = "testuser";
     final String USER_EXISTS = "exists";
@@ -27,9 +27,6 @@ public class TestRegister {
     final String SHORT_PASSWORD_CONFIRM = "short";
     final String FULLNAME = "FULLNAME";
     final String EMAIL = "EMAIL";
-
-
-
 
     @Before
     public void setMockOutput() {
@@ -73,6 +70,4 @@ public class TestRegister {
         boolean success = activity.checkRegister(USERNAME, SHORT_PASSWORD, SHORT_PASSWORD_CONFIRM, FULLNAME, EMAIL);
         assertFalse(success);
     }
-
-
 }

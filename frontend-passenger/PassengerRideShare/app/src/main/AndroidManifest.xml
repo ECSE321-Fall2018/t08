@@ -36,7 +36,21 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="t08.ecse321.passengerrideshare.myTripListActivity" />
         </activity>
-        <activity android:name=".MainMenu"></activity>
+        <activity android:name=".MainMenu" />
+        <activity android:name=".SearchTrip" />
+        <activity
+            android:name=".searchResultListActivity"
+            android:label="@string/title_searchresult_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".searchResultDetailActivity"
+            android:label="@string/title_searchresult_detail"
+            android:parentActivityName=".searchResultListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="t08.ecse321.passengerrideshare.searchResultListActivity" />
+        </activity>
     </application>
 
 </manifest>
