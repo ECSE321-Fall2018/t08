@@ -378,9 +378,11 @@ public class ATripRepository {
         for (ATrip trip : trips) {
             Vehicle veh = vehRep.getVehicle(trip.getVehicleid());
             if (veh != null) {
-                List<String> idlist = rideshareHelper.tokenizer(trip.getPassengerid(), ";"); //get passengers on trip
-                if(idlist.size() >= veh.getNbOfSeats()) { //Checks to make sure that there are enough seats
-                    continue; //If not enough seats, breaks and goes to next trip
+                if(trip.getPassengerid() != null && !(trip.getPassengerid().equals(""))) {
+                    List<String> idlist = rideshareHelper.tokenizer(trip.getPassengerid(), ";"); //get passengers on trip
+                    if (idlist.size() >= veh.getNbOfSeats()) { //Checks to make sure that there are enough seats
+                        continue; //If not enough seats, breaks and goes to next trip
+                    }
                 }
                 if (!(vehtype.equals(""))) {
                     if (veh.getVehicleType().toUpperCase().contains(vehtype.toUpperCase())) {
