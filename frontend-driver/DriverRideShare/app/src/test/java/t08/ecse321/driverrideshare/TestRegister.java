@@ -74,7 +74,7 @@ public class TestRegister {
 
     @Test
     public void testRegisterEmailInvalid(){
-        boolean success = activity.checkRegister(USERNAME, SHORT_PASSWORD, SHORT_PASSWORD_CONFIRM, FULLNAME, INVALIDEMAIL);
+        boolean success = activity.checkRegister(USERNAME, PASSWORD, PASSWORD, FULLNAME, INVALIDEMAIL);
         assertFalse(success);
     }
 }

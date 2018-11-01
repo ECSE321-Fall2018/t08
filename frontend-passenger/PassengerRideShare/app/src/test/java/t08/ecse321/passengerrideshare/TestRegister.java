@@ -1,4 +1,4 @@
-package t08.ecse321.passengerrideshare.;
+package t08.ecse321.passengerrideshare;
 
 
 import org.junit.Before;
@@ -74,7 +74,7 @@ public class TestRegister {
 
     @Test
     public void testRegisterEmailInvalid(){
-        boolean success = activity.checkRegister(USERNAME, SHORT_PASSWORD, SHORT_PASSWORD_CONFIRM, FULLNAME, INVALIDEMAIL);
+        boolean success = activity.checkRegister(USERNAME, PASSWORD, PASSWORD_CONFIRM_BAD, FULLNAME, INVALIDEMAIL);
         assertFalse(success);
     }
 }
