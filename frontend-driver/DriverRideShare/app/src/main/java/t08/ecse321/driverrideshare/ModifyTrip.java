@@ -57,6 +57,7 @@ public class ModifyTrip extends AppCompatActivity{
         }
     }
 
+    //take time from GUI and convert to Bundle with hour and minute
     private Bundle getTimeFromLabel(String text) {
         Bundle rtn = new Bundle();
         String comps[] = text.toString().split(":");
@@ -74,6 +75,7 @@ public class ModifyTrip extends AppCompatActivity{
         return rtn;
     }
 
+    //take time from GUI and convert to Bundle with year, month and date
     private Bundle getDateFromLabel(String text) {
         Bundle rtn = new Bundle();
         String comps[] = text.toString().split("-");
@@ -94,6 +96,7 @@ public class ModifyTrip extends AppCompatActivity{
         return rtn;
     }
 
+    //show a frame to select time
     public void showTimePickerDialog(View v) {
         TextView tf = (TextView) v;
         Bundle args = getTimeFromLabel(tf.getText().toString());
@@ -105,6 +108,7 @@ public class ModifyTrip extends AppCompatActivity{
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
+    //show a frame to select date
     public void showDatePickerDialog(View v) {
         TextView tf = (TextView) v;
         Bundle args = getDateFromLabel(tf.getText().toString());
@@ -116,21 +120,25 @@ public class ModifyTrip extends AppCompatActivity{
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
+    //set time on GUI 
     public void setTime(int id, int h, int m) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(String.format("%02d:%02d", h, m));
     }
 
+    //set date on GUI
     public void setDate(int id, int d, int m, int y) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(String.format("%02d-%02d-%04d", m + 1, d, y));
     }
 
+    //set time on GUI gien a string
     public void setTime(int id, String label) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(label);
     }
 
+    //set date on GUI gien a string
     public void setDate(int id, String label) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(label);
@@ -405,6 +413,7 @@ public class ModifyTrip extends AppCompatActivity{
         });
     }
 
+    //dispose frame return to initial GUI
     public void cancelButton(View view) {
         error = "";
         refreshErrorMessage();
