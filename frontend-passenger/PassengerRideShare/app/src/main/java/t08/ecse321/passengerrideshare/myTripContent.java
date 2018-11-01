@@ -109,7 +109,11 @@ public class myTripContent {
                 if(iter != 0) {
                     result += ", ";
                 }
-                result += str;
+                if (str.equals("null")) {
+                    result += "None";
+                } else {
+                    result += str;
+                }
                 iter++;
             }
             return result;
