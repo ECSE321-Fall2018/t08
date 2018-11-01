@@ -143,6 +143,7 @@ public class Register extends AppCompatActivity {
         }
     }
 
+    //dispose frame, initiate original GUI
     public void cancelButton(View view) {
         error = "";
         refreshErrorMessage();
