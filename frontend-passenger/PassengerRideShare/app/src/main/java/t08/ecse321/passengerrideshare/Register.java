@@ -108,7 +108,7 @@ public class Register extends AppCompatActivity {
         }
 
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            error = "Please fill in a correct email.";
+            error = "Please enter a valid email.";
             refreshErrorMessage();
             return false;
         }
