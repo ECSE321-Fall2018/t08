@@ -106,7 +106,7 @@ public class UpdateUser extends AppCompatActivity {
         }
 
         if(!newpass1.equals(newpass2)) {
-            error = "Please make sure new passwords match.";
+            error = "New passwords must match.";
             refreshErrorMessage();
             return false;
         }
