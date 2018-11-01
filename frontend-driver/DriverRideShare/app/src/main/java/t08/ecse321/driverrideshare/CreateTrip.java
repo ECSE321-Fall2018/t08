@@ -49,6 +49,7 @@ public class CreateTrip extends AppCompatActivity {
         }
     }
 
+    //obtain time from GUI and convert to bundle with hour and minute
     private Bundle getTimeFromLabel(String text) {
         Bundle rtn = new Bundle();
         String comps[] = text.toString().split(":");
@@ -66,6 +67,7 @@ public class CreateTrip extends AppCompatActivity {
         return rtn;
     }
 
+    //obtain date from GUI and convert to bundle with day, month, year
     private Bundle getDateFromLabel(String text) {
         Bundle rtn = new Bundle();
         String comps[] = text.toString().split("-");
@@ -86,6 +88,7 @@ public class CreateTrip extends AppCompatActivity {
         return rtn;
     }
 
+    //show a frame to choose time
     public void showTimePickerDialog(View v) {
         TextView tf = (TextView) v;
         Bundle args = getTimeFromLabel(tf.getText().toString());
@@ -98,6 +101,7 @@ public class CreateTrip extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
+    //show a frame to choose date
     public void showDatePickerDialog(View v) {
         TextView tf = (TextView) v;
         Bundle args = getDateFromLabel(tf.getText().toString());
@@ -109,11 +113,13 @@ public class CreateTrip extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
+    //set time on GUI
     public void setTime(int id, int h, int m) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(String.format("%02d:%02d", h, m));
     }
 
+    //set date on GUI
     public void setDate(int id, int d, int m, int y) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(String.format("%02d-%02d-%04d", m + 1, d, y));
