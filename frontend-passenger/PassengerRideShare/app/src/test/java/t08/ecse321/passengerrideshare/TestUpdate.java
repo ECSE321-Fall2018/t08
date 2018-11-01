@@ -75,7 +75,7 @@ public class TestUpdate {
 
     @Test
     public void testUpdateInvalidEmail(){
-        boolean success = activity.checkUpdateUser(INVALIDEMAIL, FULLNAME, CURRENT_PASSWORD, SHORT_PASSWORD, SHORT_PASSWORD_CONFIRM);
+        boolean success = activity.checkUpdateUser(INVALIDEMAIL, FULLNAME, CURRENT_PASSWORD, NEW_PASSWORD, NEW_PASSWORD);
         assertFalse(success);
     }
 }
