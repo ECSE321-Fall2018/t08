@@ -176,6 +176,7 @@ public class RegisterVehicle extends AppCompatActivity{
         return error == "";
     }
 
+    //dispose frame, reitiate home screen GUI
     public void cancelCreateVehicle(View view) {
         error = "";
         refreshErrorMessage();
