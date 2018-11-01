@@ -15,9 +15,9 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TestRegister {
+
     @Mock
     Register activity = new Register();
-
 
     final String USERNAME = "testuser";
     final String USER_EXISTS = "exists";
@@ -26,9 +26,10 @@ public class TestRegister {
     final String SHORT_PASSWORD = "short";
     final String SHORT_PASSWORD_CONFIRM = "short";
     final String FULLNAME = "FULLNAME";
-    final String EMAIL = "EMAIL";
+    final String INVALIDEMAIL = "EMAIL";
+    final String VALIDEMAIL = "email@email.com";
 
- @Before
+    @Before
     public void setMockOutput() {
         when(activity.registerPost(anyString(), anyString(), anyString(), anyString()))
                 .thenAnswer((InvocationOnMock invocation) -> {
@@ -43,31 +44,37 @@ public class TestRegister {
 
     @Test
     public void testRegisterSuccess(){
-        boolean success = activity.registerPost(USERNAME, PASSWORD, FULLNAME, EMAIL);
+        boolean success = activity.registerPost(USERNAME, PASSWORD, FULLNAME, VALIDEMAIL);
         assertTrue(success);
     }
 
     @Test
     public void testRegisterUserAlreadyExists(){
-        boolean success = activity.registerPost(USER_EXISTS, PASSWORD, FULLNAME, EMAIL);
+        boolean success = activity.registerPost(USER_EXISTS, PASSWORD, FULLNAME, VALIDEMAIL);
         assertFalse(success);
     }
 
     @Test
     public void testRegisterPasswordsDoNotMatch(){
-        boolean success = activity.checkRegister(USERNAME, PASSWORD, PASSWORD_CONFIRM_BAD, FULLNAME, EMAIL);
+        boolean success = activity.checkRegister(USERNAME, PASSWORD, PASSWORD_CONFIRM_BAD, FULLNAME, VALIDEMAIL);
         assertFalse(success);
     }
 
     @Test
     public void testRegisterNotAllFieldsFilled(){
-        boolean success = activity.checkRegister("", PASSWORD, PASSWORD_CONFIRM_BAD, FULLNAME, EMAIL);
+        boolean success = activity.checkRegister("", PASSWORD, PASSWORD_CONFIRM_BAD, FULLNAME, VALIDEMAIL);
         assertFalse(success);
     }
 
     @Test
     public void testRegisterPasswordTooShort(){
-        boolean success = activity.checkRegister(USERNAME, SHORT_PASSWORD, SHORT_PASSWORD_CONFIRM, FULLNAME, EMAIL);
+        boolean success = activity.checkRegister(USERNAME, SHORT_PASSWORD, SHORT_PASSWORD_CONFIRM, FULLNAME, VALIDEMAIL);
+        assertFalse(success);
+    }
+
+    @Test
+    public void testRegisterEmailInvalid(){
+        boolean success = activity.checkRegister(USERNAME, PASSWORD, PASSWORD_CONFIRM_BAD, FULLNAME, INVALIDEMAIL);
         assertFalse(success);
     }
 }

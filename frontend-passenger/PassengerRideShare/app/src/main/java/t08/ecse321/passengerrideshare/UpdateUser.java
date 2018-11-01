@@ -98,14 +98,22 @@ public class UpdateUser extends AppCompatActivity {
             refreshErrorMessage();
             return false;
         }
+        
+        if (email != null && !email.equals("") && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            error = "Your new email must be valid.";
+            refreshErrorMessage();
+            return false;
+        }
+
         if(!newpass1.equals(newpass2)) {
             error = "New passwords must match.";
             refreshErrorMessage();
             return false;
         }
+
         if(newpass1 != null && !newpass1.equals("")) {
             if(newpass1.length() < 8) {
-                error = "Password must be at least 8 characters.";
+                error = "New password should be at least 8 characters.";
                 refreshErrorMessage();
                 return false;
             }

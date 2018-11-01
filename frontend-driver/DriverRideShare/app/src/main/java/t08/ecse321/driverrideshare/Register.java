@@ -81,22 +81,39 @@ public class Register extends AppCompatActivity {
 
     //Checks that all registration information correct
     public boolean checkRegister(String username, String password, String pass_confirm, String fullname, String email) {
+        if(username == null
+                || username.equals("")
+                || fullname == null
+                || fullname.equals("")
+                || email == null
+                || email.equals("")
+                || password == null
+                || password.equals("")
+                || pass_confirm == null
+                || pass_confirm.equals("")) {
+            error = "Please fill all fields.";
+            refreshErrorMessage();
+            return false;
+        }
+
         if(!password.equals(pass_confirm)) {
             error = "Please ensure passwords match.";
             refreshErrorMessage();
             return false;
         }
+
         if(password.length() < 8) {
             error = "Password must be at least 8 characters.";
             refreshErrorMessage();
             return false;
         }
 
-        if(username == null || username.equals("") || fullname == null || fullname.equals("") || email == null || email.equals("")) {
-            error = "Please fill all fields.";
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            error = "Please fill in a correct email.";
             refreshErrorMessage();
             return false;
         }
+
         return true;
     }
 
