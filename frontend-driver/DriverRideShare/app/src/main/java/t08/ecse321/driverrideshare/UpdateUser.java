@@ -93,14 +93,14 @@ public class UpdateUser extends AppCompatActivity {
 
     //Checks that all update user information correct, note that fields may be left empty if not updated
     public boolean checkUpdateUser(String email, String fullname, String curpass, String newpass1, String newpass2) {
-        if (email != null && !email.equals("") && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            error = "Your new email has to be correct.";
+        if(curpass == null || curpass.equals("")) {
+            error = "Please enter your current password.";
             refreshErrorMessage();
             return false;
         }
-
-        if(curpass == null || curpass.equals("")) {
-            error = "Please enter your current password.";
+        
+        if (email != null && !email.equals("") && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            error = "Please enter a valid email.";
             refreshErrorMessage();
             return false;
         }
