@@ -93,24 +93,31 @@ public class UpdateUser extends AppCompatActivity {
 
     //Checks that all update user information correct, note that fields may be left empty if not updated
     public boolean checkUpdateUser(String email, String fullname, String curpass, String newpass1, String newpass2) {
+        if (email != null && !email.equals("") && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            error = "Your new email has to be correct.";
+            refreshErrorMessage();
+            return false;
+        }
+
         if(curpass == null || curpass.equals("")) {
             error = "Please enter your current password.";
             refreshErrorMessage();
             return false;
         }
+
         if(!newpass1.equals(newpass2)) {
-            error = "New passwords must match.";
+            error = "Please make sure new passwords match.";
             refreshErrorMessage();
             return false;
         }
+
         if(newpass1 != null && !newpass1.equals("")) {
             if(newpass1.length() < 8) {
-                error = "Password must be at least 8 characters.";
+                error = "New password should be at least 8 characters.";
                 refreshErrorMessage();
                 return false;
             }
         }
-
         return true;
     }
 
