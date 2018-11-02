@@ -9,6 +9,9 @@ public class HttpUtils {
 
     private static String baseUrl;
     private static AsyncHttpClient client = new AsyncHttpClient();
+    private static String getAbsoluteUrl(String relativeUrl) {
+        return baseUrl + relativeUrl;
+    }
 
     static {
         baseUrl = DEFAULT_BASE_URL;
@@ -36,9 +39,5 @@ public class HttpUtils {
 
     public static void postByUrl(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
         client.post(url, params, responseHandler);
-    }
-
-    private static String getAbsoluteUrl(String relativeUrl) {
-        return baseUrl + relativeUrl;
     }
 }

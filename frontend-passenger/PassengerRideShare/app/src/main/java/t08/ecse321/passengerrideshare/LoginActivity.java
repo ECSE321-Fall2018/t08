@@ -1,6 +1,5 @@
 package t08.ecse321.passengerrideshare;
 
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
-
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -48,7 +46,8 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu
+        // Add items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
     }
@@ -83,20 +82,22 @@ public class LoginActivity extends AppCompatActivity {
         error = "";
         refreshErrorMessage();
 
-        //Creates new intent and gets username and password from text view
+        //Create new intent and gets username and password from text view
         final Intent intent = new Intent(this, MainMenu.class);
         Bundle extras = new Bundle();
         extras.putString("EXTRA_USERNAME", username);
         extras.putString("EXTRA_PASSWORD", password);
         intent.putExtras(extras);
 
-        //Creates HTTP params to authorize user according to rest model
+        //Create HTTP params to authorize user according to rest model
         RequestParams params = new RequestParams();
         params.add("username", username);
         params.add("password", password);
         params.add("role", ROLE);
 
-        //Sends HTTP post method, if successful (response != -1, switches to MainMenu view), else, displays error
+        //Send HTTP post method,
+        // if successful (response != -1), switches to MainMenu view)
+        // else, displays error
         HttpUtils.post("api/user/authorize", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -116,12 +117,13 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
                 error = "Failure: ";
-                Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
+                Log.e("MyApp", "Caught error", throwable); //Error logging help
                 try {
                     if(json.getInt("data") == -1) {
                         error += "Username or password invalid.";
                     } else if(!Integer.valueOf(json.getInt("data")).equals(-1)) {
-                        error += "Status " + String.valueOf(statusCode); //This case should not happen, may occur if backend server does not create json correctly
+                        //Should not happen, may occur if backend server does not create json correctly
+                        error += "Status " + String.valueOf(statusCode);
                     }
                 } catch (Exception e) {
                     error += e.getMessage();

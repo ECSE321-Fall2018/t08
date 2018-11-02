@@ -20,9 +20,9 @@ public class MainMenu extends AppCompatActivity {
         epassword = intent.getStringExtra("EXTRA_PASSWORD");
     }
 
-    //When finish onActivityResult, returns here
-    //If successful, resets password
-    //This is currently used for update user
+    //When finish onActivityResult, return here
+    //If successful, reset password
+    //Currently used to update user
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
@@ -34,7 +34,7 @@ public class MainMenu extends AppCompatActivity {
         }
     }
 
-    //When click My Trips button, goes to myTripListActivity
+    //My Trips button clicked --> go to myTripListActivity
     public void myTrips(View view) {
         final Intent intent = new Intent(this, myTripListActivity.class);
         Bundle extras = new Bundle();
@@ -42,11 +42,11 @@ public class MainMenu extends AppCompatActivity {
         extras.putString("EXTRA_PASSWORD", epassword);
         intent.putExtras(extras);
 
-        myTripContent.clear(); //clears myTrip everytime login to avoid double counting
+        myTripContent.clear(); //clear myTrip every time login to avoid double counting
         startActivity(intent);
     }
 
-    //When click Find Trip button, goes to Search Trip Activity
+    //Find Trip button clicked --> go to Search Trip Activity
     public void findTrip(View view) {
         final Intent intent = new Intent(this, SearchTrip.class);
         Bundle extras = new Bundle();
@@ -57,7 +57,7 @@ public class MainMenu extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //When click Update User button, goes to UpdaterUser Activity
+    //Update User button clicked --> go to UpdaterUser Activity
     public void updateUser(View view) {
         final Intent intent = new Intent(this, UpdateUser.class);
         Bundle extras = new Bundle();
