@@ -49,7 +49,10 @@ public class CreateTrip extends AppCompatActivity {
         }
     }
 
-    //Obtain time from GUI and convert to bundle with hour and minute
+    /*
+    Obtain time from GUI
+    @return rtn A bundle with hour & minute
+     */
     private Bundle getTimeFromLabel(String text) {
         Bundle rtn = new Bundle();
         String comps[] = text.toString().split(":");
@@ -67,7 +70,10 @@ public class CreateTrip extends AppCompatActivity {
         return rtn;
     }
 
-    //Obtain date from GUI and convert to bundle with day, month, year
+    /*
+    Obtain date from GUI
+    @return rtn A bundle with day & month & year
+     */
     private Bundle getDateFromLabel(String text) {
         Bundle rtn = new Bundle();
         String comps[] = text.toString().split("-");
