@@ -32,10 +32,8 @@ import cz.msebera.android.httpclient.Header;
  */
 public class searchResultListActivity extends AppCompatActivity {
 
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
+    //Whether or not the activity is in two-pane mode,
+    // i.e. running on a tablet device.
     private boolean mTwoPane;
     private static String eusername;
     private static String epassword;
@@ -78,8 +76,8 @@ public class searchResultListActivity extends AppCompatActivity {
     private boolean populateSearchTripsObj(List<Integer> tripsInt) {
         searchResultContent.clear();
 
-        //Sends HTTP Post to get trip for each trip id that the search engine found
-        //Will add each trip item to list and reset recycler each time new trip found
+        //Send HTTP Post to get trip for each trip id that the search engine found
+        //Add each trip item to list and reset recycler each time new trip found
         for(Integer el: tripsInt) {
             HttpUtils.get("api/trip/trips/"+el, new RequestParams(), new JsonHttpResponseHandler() {
                 @Override
@@ -93,9 +91,9 @@ public class searchResultListActivity extends AppCompatActivity {
                         int status = response.getInt("status");
                         int vehicleid = response.getInt("vehicleid");
 
-                        //Sends HTTP Post to get vehicle for each trip id that the search engine found
-                        //Will also add vehicle info to recycler view
-                        //If vehicle not found, will initialize constructor with not found values for vehicle
+                        //Send HTTP Post to get vehicle for each trip id that the search engine found
+                        //Will add vehicle info to recycler view
+                        //If vehicle not found, initialize constructor with not found values for vehicle
                         HttpUtils.get("api/vehicle/vehicles/"+vehicleid, new RequestParams(), new JsonHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, JSONObject vehResponse) {
@@ -104,8 +102,9 @@ public class searchResultListActivity extends AppCompatActivity {
                                     String model = vehResponse.getString("model");
                                     String vehicleType = vehResponse.getString("vehicleType");
 
-                                    //creates new Search Item and adds it to map
-                                    searchResultContent.SearchResultItem item = new searchResultContent.SearchResultItem(el, status, cost, startdate, enddate, startLoc, stops, vehicleType, vehColour, model);
+                                    // Create new Search Item and adds it to map
+                                    searchResultContent.SearchResultItem item = new searchResultContent.SearchResultItem
+                                            (el, status, cost, startdate, enddate, startLoc, stops, vehicleType, vehColour, model);
                                     searchResultContent.addItem(item);
 
                                     View recyclerView = findViewById(R.id.searchresult_list);
@@ -121,10 +120,12 @@ public class searchResultListActivity extends AppCompatActivity {
                             @Override
                             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
                                 error = "Failure: ";
-                                Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
+                                Log.e("MyApp", "Caught error", throwable); //Error logging helper
                                 try {
-                                    //creates new Search Item and adds it to map
-                                    searchResultContent.SearchResultItem item = new searchResultContent.SearchResultItem(el, status, cost, startdate, enddate, startLoc, stops, "Not Found", "Not Found", "Not Found");
+                                    // Create new Search Item and adds it to map
+                                    searchResultContent.SearchResultItem item = new searchResultContent.SearchResultItem
+                                            (el, status, cost, startdate, enddate, startLoc, stops, "Not Found",
+                                                    "Not Found", "Not Found");
                                     searchResultContent.addItem(item);
 
                                     View recyclerView = findViewById(R.id.searchresult_list);
@@ -146,9 +147,10 @@ public class searchResultListActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
                     error = "Failure: ";
-                    Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
+                    Log.e("MyApp", "Caught error", throwable); //Error logging helper
                     try {
-                        error +=  String.valueOf(el)+"Error retrieving data. Status " + String.valueOf(statusCode); //This case should not happen, may occur if backend server does not create json correctly
+                        // Should not happen, may occur if backend server does not create json correctly
+                        error +=  String.valueOf(el)+"Error retrieving data. Status " + String.valueOf(statusCode);
                     } catch (Exception e) {
                         error += e.getMessage();
                     }
@@ -187,7 +189,7 @@ public class searchResultListActivity extends AppCompatActivity {
                     Intent intent = new Intent(context, searchResultDetailActivity.class);
                     arguments.putString(searchResultDetailFragment.ARG_ITEM_ID, String.valueOf(item.tripid));
 
-                    //Adds these extra parameters when goes to detail view
+                    //Add these extra parameters when goes to detail view
                     arguments.putString("EXTRA_USERNAME", eusername);
                     arguments.putString("EXTRA_PASSWORD", epassword);
                     intent.putExtras(arguments);
@@ -198,8 +200,7 @@ public class searchResultListActivity extends AppCompatActivity {
         };
 
         SimpleItemRecyclerViewAdapter(searchResultListActivity parent,
-                                      List<searchResultContent.SearchResultItem> items,
-                                      boolean twoPane) {
+                                      List<searchResultContent.SearchResultItem> items, boolean twoPane) {
             mValues = items;
             mParentActivity = parent;
             mTwoPane = twoPane;
@@ -238,8 +239,8 @@ public class searchResultListActivity extends AppCompatActivity {
         }
     }
 
+    // set the error message
     private void refreshErrorMessage() {
-        // set the error message
         TextView tvError = (TextView) findViewById(R.id.error);
         tvError.setText(error);
 

@@ -16,21 +16,15 @@ import android.widget.TextView;
  * on handsets.
  */
 public class searchResultDetailFragment extends Fragment {
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
+
+    //The fragment argument representing the item ID that this fragment represents.
     public static final String ARG_ITEM_ID = "item_id";
 
-    /**
-     * The search item content this fragment is presenting.
-     */
+    //The search item content this fragment presents.
     private searchResultContent.SearchResultItem mItem;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+    //Mandatory empty constructor for the fragment manager to instantiate the
+    // fragment (e.g. upon screen orientation changes).
     public searchResultDetailFragment() {
     }
 
@@ -61,7 +55,6 @@ public class searchResultDetailFragment extends Fragment {
         if (mItem != null) {
             ((TextView) rootView.findViewById(R.id.searchresult_detail)).setText(mItem.details);
         }
-
         return rootView;
     }
 }

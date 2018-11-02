@@ -39,8 +39,8 @@ public class SearchTrip extends AppCompatActivity {
         epassword = intent.getStringExtra("EXTRA_PASSWORD");
     }
 
+    // set the error message
     private void refreshErrorMessage() {
-        // set the error message
         TextView tvError = (TextView) findViewById(R.id.error);
         tvError.setText(error);
 
