@@ -20,9 +20,9 @@ public class MainMenu extends AppCompatActivity {
         epassword = intent.getStringExtra("EXTRA_PASSWORD");
     }
 
-    //When finish onActivityResult, returns here
-    //If successful, resets password
-    //This is currently used for update user
+    //When finish onActivityResult, return here
+    //If successful, reset password
+    //Currently used to update user
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
@@ -34,7 +34,7 @@ public class MainMenu extends AppCompatActivity {
         }
     }
 
-    //When click My Trips button, goes to myTripListActivity
+    //My Trips button clicked --> go to myTripListActivity
     public void myTrips(View view) {
         final Intent intent = new Intent(this, myTripListActivity.class);
         Bundle extras = new Bundle();
@@ -42,11 +42,12 @@ public class MainMenu extends AppCompatActivity {
         extras.putString("EXTRA_PASSWORD", epassword);
         intent.putExtras(extras);
 
-        myTripContent.clear(); //clears myTrip everytime login to avoid double counting
+        //clear myTrip every time login (avoid double counting)
+        myTripContent.clear();
         startActivity(intent);
     }
 
-    //When click Create Trip button, goes to findTrip Activity
+    //Create Trip button clicked --> go to findTripActivity
     public void createTrip(View view) {
         final Intent intent = new Intent(this, CreateTrip.class);
         Bundle extras = new Bundle();
@@ -57,7 +58,7 @@ public class MainMenu extends AppCompatActivity {
         startActivity(intent);
     }
 
-    //When click Update User button, goes to UpdaterUser Activity
+    //Update User button clicked --> go to UpdaterUserActivity
     public void updateUser(View view) {
         final Intent intent = new Intent(this, UpdateUser.class);
         Bundle extras = new Bundle();
@@ -66,10 +67,9 @@ public class MainMenu extends AppCompatActivity {
         intent.putExtras(extras);
 
         startActivityForResult(intent, 1);
-
     }
 
-    //When click sign out, finishes activity
+    //Sign out button clicked --> finish activity
     public void signOut(View view) {
         finish();
     }

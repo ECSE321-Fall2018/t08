@@ -38,7 +38,7 @@ public class CreateTrip extends AppCompatActivity {
     }
 
     private void refreshErrorMessage() {
-        // set the error message
+        //Set the error message
         TextView tvError = (TextView) findViewById(R.id.error);
         tvError.setText(error);
 
@@ -49,7 +49,10 @@ public class CreateTrip extends AppCompatActivity {
         }
     }
 
-    //obtain time from GUI and convert to bundle with hour and minute
+    /*
+    Obtain time from GUI
+    @return rtn A bundle with hour & minute
+     */
     private Bundle getTimeFromLabel(String text) {
         Bundle rtn = new Bundle();
         String comps[] = text.toString().split(":");
@@ -67,7 +70,10 @@ public class CreateTrip extends AppCompatActivity {
         return rtn;
     }
 
-    //obtain date from GUI and convert to bundle with day, month, year
+    /*
+    Obtain date from GUI
+    @return rtn A bundle with day & month & year
+     */
     private Bundle getDateFromLabel(String text) {
         Bundle rtn = new Bundle();
         String comps[] = text.toString().split("-");
@@ -88,20 +94,19 @@ public class CreateTrip extends AppCompatActivity {
         return rtn;
     }
 
-    //show a frame to choose time
+    //Show a frame to choose time
     public void showTimePickerDialog(View v) {
         TextView tf = (TextView) v;
         Bundle args = getTimeFromLabel(tf.getText().toString());
         args.putInt("id", v.getId());
         args.putInt("viewid", R.layout.activity_create_trip);
 
-
         TimePickerFragment newFragment = new TimePickerFragment();
         newFragment.setArguments(args);
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
-    //show a frame to choose date
+    //Show a frame to choose date
     public void showDatePickerDialog(View v) {
         TextView tf = (TextView) v;
         Bundle args = getDateFromLabel(tf.getText().toString());
@@ -113,19 +118,19 @@ public class CreateTrip extends AppCompatActivity {
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-    //set time on GUI
+    //Set time on GUI
     public void setTime(int id, int h, int m) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(String.format("%02d:%02d", h, m));
     }
 
-    //set date on GUI
+    //Set date on GUI
     public void setDate(int id, int d, int m, int y) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(String.format("%02d-%02d-%04d", m + 1, d, y));
     }
 
-    //Ensures no errors in entering costs
+    //Ensure no errors on entered costs
     public List<Double> checkCost(String cost1, String cost2, String cost3) {
         List<Double> doubleList = new ArrayList<Double>();
 
@@ -228,7 +233,7 @@ public class CreateTrip extends AppCompatActivity {
         error = "";
         refreshErrorMessage();
 
-        //Gets all view variables
+        //Get all view variables
         final EditText cost1_text = (EditText) findViewById(R.id.cost1);
         final EditText cost2_text = (EditText) findViewById(R.id.cost2);
         final EditText cost3_text = (EditText) findViewById(R.id.cost3);
@@ -241,7 +246,7 @@ public class CreateTrip extends AppCompatActivity {
         final TextView starttime_text = (TextView) findViewById(R.id.starttimetv);
         final TextView endtime_text = (TextView) findViewById(R.id.endtimetv);
 
-        //Converts all variables to string
+        //Convert all variables to string
         final String cost1 = cost1_text.getText().toString();
         final String cost2 = cost2_text.getText().toString();
         final String cost3 = cost3_text.getText().toString();
@@ -277,7 +282,7 @@ public class CreateTrip extends AppCompatActivity {
             return;
         }
 
-        //Gets unix time stamp and ensures validity
+        //Get unix time stamp and ensure validity
         long unixStartMilli = getUnixStamp(startdate, starttime);
         if(unixStartMilli == -1) {
             return;
@@ -288,41 +293,45 @@ public class CreateTrip extends AppCompatActivity {
             return;
         }
 
-        //Checks end time after start time
+        //Check end time after start time
         if (checkTimeStamp(unixStartMilli, unixEndMilli) == false) {
             refreshErrorMessage();
             return;
         }
 
-        //Parses double cost list as new string list
+        //Parse double cost list as new string list
         List<String> costStringList = new ArrayList<String>();
         for (Double cost : costList) {
             costStringList.add(String.valueOf(cost));
         }
 
-        //Converts costs and stops into concatenated form that can be handled by database
+        //Convert costs and stops into concatenated form that can be handled by database
         String costStr = ConcatToken.concatenator(costStringList, ";");
         String stopStr = ConcatToken.concatenator(stopList, ";");
 
-        //Gets the unix start and end time in seconds and parses to string
+        //Get the unix start and end time in seconds and parses to string
         String unixStart = String.format("%.0f", Double.valueOf(unixStartMilli/1000));
         String unixEnd = String.format("%.0f", Double.valueOf(unixEndMilli/1000));
 
 
-        //Finds the vehicle id for the driver
+        //Find the vehicle id for the driver
         findDriverPost(costStr, unixStart, unixEnd, startlocation, stopStr);
     }
 
 
-    //First gets vehicle id according to driver, then posts trip
-    public void findDriverPost(String costStr, String unixStart, String unixEnd, String startlocation, String stopStr) {
-        //Creates HTTP params to authorize user according to rest model
+    //First, get vehicle id according to driver
+    //Then, post trip
+    public void findDriverPost(String costStr, String unixStart,
+                               String unixEnd, String startlocation, String stopStr) {
+        //Create HTTP params to authorize user according to rest model
         RequestParams params = new RequestParams();
         params.add("driverusername", eusername);
         params.add("driverpassword", epassword);
 
 
-        //Sends HTTP post method, if successful (response != -1, continues to post trip), else, displays error
+        //Send HTTP post method
+        //if successful (response != -1), continue to post trip
+        //else, display error
         HttpUtils.post("api/vehicle/finddriver", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -359,9 +368,12 @@ public class CreateTrip extends AppCompatActivity {
         });
     }
 
-    //Posts the trip to the server, if successful, returns to main view, if failure, refreshes and displays error
-    public void createTripPost(String costStr, String unixStart, String unixEnd, String startlocation, String stopStr, int vehicleid) {
-        //Creates HTTP params to authorize user according to rest model
+    //Post the trip to the server
+    //if successful, return to main view
+    //if failure, refresh and display error
+    public void createTripPost(String costStr, String unixStart, String unixEnd,
+                               String startlocation, String stopStr, int vehicleid) {
+        //Create HTTP params to authorize user according to rest model
         RequestParams params = new RequestParams();
         params.add("status", "1");
         params.add("cost", costStr);
@@ -373,7 +385,9 @@ public class CreateTrip extends AppCompatActivity {
         params.add("driveruser", eusername);
         params.add("driverpass", epassword);
 
-        //Sends HTTP post method, if successful, continues to post trip), else, displays error
+        //Send HTTP post method
+        //if successful, continue to post trip
+        //else, display error
         HttpUtils.post("api/trip/create", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-
 /**
  * A fragment representing a single myTrip detail screen.
  * This fragment is either contained in a {@link myTripListActivity}
@@ -18,26 +17,19 @@ import android.widget.TextView;
  * on handsets.
  */
 public class myTripDetailFragment extends Fragment {
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
+
+    //The fragment argument representing the item ID of this fragment.
     public static final String ARG_ITEM_ID = "item_id";
 
-    /**
-     * The trip content this fragment is presenting.
-     */
+    // The trip content this fragment presents.
     private myTripContent.TripItem mItem;
     private LayoutInflater inflater;
     private ViewGroup container;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+   //Mandatory empty constructor for the fragment manager to instantiate the
+   // fragment (e.g. upon screen orientation changes).
     public myTripDetailFragment() {
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,7 +62,7 @@ public class myTripDetailFragment extends Fragment {
             //Show the trip content as text in a TextView.
             ((TextView) rootView.findViewById(R.id.mytrip_detail)).setText(mItem.details);
 
-            //This sets the radio button for trip status to the current setting
+            //Set the radio button for trip status to the current setting
             int status = mItem.tripStatus;
             switch (status) {
                 case 0:
@@ -82,13 +74,12 @@ public class myTripDetailFragment extends Fragment {
                 case 2:
                     ((RadioButton) rootView.findViewById(R.id.rb_completed)).setChecked(true);
                     break;
-
             }
         }
         return rootView;
     }
 
-    //Updates the details when resumes view
+    //Update the details when resumes view
     @Override
     public void onResume() {
         super.onResume();

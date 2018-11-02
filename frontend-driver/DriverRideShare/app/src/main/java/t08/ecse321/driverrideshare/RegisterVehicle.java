@@ -38,8 +38,8 @@ public class RegisterVehicle extends AppCompatActivity{
         return error;
     }
 
+    // set the error message
     private void refreshErrorMessage() {
-        // set the error message
         TextView tvError = (TextView) findViewById(R.id.error);
         tvError.setText(error);
 
@@ -54,9 +54,8 @@ public class RegisterVehicle extends AppCompatActivity{
     //When click register vehicle button, will attempt to register
     //If registration successful, will switch to MyTripsActivity.class
     public void registerVehicleButton(View view) {
-        //Creates new intent and gets information from text view
+        //Create new intent and gets information from text view
         // final Intent intent = new Intent(this, MyTripsActivity.class);
-
         error = "";
 
         final EditText vehicle_type_text = (EditText) findViewById(R.id.vehicle_type);
@@ -95,7 +94,6 @@ public class RegisterVehicle extends AppCompatActivity{
             refreshErrorMessage();
             return;
         }
-
 
         if(registerVehiclePost(eusername, epassword, vehicleNbOfSeats, vehicleColour, vehicleModel, vehicleType)) {
             vehicle_type_text.setText("");
@@ -154,7 +152,7 @@ public class RegisterVehicle extends AppCompatActivity{
         params.add("model", model);
         params.add("vehicleType", vehicleType);
 
-        //Sends HTTP post method, if successful (response HTTP 200), switches to UpdateUser view), else, displays error
+        //Send HTTP post method, if successful (response HTTP 200), switches to UpdateUser view), else, displays error
         HttpUtils.post("api/vehicle/create", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -176,11 +174,10 @@ public class RegisterVehicle extends AppCompatActivity{
         return error == "";
     }
 
-    //dispose frame, reitiate home screen GUI
+    //dispose frame, initiate home screen GUI
     public void cancelCreateVehicle(View view) {
         error = "";
         refreshErrorMessage();
         finish();
     }
-
 }
