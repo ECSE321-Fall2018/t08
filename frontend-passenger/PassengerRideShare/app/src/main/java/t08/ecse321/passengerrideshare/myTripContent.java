@@ -104,7 +104,7 @@ public class myTripContent {
 
             String result = startLocation + " to ";
 
-            if (stopList.size() == 0) {
+            if (stopList.get(0).equals("null")) {
                 result += "None";
             } else {
                 int iter = 0;

@@ -105,7 +105,7 @@ public class myTripContent {
             text = text + "Passenger IDs: ";
 
             int iter = 0;
-            if (passengeridlist.size() == 0) {
+            if (passengeridlist.get(0).equals("null")) {
                 text += "None";
             } else {
                 for (String str : passengeridlist) {
