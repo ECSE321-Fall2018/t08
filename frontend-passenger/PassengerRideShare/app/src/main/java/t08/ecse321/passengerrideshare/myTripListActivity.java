@@ -165,7 +165,8 @@ public class myTripListActivity extends AppCompatActivity {
                 error = "Failure: ";
                 Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
                 try {
-                    error +=  "Error retrieving data. Status " + String.valueOf(statusCode); //This case should not happen, may occur if backend server does not create json correctly
+                    // Should not happen, may occur if backend server does not create json correctly
+                    error +=  "Error retrieving data. Status " + String.valueOf(statusCode);
                 }
                  catch (Exception e) {
                     error += e.getMessage();
@@ -194,7 +195,7 @@ public class myTripListActivity extends AppCompatActivity {
                     Bundle arguments = new Bundle();
                     arguments.putString(myTripDetailFragment.ARG_ITEM_ID, String.valueOf(item.tripid));
 
-                    //Adds these extra parameters when goes to detail view
+                    // Add extra parameters when goes to detail view
                     arguments.putString("EXTRA_USERNAME", eusername);
                     arguments.putString("EXTRA_PASSWORD", epassword);
                     myTripDetailFragment fragment = new myTripDetailFragment();
@@ -209,7 +210,7 @@ public class myTripListActivity extends AppCompatActivity {
 
                     arguments.putString(myTripDetailFragment.ARG_ITEM_ID, String.valueOf(item.tripid));
 
-                    //Adds these extra parameters when goes to detail view
+                    //Add extra parameters when goes to detail view
                     arguments.putString("EXTRA_USERNAME", eusername);
                     arguments.putString("EXTRA_PASSWORD", epassword);
                     intent.putExtras(arguments);
@@ -220,8 +221,7 @@ public class myTripListActivity extends AppCompatActivity {
         };
 
         SimpleItemRecyclerViewAdapter(myTripListActivity parent,
-                                      List<myTripContent.TripItem> items,
-                                      boolean twoPane) {
+                                      List<myTripContent.TripItem> items, boolean twoPane) {
             mValues = items;
             mParentActivity = parent;
             mTwoPane = twoPane;
@@ -248,7 +248,7 @@ public class myTripListActivity extends AppCompatActivity {
             return mValues.size();
         }
 
-        class ViewHolder extends RecyclerView.ViewHolder {
+        static class ViewHolder extends RecyclerView.ViewHolder {
             final TextView mIdView;
             final TextView mContentView;
 
