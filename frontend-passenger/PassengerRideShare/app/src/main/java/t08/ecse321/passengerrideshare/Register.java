@@ -45,8 +45,8 @@ public class Register extends AppCompatActivity {
     //When click register button, will attempt to register
     //If registration successful, will switch to MainMenu.class
     public void registerButton(View view) {
-        //Gets information from text view
 
+        //Get information from text view
         final EditText username_text = (EditText) findViewById(R.id.reg_username);
         final EditText password_text = (EditText) findViewById(R.id.reg_password1);
         final EditText confirm_pass_text = (EditText) findViewById(R.id.reg_password2);
@@ -78,8 +78,9 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    //Checks that all registration information correct
-    public boolean checkRegister(String username, String password, String pass_confirm, String fullname, String email) {
+    //Check that all registration information correct
+    public boolean checkRegister(String username, String password, String pass_confirm,
+                                 String fullname, String email) {
         if(username == null
                 || username.equals("")
                 || fullname == null
@@ -94,25 +95,21 @@ public class Register extends AppCompatActivity {
             refreshErrorMessage();
             return false;
         }
-
         if(!password.equals(pass_confirm)) {
             error = "Please make sure passwords match.";
             refreshErrorMessage();
             return false;
         }
-
         if(password.length() < 8) {
             error = "New password should be at least 8 characters.";
             refreshErrorMessage();
             return false;
         }
-
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             error = "Please enter a valid email.";
             refreshErrorMessage();
             return false;
         }
-
         return true;
     }
 
@@ -125,7 +122,7 @@ public class Register extends AppCompatActivity {
         extras.putString("EXTRA_PASSWORD", password);
         intent.putExtras(extras);
 
-        //Creates HTTP params to authorize user according to rest model
+        //Create HTTP params to authorize user according to rest model
         RequestParams params = new RequestParams();
         params.add("username", username);
         params.add("email", email);
@@ -133,7 +130,9 @@ public class Register extends AppCompatActivity {
         params.add("role", ROLE);
         params.add("password", password);
 
-        //Sends HTTP post method, if successful (response HTTP 200), switches to MainMenu view), else, displays error
+        // Send HTTP post method,
+        // if successful (response HTTP 200), switch to MainMenu view,
+        // else, display error
         HttpUtils.post("api/user/create", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

@@ -55,14 +55,13 @@ public class UpdateUser extends AppCompatActivity {
     //When click update user button, will attempt to update user
     //If update user successful, will switch to MainMenu.class
     public void updateButton(View view) {
-        //Gets information from text view
 
+        //Get information from text view
         final EditText email_text = (EditText) findViewById(R.id.up_email);
         final EditText fullname_text = (EditText) findViewById(R.id.up_fullname);
         final EditText curpass_text = (EditText) findViewById(R.id.up_curpass);
         final EditText newpass1_text = (EditText) findViewById(R.id.up_newpass1);
         final EditText newpass2_text = (EditText) findViewById(R.id.up_newpass2);
-
 
         final String email = email_text.getText().toString();
         final String fullname = fullname_text.getText().toString();
@@ -91,26 +90,24 @@ public class UpdateUser extends AppCompatActivity {
         }
     }
 
-    //Checks that all update user information correct, note that fields may be left empty if not updated
+    // Check that all update user information correct,
+    // Note: fields may be left empty if not updated
     public boolean checkUpdateUser(String email, String fullname, String curpass, String newpass1, String newpass2) {
         if(curpass == null || curpass.equals("")) {
             error = "Please enter your current password.";
             refreshErrorMessage();
             return false;
         }
-        
         if (email != null && !email.equals("") && !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             error = "Your new email must be valid.";
             refreshErrorMessage();
             return false;
         }
-
         if(!newpass1.equals(newpass2)) {
             error = "New passwords must match.";
             refreshErrorMessage();
             return false;
         }
-
         if(newpass1 != null && !newpass1.equals("")) {
             if(newpass1.length() < 8) {
                 error = "New password should be at least 8 characters.";
@@ -118,14 +115,13 @@ public class UpdateUser extends AppCompatActivity {
                 return false;
             }
         }
-
         return true;
     }
 
     //Http Post method for update user
     public boolean updatePost(String email, String fullname, String curpass, String newpass1) {
 
-        //Creates HTTP params to authorize user according to rest model
+        //Create HTTP params to authorize user according to rest model
         RequestParams params = new RequestParams();
         params.add("username", eusername);
         if(email!= null && !email.equals("")) {
@@ -139,13 +135,15 @@ public class UpdateUser extends AppCompatActivity {
         }
         params.add("oldpass", curpass);
 
-        //Sends HTTP post method, if successful (response HTTP 200), switches to MainMenu view), else, displays error
+        //Send HTTP post method,
+        // if successful (response HTTP 200), switches to MainMenu view,
+        // else, displays error
         HttpUtils.post("api/user/update", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 error = "";
 
-                //Resets password in intent and returns it for result
+                //Reset password in intent and return it for result
                 Intent newintent = new Intent();
                 newintent.putExtra("EXTRA_PASSWORD", newpass1);
                 setResult(Activity.RESULT_OK, newintent);
@@ -154,7 +152,7 @@ public class UpdateUser extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
                 error = "Failure: ";
-                Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
+                Log.e("MyApp", "Caught error", throwable); //Error logging tool
                 try {
                     error += "Error updating user. Current password may be incorrect.";
                 } catch (Exception e) {

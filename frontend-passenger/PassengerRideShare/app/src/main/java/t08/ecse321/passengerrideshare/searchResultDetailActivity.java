@@ -113,7 +113,6 @@ public class searchResultDetailActivity extends AppCompatActivity {
                 try {
                     error = "";
                     finish();
-
                 } catch(Exception e) {
                     error += e.getMessage();
                 }

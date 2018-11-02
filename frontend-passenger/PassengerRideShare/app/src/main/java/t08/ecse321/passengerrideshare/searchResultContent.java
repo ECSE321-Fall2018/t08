@@ -12,16 +12,11 @@ import java.util.Map;
  */
 public class searchResultContent {
 
-    /**
-     * An array of sample search result items.
-     */
+    //An array of sample search result items.
     public static final List<SearchResultItem> ITEMS = new ArrayList<SearchResultItem>();
 
-    /**
-     * A map of sample search result items, by ID.
-     */
+    //A map of sample search result items, by ID.
     public static final Map<String, SearchResultItem> ITEM_MAP = new HashMap<String, SearchResultItem>();
-
 
     public static void addItem(SearchResultItem item) {
         ITEMS.add(item);
@@ -33,18 +28,16 @@ public class searchResultContent {
         ITEM_MAP.clear();
     }
 
-    /**
-     * A search result item representing a piece of content.
-     */
+    //A search result item representing a piece of content.
     public static class SearchResultItem {
         public final String tripid; //ID MUST BE STRING!!!
 
         public final int tripStatus; // 0 for ongoing, 1 for planned, 2 for completed
-        public final String costPerStop; // Contains all costs per stop, in order, separated by delimiter ';'
+        public final String costPerStop; // Contain all ordered costs per stop, delimited by ';'
         public final long startdate; // Implemented as Unix Time Stamp
         public final long enddate;
         public final String startLocation;
-        public final String stops; // Contains all stops, separated by delimiter ';'
+        public final String stops; // Contain all stops, delimited by ';'
         public final String vehicle_type;
         public final String vehicle_colour;
         public final String vehicle_model;
@@ -52,7 +45,9 @@ public class searchResultContent {
         public final String content; //WHAT WILL BE DISPLAYED ON THE MENU, CAN LATER ADD OTHER STRINGS
         public final String details;
 
-        public SearchResultItem(int tripid, int tripStatus, String costPerStop, long startdate, long enddate, String startLocation, String stops, String vehicle_type, String vehicle_colour, String vehicle_model) {
+        public SearchResultItem(int tripid, int tripStatus, String costPerStop, long startdate,
+                                long enddate, String startLocation, String stops,
+                                String vehicle_type, String vehicle_colour, String vehicle_model) {
             this.tripid = String.valueOf(tripid);
             this.tripStatus = tripStatus;
             this.costPerStop = costPerStop;
@@ -63,11 +58,15 @@ public class searchResultContent {
             this.vehicle_type = vehicle_type;
             this.vehicle_colour = vehicle_colour;
             this.vehicle_model = vehicle_model;
-            this.content = toString(startLocation, stops); //This will be displayed on the menu
-            this.details = createDetails(tripid, tripStatus, costPerStop, startdate, enddate, startLocation, stops, vehicle_type, vehicle_colour, vehicle_model); //This will be displayed in the content
+            this.content = toString(startLocation, stops); //Will be displayed on the menu
+            // this.details will be displayed in the content
+            this.details = createDetails(tripid, tripStatus, costPerStop, startdate,
+                    enddate, startLocation, stops, vehicle_type, vehicle_colour, vehicle_model);
         }
 
-        public String createDetails(int tripid, int tripStatus, String costPerStop, long startdate, long enddate, String startLocation, String stops, String vehicle_type, String vehicle_colour, String vehicle_model) {
+        public String createDetails(int tripid, int tripStatus, String costPerStop, long startdate,
+                                    long enddate, String startLocation, String stops, String vehicle_type,
+                                    String vehicle_colour, String vehicle_model) {
             String tripStatusStr;
             switch(tripStatus) {
                 case 0:

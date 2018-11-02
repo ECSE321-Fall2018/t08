@@ -17,21 +17,15 @@ import android.widget.TextView;
  * on handsets.
  */
 public class myTripDetailFragment extends Fragment {
-    /**
-     * The fragment argument representing the item ID that this fragment
-     * represents.
-     */
+
+    //The fragment argument representing the item ID that this fragment represents.
     public static final String ARG_ITEM_ID = "item_id";
 
-    /**
-     * The trip content this fragment is presenting.
-     */
+    //The trip content this fragment is presenting.
     private myTripContent.TripItem mItem;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+    //Mandatory empty constructor for the fragment manager to instantiate the
+    //fragment (e.g. upon screen orientation changes).
     public myTripDetailFragment() {
     }
 
