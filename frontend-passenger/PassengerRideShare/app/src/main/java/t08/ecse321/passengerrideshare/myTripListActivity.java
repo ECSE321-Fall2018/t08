@@ -248,7 +248,7 @@ public class myTripListActivity extends AppCompatActivity {
             return mValues.size();
         }
 
-        static class ViewHolder extends RecyclerView.ViewHolder {
+        class ViewHolder extends RecyclerView.ViewHolder {
             final TextView mIdView;
             final TextView mContentView;
 

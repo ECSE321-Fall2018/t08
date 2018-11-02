@@ -7,15 +7,31 @@
     tools:context=".UpdateUser"
     tools:layout_editor_absoluteY="81dp">
 
+    <Button
+        android:id="@+id/createVeh"
+        android:layout_width="120dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="6dp"
+        android:background="@drawable/mybutton"
+        android:onClick="createVehicle"
+        android:text="@string/create_vehicle"
+        android:textColor="@android:color/background_light"
+        app:layout_constraintBottom_toTopOf="@+id/button_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_register" />
+
     <EditText
         android:id="@+id/up_newpass2"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginBottom="20dp"
         android:ems="10"
         android:hint="@string/confirm_new_password"
         android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="@+id/up_newpass1"
+        app:layout_constraintBottom_toTopOf="@+id/error"
+        app:layout_constraintEnd_toStartOf="@+id/error"
+        app:layout_constraintStart_toStartOf="@+id/error"
         app:layout_constraintTop_toBottomOf="@+id/up_newpass1" />
 
     <EditText
@@ -70,31 +86,31 @@
 
     <Button
         android:id="@+id/button_register"
-        android:layout_width="118dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="72dp"
-        android:layout_marginBottom="112dp"
+        android:layout_width="120dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="6dp"
         android:background="@drawable/mybutton"
         android:onClick="updateButton"
         android:text="@string/update_user"
         android:textColor="@android:color/background_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/createVeh"
+        app:layout_constraintEnd_toStartOf="@+id/error"
+        app:layout_constraintStart_toStartOf="@+id/error"
+        app:layout_constraintTop_toBottomOf="@+id/error" />
 
     <Button
         android:id="@+id/button_cancel"
         android:layout_width="120dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="112dp"
+        android:layout_marginBottom="6dp"
         android:background="@drawable/mybutton"
         android:onClick="cancelButton"
         android:text="@string/cancelStr"
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button_register"
-        app:layout_constraintHorizontal_bias="0.485"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/createVeh" />
 
     <TextView
         android:id="@+id/error"
