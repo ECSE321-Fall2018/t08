@@ -25,20 +25,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An activity representing a list of myTrips. This activity
- * has different presentations for handset and tablet-size devices. On
- * handsets, the activity presents a list of items, which when touched,
- * lead to a {@link myTripDetailActivity} representing
- * item details. On tablets, the activity presents the list of items and
+ * An activity representing a list of myTrips.
+ * Different presentations for handset and tablet-size devices.
+ * On handsets, the activity presents a list of items when touched,
+ * lead to a {@link myTripDetailActivity} representing item details.
+ * On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
 public class myTripListActivity extends AppCompatActivity {
 
     private String error;
-    /**
-     * Whether or not the activity is in two-pane mode, i.e. running on a tablet
-     * device.
-     */
+    //Whether or not the activity is in two-pane mode, i.e. running on a tablet device.
     private boolean mTwoPane;
     private static String eusername;
     private static String epassword;
@@ -57,15 +54,14 @@ public class myTripListActivity extends AppCompatActivity {
         epassword = intent.getStringExtra("EXTRA_PASSWORD");
 
         if (findViewById(R.id.mytrip_detail_container) != null) {
-            // The detail container view will be present only in the
-            // large-screen layouts (res/values-w900dp).
-            // If this view is present, then the
-            // activity should be in two-pane mode.
+            // Only present in the large-screen layouts (res/values-w900dp).
+            // If this view is present, then the activity should be in two-pane mode.
             mTwoPane = true;
         }
     }
 
-    //This method is called when the activity is brought back to the top of the stack and also after onCreate()
+    //Called when the activity is brought back to the top of the stack
+    //also called after onCreate()
     @Override
     protected void onResume() {
         super.onResume();
@@ -78,7 +74,7 @@ public class myTripListActivity extends AppCompatActivity {
         epassword = intent.getStringExtra("EXTRA_PASSWORD");
         myTripContent.clear();
 
-        //Resets view if information changed (cancelled trip)
+        //Reset view if information changed (cancelled trip)
         List<Integer> intList = receiveUserTrips(eusername, epassword);
         View recyclerView = findViewById(R.id.mytrip_list);
         assert recyclerView != null;
@@ -86,7 +82,7 @@ public class myTripListActivity extends AppCompatActivity {
     }
 
     private boolean populateUserTripsObj(List<Integer> tripsInt) {
-        //Sends HTTP Post to get trip for each trip id that user is on
+        //Send HTTP Post to get trip for each trip id that user is on
         //Will add each trip item to list and reset recycler each time new trip found
         for(Integer el: tripsInt) {
             HttpUtils.get("api/trip/trips/"+el, new RequestParams(), new JsonHttpResponseHandler() {
@@ -101,7 +97,7 @@ public class myTripListActivity extends AppCompatActivity {
                         int status = response.getInt("status");
                         String passengerid = response.getString("passengerid");
 
-                        //creates new TripItem and adds it to map
+                        //Create new TripItem and adds it to map
                         myTripContent.TripItem item = new myTripContent.TripItem(el, status, cost, startdate, enddate, startLoc, stops, passengerid);
                         myTripContent.addItem(item);
 
@@ -132,28 +128,27 @@ public class myTripListActivity extends AppCompatActivity {
         return true;
     }
 
-    //Obtains list of integer trip ids that user is on
+    //Obtain list of integer trip ids "owned" by an user
     public List<Integer> receiveUserTrips(String username, String password) {
         RequestParams params = new RequestParams();
         params.add("username", username);
         params.add("password", password);
 
         ArrayList<Integer> list = new ArrayList<Integer>();
-        //Sends HTTP Post to find trip number of user
+        //Send HTTP Post to find trip number of user
         HttpUtils.post("api/trip/usertrips", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 try {
-
                     JSONArray array = response.optJSONArray("data");
                     if(array == null) {
                         error = "No data.";
                     } else {
                         for(int i = 0; i < array.length(); i++) {
-                            //For each integer, adds it to list
+                            //For each integer, add to list
                             list.add(array.optInt(i));
                         }
-                        //Will call method to now retrieve information for each trip
+                        //Will call method to retrieve each trip's info
                         populateUserTripsObj(list);
                     }
                 } catch(Exception e) {
@@ -166,7 +161,8 @@ public class myTripListActivity extends AppCompatActivity {
                 error = "Failure: ";
                 Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
                 try {
-                    error +=  "Error retrieving data. Status " + String.valueOf(statusCode); //This case should not happen, may occur if backend server does not create json correctly
+                    //Should not happen, may occur if backend server does not create json correctly
+                    error +=  "Error retrieving data. Status " + String.valueOf(statusCode);
                 }
                 catch (Exception e) {
                     error += e.getMessage();
@@ -195,7 +191,7 @@ public class myTripListActivity extends AppCompatActivity {
                     Bundle arguments = new Bundle();
                     arguments.putString(myTripDetailFragment.ARG_ITEM_ID, String.valueOf(item.tripid));
 
-                    //Adds these extra parameters when goes to detail view
+                    //Add extra parameters when in detail view
                     arguments.putString("EXTRA_USERNAME", eusername);
                     arguments.putString("EXTRA_PASSWORD", epassword);
                     myTripDetailFragment fragment = new myTripDetailFragment();
@@ -210,7 +206,7 @@ public class myTripListActivity extends AppCompatActivity {
 
                     arguments.putString(myTripDetailFragment.ARG_ITEM_ID, String.valueOf(item.tripid));
 
-                    //Adds these extra parameters when goes to detail view
+                    //Add extra parameters when in to detail view
                     arguments.putString("EXTRA_USERNAME", eusername);
                     arguments.putString("EXTRA_PASSWORD", epassword);
                     intent.putExtras(arguments);
@@ -221,8 +217,7 @@ public class myTripListActivity extends AppCompatActivity {
         };
 
         SimpleItemRecyclerViewAdapter(myTripListActivity parent,
-                                      List<myTripContent.TripItem> items,
-                                      boolean twoPane) {
+                                      List<myTripContent.TripItem> items, boolean twoPane) {
             mValues = items;
             mParentActivity = parent;
             mTwoPane = twoPane;
@@ -261,8 +256,8 @@ public class myTripListActivity extends AppCompatActivity {
         }
     }
 
+    //Set the error message
     private void refreshErrorMessage() {
-        // set the error message
         TextView tvError = (TextView) findViewById(R.id.error);
         tvError.setText(error);
 
