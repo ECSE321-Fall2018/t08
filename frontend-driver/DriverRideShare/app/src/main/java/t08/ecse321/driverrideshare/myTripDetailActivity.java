@@ -155,10 +155,10 @@ public class myTripDetailActivity extends AppCompatActivity {
 
     //Called when a radio button is clicked --> change the status of the trip
     public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
+        //Check if  button is clicked (checked)
         boolean checked = ((RadioButton) view).isChecked();
 
-        // Check which radio button was clicked
+        //Check which radio button was clicked
         switch(view.getId()) {
             case R.id.rb_plan:
                 if (checked)
@@ -232,9 +232,8 @@ public class myTripDetailActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // set the error message
+    // Set the error message
     private void refreshErrorMessage() {
-
         TextView tvError = (TextView) findViewById(R.id.error);
         tvError.setText(error);
 

@@ -22,7 +22,7 @@ public class MainMenu extends AppCompatActivity {
 
     //When finish onActivityResult, return here
     //If successful, reset password
-    //Currently used for update user
+    //Currently used to update user
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {

@@ -18,10 +18,10 @@ import android.widget.TextView;
  */
 public class myTripDetailFragment extends Fragment {
 
-    //The fragment argument representing the item ID that this fragment represents.
+    //The fragment argument representing the item ID of this fragment.
     public static final String ARG_ITEM_ID = "item_id";
 
-    // The trip content this fragment is presenting.
+    // The trip content this fragment presents.
     private myTripContent.TripItem mItem;
     private LayoutInflater inflater;
     private ViewGroup container;

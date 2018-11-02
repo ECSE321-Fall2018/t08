@@ -422,7 +422,7 @@ public class ModifyTrip extends AppCompatActivity{
         });
     }
 
-    //Return to main page
+    //Show error message and return to main page
     public void cancelButton(View view) {
         error = "";
         refreshErrorMessage();
