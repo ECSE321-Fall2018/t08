@@ -23,6 +23,7 @@ import cz.msebera.android.httpclient.Header;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * An activity representing a list of myTrips. This activity
@@ -88,6 +89,9 @@ public class myTripListActivity extends AppCompatActivity {
     private boolean populateUserTripsObj(List<Integer> tripsInt) {
         //Sends HTTP Post to get trip for each trip id that user is on
         //Will add each trip item to list and reset recycler each time new trip found
+
+        Collections.sort(tripsInt);
+
         for(Integer el: tripsInt) {
             HttpUtils.get("api/trip/trips/"+el, new RequestParams(), new JsonHttpResponseHandler() {
                 @Override
