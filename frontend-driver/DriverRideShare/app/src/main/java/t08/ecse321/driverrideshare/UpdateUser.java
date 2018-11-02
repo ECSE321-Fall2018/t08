@@ -56,13 +56,11 @@ public class UpdateUser extends AppCompatActivity {
     //If update user successful, will switch to MainMenu.class
     public void updateButton(View view) {
         //Gets information from text view
-
         final EditText email_text = (EditText) findViewById(R.id.up_email);
         final EditText fullname_text = (EditText) findViewById(R.id.up_fullname);
         final EditText curpass_text = (EditText) findViewById(R.id.up_curpass);
         final EditText newpass1_text = (EditText) findViewById(R.id.up_newpass1);
         final EditText newpass2_text = (EditText) findViewById(R.id.up_newpass2);
-
 
         final String email = email_text.getText().toString();
         final String fullname = fullname_text.getText().toString();
@@ -91,8 +89,10 @@ public class UpdateUser extends AppCompatActivity {
         }
     }
 
-    //Checks that all update user information correct, note that fields may be left empty if not updated
-    public boolean checkUpdateUser(String email, String fullname, String curpass, String newpass1, String newpass2) {
+    //Check that all update user information correct
+    // note: fields may be left empty if not updated
+    public boolean checkUpdateUser(String email, String fullname,
+                                   String curpass, String newpass1, String newpass2) {
         if(curpass == null || curpass.equals("")) {
             error = "Please enter your current password.";
             refreshErrorMessage();
@@ -138,7 +138,9 @@ public class UpdateUser extends AppCompatActivity {
         }
         params.add("oldpass", curpass);
 
-        //Sends HTTP post method, if successful (response HTTP 200), switches to MainMenu view), else, displays error
+        //Sends HTTP post method
+        // if successful (response HTTP 200), switches to MainMenu view
+        // else, displays error
         HttpUtils.post("api/user/update", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

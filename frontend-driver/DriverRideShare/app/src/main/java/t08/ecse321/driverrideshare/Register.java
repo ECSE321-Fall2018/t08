@@ -19,7 +19,6 @@ public class Register extends AppCompatActivity {
     private String error = null;
     private final String ROLE = "Driver";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,8 +30,8 @@ public class Register extends AppCompatActivity {
         return error;
     }
 
+    // set the error message
     private void refreshErrorMessage() {
-        // set the error message
         TextView tvError = (TextView) findViewById(R.id.error);
         tvError.setText(error);
 
@@ -47,7 +46,6 @@ public class Register extends AppCompatActivity {
     //If registration successful, will switch to MainMenu.class
     public void registerButton(View view) {
         //Gets information from text view
-
         final EditText username_text = (EditText) findViewById(R.id.reg_username);
         final EditText password_text = (EditText) findViewById(R.id.reg_password1);
         final EditText confirm_pass_text = (EditText) findViewById(R.id.reg_password2);
@@ -79,7 +77,7 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    //Checks that all registration information correct
+    //Check that all registration information correct
     public boolean checkRegister(String username, String password, String pass_confirm, String fullname, String email) {
         if(username == null
                 || username.equals("")
@@ -126,7 +124,7 @@ public class Register extends AppCompatActivity {
         extras.putString("EXTRA_PASSWORD", password);
         intent.putExtras(extras);
 
-        //Creates HTTP params to authorize user according to rest model
+        //Create HTTP params to authorize user according to rest model
         RequestParams params = new RequestParams();
         params.add("username", username);
         params.add("email", email);
@@ -134,7 +132,9 @@ public class Register extends AppCompatActivity {
         params.add("role", ROLE);
         params.add("password", password);
 
-        //Sends HTTP post method, if successful (response HTTP 200), switches to MainMenu view), else, displays error
+        //Send HTTP post method
+        // if successful (response HTTP 200), switches to MainMenu view
+        // else, displays error
         HttpUtils.post("api/user/create", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -160,7 +160,7 @@ public class Register extends AppCompatActivity {
         }
     }
 
-    //dispose frame, reinitiate homecreen GUI
+    //dispose frame, initiate home screen GUI
     public void cancelButton(View view) {
         error = "";
         refreshErrorMessage();

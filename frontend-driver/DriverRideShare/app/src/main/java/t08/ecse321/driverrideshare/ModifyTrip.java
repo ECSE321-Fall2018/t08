@@ -45,8 +45,8 @@ public class ModifyTrip extends AppCompatActivity{
         resetView(mItem);
     }
 
+    //Set the error message
     private void refreshErrorMessage() {
-        // set the error message
         TextView tvError = (TextView) findViewById(R.id.error);
         tvError.setText(error);
 
@@ -57,7 +57,10 @@ public class ModifyTrip extends AppCompatActivity{
         }
     }
 
-    //take time from GUI and convert to Bundle with hour and minute
+    /*
+    Obtain time from GUI
+    @return rtn A bundle with hour & minute
+     */
     private Bundle getTimeFromLabel(String text) {
         Bundle rtn = new Bundle();
         String comps[] = text.toString().split(":");
@@ -75,7 +78,10 @@ public class ModifyTrip extends AppCompatActivity{
         return rtn;
     }
 
-    //take time from GUI and convert to Bundle with year, month and date
+    /*
+    Obtain date from GUI
+    @return rtn A bundle with day & month & year
+     */
     private Bundle getDateFromLabel(String text) {
         Bundle rtn = new Bundle();
         String comps[] = text.toString().split("-");
@@ -108,7 +114,7 @@ public class ModifyTrip extends AppCompatActivity{
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
-    //show a frame to select date
+    //Show a frame to select date
     public void showDatePickerDialog(View v) {
         TextView tf = (TextView) v;
         Bundle args = getDateFromLabel(tf.getText().toString());
@@ -120,31 +126,31 @@ public class ModifyTrip extends AppCompatActivity{
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-    //set time on GUI 
+    //sSt time on GUI
     public void setTime(int id, int h, int m) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(String.format("%02d:%02d", h, m));
     }
 
-    //set date on GUI
+    //Set date on GUI
     public void setDate(int id, int d, int m, int y) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(String.format("%02d-%02d-%04d", m + 1, d, y));
     }
 
-    //set time on GUI gien a string
+    //Set time on GUI given a string
     public void setTime(int id, String label) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(label);
     }
 
-    //set date on GUI gien a string
+    //Set date on GUI given a string
     public void setDate(int id, String label) {
         TextView tv = (TextView) findViewById(id);
         tv.setText(label);
     }
 
-    //Ensures no errors in entering costs
+    //Ensure no errors in entering costs
     public List<Double> checkCost(String cost1, String cost2, String cost3) {
         List<Double> doubleList = new ArrayList<Double>();
 
@@ -180,7 +186,7 @@ public class ModifyTrip extends AppCompatActivity{
         return doubleList;
     }
 
-    //Ensures no errors in entering stops
+    //Ensure no errors in entering stops
     public List<String> checkStop(String stop1, String stop2, String stop3) {
         List<String> stopList = new ArrayList<String>();
 
@@ -201,7 +207,7 @@ public class ModifyTrip extends AppCompatActivity{
         return stopList;
     }
 
-    //Ensures each stop has a cost
+    //Ensure each stop has a cost
     public boolean checkCostStopLists(List<String> stopList, List<Double> costList) {
         if(stopList.size() == costList.size()) {
             return true;
@@ -210,7 +216,7 @@ public class ModifyTrip extends AppCompatActivity{
         return false;
     }
 
-    //Returns unix time stamp in milliseconds
+    //Return unix time stamp in milliseconds
     public long getUnixStamp(String date, String time) {
         SimpleDateFormat datetimeFormat = new SimpleDateFormat("MM-dd-yyyy HH:mm");
         datetimeFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -233,7 +239,7 @@ public class ModifyTrip extends AppCompatActivity{
     }
 
     public void resetView(myTripContent.TripItem item) {
-        //Checks number of costs and sets view accordingly
+        //Check number of costs and set view accordingly
         List<String> costList = ConcatToken.tokenizer(item.costPerStop, ";");
         switch(costList.size()) {
             case 0:
@@ -252,7 +258,7 @@ public class ModifyTrip extends AppCompatActivity{
                 break;
 
         }
-        //Checks number of stops and sets view accordingly
+        //Check number of stops and set view accordingly
         List<String> stopList = ConcatToken.tokenizer(item.stops, ";");
         switch(stopList.size()) {
             case 0:
@@ -269,12 +275,10 @@ public class ModifyTrip extends AppCompatActivity{
                 ((EditText)findViewById(R.id.stop2)).setText(stopList.get(1));
                 ((EditText)findViewById(R.id.stop3)).setText(stopList.get(2));
                 break;
-
         }
         ((EditText)findViewById(R.id.startlocation)).setText(item.startLocation);
 
-
-        //Sets the labels to the start date and time
+        //Set the labels to start date and time
         java.util.Date startDate=new java.util.Date(item.startdate*1000);
         java.util.Date endDate=new java.util.Date(item.enddate*1000);
 
@@ -294,7 +298,7 @@ public class ModifyTrip extends AppCompatActivity{
         error = "";
         refreshErrorMessage();
 
-        //Gets all view variables
+        //Get all view variables
         final EditText cost1_text = (EditText) findViewById(R.id.cost1);
         final EditText cost2_text = (EditText) findViewById(R.id.cost2);
         final EditText cost3_text = (EditText) findViewById(R.id.cost3);
@@ -307,7 +311,7 @@ public class ModifyTrip extends AppCompatActivity{
         final TextView starttime_text = (TextView) findViewById(R.id.starttimetv);
         final TextView endtime_text = (TextView) findViewById(R.id.endtimetv);
 
-        //Converts all variables to string
+        //Convert all variables to string
         final String cost1 = cost1_text.getText().toString();
         final String cost2 = cost2_text.getText().toString();
         final String cost3 = cost3_text.getText().toString();
@@ -343,7 +347,7 @@ public class ModifyTrip extends AppCompatActivity{
             return;
         }
 
-        //Gets unix time stamp and ensures validity
+        //Get unix time stamp and ensure validity
         long unixStartMilli = getUnixStamp(startdate, starttime);
         if(unixStartMilli == -1) {
             return;
@@ -354,34 +358,36 @@ public class ModifyTrip extends AppCompatActivity{
             return;
         }
 
-        //Checks end time after start time
+        //Check end time after start time
         if (checkTimeStamp(unixStartMilli, unixEndMilli) == false) {
             refreshErrorMessage();
             return;
         }
 
-        //Parses double cost list as new string list
+        //Parse double cost list as new string list
         List<String> costStringList = new ArrayList<String>();
         for (Double cost : costList) {
             costStringList.add(String.valueOf(cost));
         }
 
-        //Converts costs and stops into concatenated form that can be handled by database
+        //Convert costs & stops into concatenated form to be handled by database
         String costStr = ConcatToken.concatenator(costStringList, ";");
         String stopStr = ConcatToken.concatenator(stopList, ";");
 
-        //Gets the unix start and end time in seconds and parses to string
+        //Get the unix start and end time in seconds and parse to string
         String unixStart = String.format("%.0f", Double.valueOf(unixStartMilli/1000));
         String unixEnd = String.format("%.0f", Double.valueOf(unixEndMilli/1000));
 
-
-        //Posts the modified trip
+        //Post the modified trip
         modifyTripPost(costStr, unixStart, unixEnd, startlocation, stopStr, unixStartMilli/1000, unixEndMilli/1000);
     }
 
-    //Posts the modified trip to the server, if successful, returns to main view, if failure, refreshes and displays error
-    public void modifyTripPost(String costStr, String unixStart, String unixEnd, String startlocation, String stopStr, long unixStartLo, long unixEndLo) {
-        //Creates HTTP params to authorize user according to rest model
+    //Post the modified trip to the server,
+    // if successful, returns to main view,
+    // if failure, refreshes and displays error
+    public void modifyTripPost(String costStr, String unixStart, String unixEnd,
+                               String startlocation, String stopStr, long unixStartLo, long unixEndLo) {
+        //Create HTTP params to authorize user according to rest model
         RequestParams params = new RequestParams();
         params.add("tripid", tripid);
         params.add("cost", costStr);
@@ -392,11 +398,14 @@ public class ModifyTrip extends AppCompatActivity{
         params.add("driveruser", eusername);
         params.add("driverpass", epassword);
 
-        //Sends HTTP post method, if successful (response != -1, continues to modify trip), else, displays error
+        //Send HTTP post method,
+        // if successful (response != -1), continue to modify trip
+        // else, display error
         HttpUtils.post("api/trip/modify", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                myTripContent.TripItem newItem = new myTripContent.TripItem(Integer.valueOf(tripid), mItem.tripStatus, costStr, unixStartLo, unixEndLo, startlocation, stopStr, mItem.passengerid);
+                myTripContent.TripItem newItem = new myTripContent.TripItem(Integer.valueOf(tripid),
+                        mItem.tripStatus, costStr, unixStartLo, unixEndLo, startlocation, stopStr, mItem.passengerid);
                 myTripContent.ITEM_MAP.remove(tripid);
                 myTripContent.addItem(newItem);
                 error = "";
@@ -406,14 +415,14 @@ public class ModifyTrip extends AppCompatActivity{
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
                 error = "Failure: Unable to create trip.";
-                Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
+                Log.e("MyApp", "Caught error", throwable); //Error logging helper
                 refreshErrorMessage();
                 resetView(mItem);
             }
         });
     }
 
-    //dispose frame return to initial GUI
+    //Show error message and return to main page
     public void cancelButton(View view) {
         error = "";
         refreshErrorMessage();

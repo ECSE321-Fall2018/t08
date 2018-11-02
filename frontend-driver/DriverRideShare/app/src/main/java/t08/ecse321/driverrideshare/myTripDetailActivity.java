@@ -21,10 +21,10 @@ import org.json.JSONObject;
 import cz.msebera.android.httpclient.Header;
 
 /**
- * An activity representing a single myTrip detail screen. This
- * activity is only used on narrow width devices. On tablet-size devices,
- * item details are presented side-by-side with a list of items
- * in a {@link myTripListActivity}.
+ * An activity representing a single myTrip detail screen.
+ * Only used on narrow width devices (ie. phone).
+ * On tablet-size devices, item details are presented
+ * side-by-side with a list of items in a {@link myTripListActivity}.
  */
 public class myTripDetailActivity extends AppCompatActivity {
 
@@ -81,9 +81,10 @@ public class myTripDetailActivity extends AppCompatActivity {
         setDetails();
     }
 
+    // Create the detail fragment,
+    // add it to the activity using a fragment transaction.
     public void setDetails() {
-        // Create the detail fragment and add it to the activity
-        // using a fragment transaction.
+
         Bundle arguments = new Bundle();
         arguments.putString(myTripDetailFragment.ARG_ITEM_ID,
                 getIntent().getStringExtra(myTripDetailFragment.ARG_ITEM_ID));
@@ -118,14 +119,14 @@ public class myTripDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
     public void cancelTrip(String username, String password, String tripid) {
         RequestParams params = new RequestParams();
         params.add("tripid", tripid);
         params.add("username", username);
         params.add("password", password);
 
-        //If cancel trip successful, want to return to main page (with finish()) and reload list
+        //If cancel trip successful,
+        // return to main page (with finish()) and reload list
         HttpUtils.post("api/trip/cancel", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -141,7 +142,7 @@ public class myTripDetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
                 error = "Failure: ";
-                Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
+                Log.e("MyApp", "Caught error", throwable); //Error logging helper
                 try {
                     error = json.getString("data");
                 } catch (JSONException e1) {
@@ -152,12 +153,12 @@ public class myTripDetailActivity extends AppCompatActivity {
         });
     }
 
-    //This is called when a radio button is clicked, it changes the status of the trip
+    //Called when a radio button is clicked --> change the status of the trip
     public void onRadioButtonClicked(View view) {
-        // Is the button now checked?
+        //Check if  button is clicked (checked)
         boolean checked = ((RadioButton) view).isChecked();
 
-        // Check which radio button was clicked
+        //Check which radio button was clicked
         switch(view.getId()) {
             case R.id.rb_plan:
                 if (checked)
@@ -174,7 +175,7 @@ public class myTripDetailActivity extends AppCompatActivity {
         }
     }
 
-    //Method to change the status of the trip
+    //Change the status of the trip
     public void postStatus(int status, String username, String password, String tripid) {
         RequestParams params = new RequestParams();
         params.add("tripstatus", String.valueOf(status));
@@ -182,8 +183,8 @@ public class myTripDetailActivity extends AppCompatActivity {
         params.add("username", username);
         params.add("password", password);
 
-        //If change trip status successful, want to temporarily update TripItem in myTripContent
-        //After returning to main page, it will do a true reload and get info from the server
+        //If change trip status successful, temporarily update TripItem in myTripContent
+        //After returning to main page, will do a true reload and get info from the server
         HttpUtils.post("api/trip/status", params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -192,10 +193,12 @@ public class myTripDetailActivity extends AppCompatActivity {
 
                     //Resets Trip Item with new status
                     myTripContent.TripItem tempItem = myTripContent.ITEM_MAP.remove(tripid);
-                    myTripContent.TripItem newItem = new myTripContent.TripItem(Integer.valueOf(tripid), status, tempItem.costPerStop, tempItem.startdate, tempItem.enddate, tempItem.startLocation, tempItem.stops, tempItem.passengerid);
+                    myTripContent.TripItem newItem = new myTripContent.TripItem(Integer.valueOf(tripid),
+                            status, tempItem.costPerStop, tempItem.startdate, tempItem.enddate,
+                            tempItem.startLocation, tempItem.stops, tempItem.passengerid);
                     myTripContent.ITEM_MAP.put(tripid, newItem);
 
-                    //Refreshes details
+                    //Refresh details
                     setDetails();
 
                 } catch(Exception e) {
@@ -206,7 +209,7 @@ public class myTripDetailActivity extends AppCompatActivity {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject json) {
                 error = "Failure: ";
-                Log.e("MyApp", "Caught error", throwable); //This helps us to log our errors
+                Log.e("MyApp", "Caught error", throwable); //Error logging helper
                 try {
                     error = json.getString("data");
                 } catch (JSONException e1) {
@@ -217,7 +220,7 @@ public class myTripDetailActivity extends AppCompatActivity {
         });
     }
 
-    //Opens page modify trip, sets intents
+    //Open Modify Trip page, set intents
     public void modifyTrip(View view) {
         Bundle arguments = new Bundle();
         Intent intent = new Intent(this, ModifyTrip.class);
@@ -229,8 +232,8 @@ public class myTripDetailActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // Set the error message
     private void refreshErrorMessage() {
-        // set the error message
         TextView tvError = (TextView) findViewById(R.id.error);
         tvError.setText(error);
 
