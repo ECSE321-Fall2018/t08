@@ -24,7 +24,7 @@ import java.util.TimeZone;
 import cz.msebera.android.httpclient.Header;
 
 public class SearchTrip extends AppCompatActivity {
-    private String error = null;
+    private String error;
     private String eusername;
     private String epassword;
     private final String initDateTime = "Click to Set";
