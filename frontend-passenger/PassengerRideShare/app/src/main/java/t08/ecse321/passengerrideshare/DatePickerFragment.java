@@ -19,14 +19,6 @@ public class DatePickerFragment extends DialogFragment
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        // Parse the existing time from the arguments
-        Bundle args = getArguments();
-        if (args != null) {
-            year = args.getInt("year");
-            month = args.getInt("month") - 1;
-            day = args.getInt("day");
-        }
-
         // Create a new instance of DatePickerDialog and return it
         return new DatePickerDialog(getActivity(), this, year, month, day);
     }
