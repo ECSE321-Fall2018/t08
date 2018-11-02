@@ -105,12 +105,16 @@ public class myTripContent {
             text = text + "Passenger IDs: ";
 
             int iter = 0;
-            for(String str: passengeridlist) {
-                if(iter != 0) {
-                    text += ", ";
+            if (passengeridlist.size() == 0 || passengeridlist.get(0).equals("null")) {
+                text += "None";
+            } else {
+                for (String str : passengeridlist) {
+                    if (iter != 0) {
+                        text += ", ";
+                    }
+                    text += str;
+                    iter++;
                 }
-                text += str;
-                iter++;
             }
             return text;
         }

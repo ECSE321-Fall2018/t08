@@ -105,13 +105,14 @@ public class myTripContent {
             String result = startLocation + " to ";
 
             int iter = 0;
-            for(String str: stopList) {
-                if(iter != 0) {
+            for (String str : stopList) {
+                if (iter != 0) {
                     result += ", ";
                 }
                 result += str;
                 iter++;
             }
+
             return result;
         }
 
