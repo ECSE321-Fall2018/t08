@@ -104,17 +104,13 @@ public class myTripContent {
 
             String result = startLocation + " to ";
 
-            if (stopList.get(0).equals("null")) {
-                result += "None";
-            } else {
-                int iter = 0;
-                for (String str : stopList) {
-                    if (iter != 0) {
-                        result += ", ";
-                    }
-                    result += str;
-                    iter++;
+            int iter = 0;
+            for (String str : stopList) {
+                if (iter != 0) {
+                    result += ", ";
                 }
+                result += str;
+                iter++;
             }
 
             return result;
