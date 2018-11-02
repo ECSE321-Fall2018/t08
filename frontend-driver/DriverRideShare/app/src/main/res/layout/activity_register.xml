@@ -67,38 +67,43 @@
         app:layout_constraintBottom_toTopOf="@+id/reg_fullname"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <Button
         android:id="@+id/button_register"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginBottom="23dp"
+        android:layout_width="110dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="64dp"
         android:background="@drawable/mybutton"
         android:onClick="registerButton"
         android:text="@string/registerStr"
         android:textColor="@android:color/background_light"
-        app:layout_constraintBottom_toTopOf="@+id/button_cancel"
-        app:layout_constraintStart_toStartOf="@+id/button_cancel"
-        app:layout_constraintTop_toBottomOf="@+id/error" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/button_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginBottom="34dp"
+        android:layout_width="110dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="64dp"
         android:background="@drawable/mybutton"
         android:onClick="cancelButton"
         android:text="@string/cancelStr"
         android:textColor="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button_register"
+        app:layout_constraintHorizontal_bias="0.363"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_register" />
+        app:layout_constraintTop_toTopOf="@+id/button_register"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/error"
-        android:layout_width="wrap_content"
+        android:layout_width="3dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="41dp"
         android:text=""
@@ -106,6 +111,7 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/button_register"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reg_password2" />
 
