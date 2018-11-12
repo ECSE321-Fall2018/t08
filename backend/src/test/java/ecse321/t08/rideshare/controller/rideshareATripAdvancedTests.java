@@ -36,6 +36,7 @@ public class rideshareATripAdvancedTests {
     private static final int TRIP_ID2 = -5;
     private static final int TRIP_ID3 = -10;
     private static final int TRIP_STATUS = 1;
+    private static final int TRIP_STATUS_2 = 2;
     private static final Double MAX_COST = 5.00;
     private static final String COST_PER_STOP = "5.00;8.00";
     private static final long START_DATE = 934238908;
@@ -46,8 +47,10 @@ public class rideshareATripAdvancedTests {
     private static final String TEST_FAKE_STOP = "Vancouver";
     private static final int VEHICLE_ID = -2;
     private static final String PASSENGER_ID = "1;2;3;4";
+    private static final String PASSENGER_ID_2 = "3;4;5;6";
     private static final String NONEXISTING_PASSENGER_ID = "5;6;7;8";
-    private static final int DRIVER_ID = 1;
+    private static final int DRIVER_ID = 21;
+    private static final int DRIVER_ID_2 = 22;
     private static final int NONEXSITING_DRIVER_ID = 5;
     private static final String DRIVER_USERNAME = "drivertest";
     private static final String DRIVER_PASSWORD = "driverpass";
@@ -187,7 +190,7 @@ public class rideshareATripAdvancedTests {
             tripsList.add(trip2);
             tripsList.add(trip3);
             if (user.getRole().equalsIgnoreCase("Driver")) {
-                List<ATrip> flist = tripsList.stream().filter(u -> (u.getDriverid() == 1))
+                List<ATrip> flist = tripsList.stream().filter(u -> (u.getDriverid() == DRIVER_ID))
                     .collect(Collectors.toList());
                 List<Integer> result = new ArrayList<Integer>();
                 for (ATrip i : flist) {
@@ -468,6 +471,163 @@ public class rideshareATripAdvancedTests {
     public void userTripFailure() {
         ResponseEntity<?> result = aTripController.usertrip(ADMIN_USERNAME, ADMIN_PASSWORD);
         assertEquals(HttpStatus.NOT_FOUND, result.getStatusCode());    }
+
+    @Test
+    public void findUserOnTripWithStatus() { //Tests duplicate passenger, duplicate driver on trip with set status
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setDriverid(DRIVER_ID);
+        trip.setPassengerid(PASSENGER_ID);
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(TRIP_STATUS);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setDriverid(DRIVER_ID);
+        trip2.setPassengerid(PASSENGER_ID_2);
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStatus(TRIP_STATUS);
+        trips.add(trip2);
+
+        ATrip trip3 = new ATrip();
+        trip3.setDriverid(DRIVER_ID);
+        trip3.setPassengerid(NONEXISTING_PASSENGER_ID);
+        trip3.setTripid(TRIP_ID3);
+        trip3.setStatus(TRIP_STATUS_2);
+        trips.add(trip3);
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add("1;" + TRIP_ID);
+        result.add("2;" + TRIP_ID);
+        result.add("3;" + TRIP_ID);
+        result.add("4;" + TRIP_ID);
+        result.add(DRIVER_ID + ";" + TRIP_ID);
+        result.add("5;" + TRIP_ID2);
+        result.add("6;" + TRIP_ID2);
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.findUserOnTripWithStatus(TRIP_STATUS, trips);
+
+        assertEquals(result.size(), response.size());
+        for (int i = 0; i < result.size(); i++) {
+            assertEquals(result.get(i), response.get(i));
+        }
+    }
+
+    @Test
+    public void findUserOnTripWithStatus2() {
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setDriverid(DRIVER_ID);
+        trip.setPassengerid(PASSENGER_ID);
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(TRIP_STATUS);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setDriverid(DRIVER_ID);
+        trip2.setPassengerid(PASSENGER_ID_2);
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStatus(TRIP_STATUS_2);
+        trips.add(trip2);
+
+        ATrip trip3 = new ATrip();
+        trip3.setDriverid(DRIVER_ID_2);
+        trip3.setPassengerid(NONEXISTING_PASSENGER_ID);
+        trip3.setTripid(TRIP_ID3);
+        trip3.setStatus(TRIP_STATUS_2);
+        trips.add(trip3);
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add("3;" + TRIP_ID2);
+        result.add("4;" + TRIP_ID2);
+        result.add("5;" + TRIP_ID2);
+        result.add("6;" + TRIP_ID2);
+        result.add(DRIVER_ID + ";" + TRIP_ID2);
+        result.add("7;" + TRIP_ID3);
+        result.add("8;" + TRIP_ID3);
+        result.add(DRIVER_ID_2 + ";" + TRIP_ID3);
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.findUserOnTripWithStatus(TRIP_STATUS_2, trips);
+
+        assertEquals(result.size(), response.size());
+        for (int i = 0; i < result.size(); i++) {
+            assertEquals(result.get(i), response.get(i));
+        }
+    }
+
+    @Test
+    public void findUserOnTripWithStatus3() {
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setDriverid(DRIVER_ID);
+        trip.setPassengerid(PASSENGER_ID);
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(TRIP_STATUS_2);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setDriverid(DRIVER_ID_2);
+        trip2.setPassengerid(PASSENGER_ID);
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStatus(TRIP_STATUS_2);
+        trips.add(trip2);
+
+        ATrip trip3 = new ATrip();
+        trip3.setDriverid(DRIVER_ID_2);
+        trip3.setPassengerid(NONEXISTING_PASSENGER_ID);
+        trip3.setTripid(TRIP_ID3);
+        trip3.setStatus(TRIP_STATUS_2);
+        trips.add(trip3);
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add("1;" + TRIP_ID);
+        result.add("2;" + TRIP_ID);
+        result.add("3;" + TRIP_ID);
+        result.add("4;" + TRIP_ID);
+        result.add(DRIVER_ID + ";" + TRIP_ID);
+        result.add(DRIVER_ID_2 + ";" + TRIP_ID2);
+        result.add("5;" + TRIP_ID3);
+        result.add("6;" + TRIP_ID3);
+        result.add("7;" + TRIP_ID3);
+        result.add("8;" + TRIP_ID3);
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.findUserOnTripWithStatus(TRIP_STATUS_2, trips);
+
+        assertEquals(result.size(), response.size());
+        for (int i = 0; i < result.size(); i++) {
+            assertEquals(result.get(i), response.get(i));
+        }
+    }
+
+    @Test
+    public void findUserOnTripWithStatusFailure() {
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setDriverid(DRIVER_ID);
+        trip.setPassengerid(PASSENGER_ID);
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(TRIP_STATUS);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setDriverid(DRIVER_ID);
+        trip2.setPassengerid(PASSENGER_ID_2);
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStatus(TRIP_STATUS);
+        trips.add(trip2);
+
+        ATrip trip3 = new ATrip();
+        trip3.setDriverid(DRIVER_ID_2);
+        trip3.setPassengerid(NONEXISTING_PASSENGER_ID);
+        trip3.setTripid(TRIP_ID3);
+        trip3.setStatus(TRIP_STATUS);
+        trips.add(trip3);
+
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.findUserOnTripWithStatus(TRIP_STATUS_2, trips);
+
+        assertTrue(response.isEmpty());
+    }
 
     @Test
     public void findTrip() {

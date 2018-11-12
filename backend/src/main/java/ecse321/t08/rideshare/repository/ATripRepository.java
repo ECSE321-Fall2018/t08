@@ -311,6 +311,56 @@ public class ATripRepository {
     }
 
     @Transactional
+    public List<String> usertripstatus(String username, String password, int status) {
+        if(userRep.authorizeUser(username, password, "Administrator") == -1) {
+            return new ArrayList<>();
+        }
+
+        List<ATrip> trips = em.createNamedQuery("ATrip.findAll").getResultList();
+
+        return findUserOnTripWithStatus(status, trips);
+    }
+
+    public List<String> findUserOnTripWithStatus(int status, List<ATrip> trips) {
+
+        List<Integer> userIds = new ArrayList<Integer>();
+        List<String> result = new ArrayList<String>();
+
+        for(ATrip trip: trips) { //Iterates through all trips
+            if(trip.getStatus() == status) {
+                List<String> idlist = rideshareHelper.tokenizer(trip.getPassengerid(), ";"); //Gets list of passenger on trip
+                for (String idPass : idlist) { //Iterates through all passengers on trip
+                    boolean onTrip = false;
+                    for (Integer idRecorded : userIds) { //Iterates through all users already recorded, if passenger is already on list, will not add again
+                        if (idPass.equals(String.valueOf(idRecorded))) {
+                            onTrip = true;
+                        }
+                    }
+
+                    if (!onTrip) {
+                        userIds.add(Integer.parseInt(idPass));
+                        result.add(idPass + ";" + trip.getTripid());
+                    }
+                }
+
+                //Checks to make sure that driver no already on trip
+                boolean onTrip = false;
+                for (Integer idRecorded : userIds) { //Iterates through all users already recorded, if driver is already on list, will not add again
+                    if (trip.getDriverid() == idRecorded) {
+                        onTrip = true;
+                    }
+                }
+
+                if (!onTrip) {
+                    userIds.add(trip.getDriverid());
+                    result.add(trip.getDriverid() + ";" + trip.getTripid());
+                }
+            }
+        }
+        return result;
+    }
+
+    @Transactional
     public List<Integer> findtrip(String startLocation, String stop, long startdate, long enddate, String vehtype, Double maxcost) {
         List<ATrip> trips = em.createNamedQuery("ATrip.findAll").getResultList();
         if(trips != null && !(trips.isEmpty())) {
