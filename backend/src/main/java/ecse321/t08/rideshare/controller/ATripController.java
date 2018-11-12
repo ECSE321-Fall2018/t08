@@ -222,7 +222,22 @@ public class ATripController {
             json.put("data", arr);
             return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         }
+    }
 
+    //Find all users on trip with trip status (status), returns user id list and trip id list
+    @RequestMapping(value = "/usertripstatus", method = RequestMethod.POST)
+    public ResponseEntity<?> usertripstatus(@RequestParam("username") String username,
+                                            @RequestParam("password") String password,
+                                            @RequestParam("status") Integer tripstatus) {
+        List<String> list = repository.usertripstatus(username, password, tripstatus);
+        if(list.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } else {
+            String[] arr = list.stream().toArray(String[]::new);
+            JSONObject json = new JSONObject();
+            json.put("data", arr);
+            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
+        }
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.POST)
