@@ -194,10 +194,12 @@ public class ATripRepository {
                 if(trip.getPassengerid() != null && !(trip.getPassengerid().equals(""))) {
                     ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
                     for (String s : ids) {
-                        User passenger = userRep.getUser(Integer.parseInt(s));
-                        if (passenger != null) {
-                            passenger.setTripnumber(passenger.getTripnumber() - 1);
-                            em.merge(passenger);
+                        if(!s.equals("")) {
+                            User passenger = userRep.getUser(Integer.parseInt(s));
+                            if (passenger != null) {
+                                passenger.setTripnumber(passenger.getTripnumber() - 1);
+                                em.merge(passenger);
+                            }
                         }
                     }
                 }
@@ -330,16 +332,18 @@ public class ATripRepository {
             if(trip.getStatus() == status) {
                 List<String> idlist = rideshareHelper.tokenizer(trip.getPassengerid(), ";"); //Gets list of passenger on trip
                 for (String idPass : idlist) { //Iterates through all passengers on trip
-                    boolean onTrip = false;
-                    for (Integer idRecorded : userIds) { //Iterates through all users already recorded, if passenger is already on list, will not add again
-                        if (idPass.equals(String.valueOf(idRecorded))) {
-                            onTrip = true;
+                    if(!idPass.equals("")) {
+                        boolean onTrip = false;
+                        for (Integer idRecorded : userIds) { //Iterates through all users already recorded, if passenger is already on list, will not add again
+                            if (idPass.equals(String.valueOf(idRecorded))) {
+                                onTrip = true;
+                            }
                         }
-                    }
 
-                    if (!onTrip) {
-                        userIds.add(Integer.parseInt(idPass));
-                        result.add(idPass + ";" + trip.getTripid());
+                        if (!onTrip) {
+                            userIds.add(Integer.parseInt(idPass));
+                            result.add(idPass + ";" + trip.getTripid());
+                        }
                     }
                 }
 
