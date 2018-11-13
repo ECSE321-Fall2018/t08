@@ -365,6 +365,22 @@ public class ATripRepository {
     }
 
     @Transactional
+    public List<Integer> findtripstatus(String username, String password, int status) {
+        if(userRep.authorizeUser(username, password, "Administrator") == -1) {
+            return new ArrayList<>();
+        }
+
+        List<ATrip> trips = em.createNamedQuery("ATrip.findAll").getResultList();
+
+        return findTripWithStatus(status, trips);
+    }
+
+    public List<Integer> findTripWithStatus(int status, List<ATrip> trips) {
+        return trips.stream().filter(trip -> trip.getStatus() == status)
+                .map(trip -> trip.getTripid()).collect(Collectors.toList());
+    }
+
+    @Transactional
     public List<Integer> findtrip(String startLocation, String stop, long startdate, long enddate, String vehtype, Double maxcost) {
         List<ATrip> trips = em.createNamedQuery("ATrip.findAll").getResultList();
         if(trips != null && !(trips.isEmpty())) {
