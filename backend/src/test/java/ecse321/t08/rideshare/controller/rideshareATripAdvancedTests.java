@@ -630,6 +630,78 @@ public class rideshareATripAdvancedTests {
     }
 
     @Test
+    public void findUserOnTripWithStatusFailure2() {
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setDriverid(DRIVER_ID);
+        trip.setPassengerid("");
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(TRIP_STATUS);
+        trips.add(trip);
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add(DRIVER_ID + ";" + TRIP_ID);
+
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.findUserOnTripWithStatus(TRIP_STATUS, trips);
+
+        assertEquals(result.size(), response.size());
+        for (int i = 0; i < result.size(); i++) {
+            assertEquals(result.get(i), response.get(i));
+        }
+    }
+
+    @Test
+    public void findTripStatus() {
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(TRIP_STATUS);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStatus(TRIP_STATUS);
+        trips.add(trip2);
+
+        ATrip trip3 = new ATrip();
+        trip3.setTripid(TRIP_ID3);
+        trip3.setStatus(TRIP_STATUS_2);
+        trips.add(trip3);
+
+        List<Integer> result = new ArrayList<Integer>();
+        result.add(TRIP_ID);
+        result.add(TRIP_ID2);
+
+        ATripRepository repo = new ATripRepository();
+        List<Integer> response = repo.findTripWithStatus(TRIP_STATUS, trips);
+
+        assertEquals(response.size(), result.size());
+        for (int i = 0; i < result.size(); i++) {
+            assertEquals(result.get(i), response.get(i));
+        }
+    }
+
+    @Test
+    public void findTripStatusFailure() {
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(TRIP_STATUS);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStatus(TRIP_STATUS);
+        trips.add(trip2);
+
+        ATripRepository repo = new ATripRepository();
+        List<Integer> response = repo.findTripWithStatus(TRIP_STATUS_2, trips);
+
+        assertTrue(response.isEmpty());
+    }
+
+    @Test
     public void findTrip() {
         ResponseEntity<?>  result = aTripController.findTrip(
             START_LOCATION, 

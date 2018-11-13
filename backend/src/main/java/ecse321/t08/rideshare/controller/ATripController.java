@@ -240,6 +240,22 @@ public class ATripController {
         }
     }
 
+    //Returns all trip ids of trips with the trip status (status)
+    @RequestMapping(value = "/findtripstatus", method = RequestMethod.POST)
+    public ResponseEntity<?> findtripstatus(@RequestParam("username") String username,
+                                            @RequestParam("password") String password,
+                                            @RequestParam("status") Integer tripstatus) {
+        List<Integer> list = repository.findtripstatus(username, password, tripstatus);
+        if(list.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } else {
+            int[] arr = list.stream().mapToInt(Integer::intValue).toArray();
+            JSONObject json = new JSONObject();
+            json.put("data", arr);
+            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
+        }
+    }
+
     @RequestMapping(value = "/find", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> findTrip(
