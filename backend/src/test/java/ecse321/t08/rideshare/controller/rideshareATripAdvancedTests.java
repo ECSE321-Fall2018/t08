@@ -702,6 +702,214 @@ public class rideshareATripAdvancedTests {
     }
 
     @Test
+    public void userRanking() { //Tests duplicate passenger, duplicate driver on trip with set status
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setDriverid(DRIVER_ID);
+        trip.setPassengerid(PASSENGER_ID);
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(2);
+        trip.setStartdate(1);
+        trip.setEnddate(10);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setDriverid(DRIVER_ID);
+        trip2.setPassengerid(PASSENGER_ID_2);
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStatus(2);
+        trip2.setStartdate(1);
+        trip2.setEnddate(10);
+        trips.add(trip2);
+
+        ATrip trip3 = new ATrip();
+        trip3.setDriverid(DRIVER_ID);
+        trip3.setPassengerid(NONEXISTING_PASSENGER_ID);
+        trip3.setTripid(TRIP_ID3);
+        trip3.setStatus(1);
+        trip3.setStartdate(2);
+        trip3.setEnddate(9);
+        trips.add(trip3);
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add("1;" + 1);
+        result.add("2;" + 1);
+        result.add("3;" + 2);
+        result.add("4;" + 2);
+        result.add("5;" + 1);
+        result.add(DRIVER_ID + ";" + 2);
+        result.add("6;" + 1);
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.getUserRankings(0, 10, trips);
+
+        assertEquals(result.size(), response.size());
+        for (int i = 0; i < result.size(); i++) {
+            assertTrue(response.contains(result.get(i)));
+        }
+    }
+
+    @Test
+    public void userRanking2() { //Tests duplicate passenger, duplicate driver on trip with set status
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setDriverid(DRIVER_ID);
+        trip.setPassengerid(PASSENGER_ID);
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(2);
+        trip.setStartdate(1);
+        trip.setEnddate(10);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setDriverid(DRIVER_ID);
+        trip2.setPassengerid(PASSENGER_ID_2);
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStatus(2);
+        trip2.setStartdate(-1);
+        trip2.setEnddate(9);
+        trips.add(trip2);
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add("1;" + 1);
+        result.add("2;" + 1);
+        result.add("3;" + 1);
+        result.add("4;" + 1);
+        result.add(DRIVER_ID + ";" + 1);
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.getUserRankings(0, 10, trips);
+
+        assertEquals(result.size(), response.size());
+        for (int i = 0; i < result.size(); i++) {
+            assertTrue(response.contains(result.get(i)));
+        }
+    }
+
+    @Test
+    public void userRanking3() { //Tests duplicate passenger, duplicate driver on trip with set status
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setDriverid(DRIVER_ID);
+        trip.setPassengerid(PASSENGER_ID);
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(2);
+        trip.setStartdate(1);
+        trip.setEnddate(10);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setDriverid(DRIVER_ID);
+        trip2.setPassengerid(PASSENGER_ID_2);
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStatus(2);
+        trip2.setStartdate(2);
+        trip2.setEnddate(11);
+        trips.add(trip2);
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add("1;" + 1);
+        result.add("2;" + 1);
+        result.add("3;" + 1);
+        result.add("4;" + 1);
+        result.add(DRIVER_ID + ";" + 1);
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.getUserRankings(0, 10, trips);
+
+        assertEquals(result.size(), response.size());
+        for (int i = 0; i < result.size(); i++) {
+            assertTrue(response.contains(result.get(i)));
+        }
+    }
+
+    @Test
+    public void userRanking4() { //Tests duplicate passenger, duplicate driver on trip with set status
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setDriverid(DRIVER_ID);
+        trip.setPassengerid(PASSENGER_ID);
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(2);
+        trip.setStartdate(1);
+        trip.setEnddate(9);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setDriverid(DRIVER_ID_2);
+        trip2.setPassengerid(PASSENGER_ID);
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStatus(2);
+        trip2.setStartdate(1);
+        trip2.setEnddate(9);
+        trips.add(trip2);
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add("1;" + 2);
+        result.add("2;" + 2);
+        result.add("3;" + 2);
+        result.add("4;" + 2);
+        result.add(DRIVER_ID + ";" + 1);
+        result.add(DRIVER_ID_2 + ";" + 1);
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.getUserRankings(0, 10, trips);
+
+        assertEquals(result.size(), response.size());
+        for (int i = 0; i < result.size(); i++) {
+            assertTrue(response.contains(result.get(i)));
+        }
+    }
+
+    @Test
+    public void userRankingFailure() { //Tests duplicate passenger, duplicate driver on trip with set status
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setDriverid(DRIVER_ID);
+        trip.setPassengerid(PASSENGER_ID);
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(1);
+        trip.setStartdate(4);
+        trip.setEnddate(5);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setDriverid(DRIVER_ID_2);
+        trip2.setPassengerid(PASSENGER_ID);
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStatus(2);
+        trip2.setStartdate(1);
+        trip2.setEnddate(9);
+        trips.add(trip2);
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add("1;" + 2);
+        result.add("2;" + 2);
+        result.add("3;" + 2);
+        result.add("4;" + 2);
+        result.add(DRIVER_ID + ";" + 1);
+        result.add(DRIVER_ID_2 + ";" + 1);
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.getUserRankings(3, 6, trips);
+
+        assertTrue(response.isEmpty());
+    }
+
+    @Test
+    public void userRankingFailure2() { //Tests duplicate passenger, duplicate driver on trip with set status
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setDriverid(DRIVER_ID);
+        trip.setPassengerid("");
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(1);
+        trip.setStartdate(4);
+        trip.setEnddate(5);
+        trips.add(trip);
+
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.getUserRankings(1, 10, trips);
+        
+        assertTrue(response.isEmpty());
+    }
+
+    @Test
     public void findTrip() {
         ResponseEntity<?>  result = aTripController.findTrip(
             START_LOCATION, 

@@ -12,10 +12,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 
-import javax.persistence.EntityManager;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.when;
 
@@ -25,9 +22,6 @@ import static org.mockito.Mockito.when;
 public class rideshareVehicleBasicTests {
     @Mock
     private VehicleRepository vehicleDao;
-
-    @Mock
-    private EntityManager entityManager;
 
     @InjectMocks
     private VehicleController vehicleController;

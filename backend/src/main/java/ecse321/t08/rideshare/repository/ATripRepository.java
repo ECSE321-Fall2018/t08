@@ -12,6 +12,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Repository
@@ -378,6 +379,49 @@ public class ATripRepository {
     public List<Integer> findTripWithStatus(int status, List<ATrip> trips) {
         return trips.stream().filter(trip -> trip.getStatus() == status)
                 .map(trip -> trip.getTripid()).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<String> ranking(String username, String password, long start, long end) {
+        if(userRep.authorizeUser(username, password, "Administrator") == -1) {
+            return new ArrayList<>();
+        }
+
+        List<ATrip> trips = em.createNamedQuery("ATrip.findAll").getResultList();
+
+        return getUserRankings(start, end, trips);
+    }
+
+    public List<String> getUserRankings(long start, long end, List<ATrip> trips) {
+
+        //Gets all trips between start and end date with status completed (2)
+        trips = trips.stream().filter(trip -> trip.getStartdate() >= start && trip.getEnddate() <= end && trip.getStatus() == 2)
+                .collect(Collectors.toList());
+
+        //Adds userids to list
+        List<Integer> userIds = new ArrayList<Integer>();
+        for(ATrip trip: trips) {
+            List<String> idlist = rideshareHelper.tokenizer(trip.getPassengerid(), ";"); //Gets list of passenger on trip
+            for (String idPass : idlist) { //Iterates through all passengers on trip
+                if(!idPass.equals("")) {
+                    userIds.add(Integer.parseInt(idPass));
+                }
+            }
+            userIds.add(trip.getDriverid());
+        }
+
+        //Counts number of user ids and groups by userid, count number
+        Map<Integer, Long> countedUsers = userIds.stream()
+                .collect(Collectors.groupingBy(e->e, Collectors.counting()));
+
+        List<String> result = new ArrayList<String>();
+
+        //Iterates over each map item, formats it and adds it to return list
+        for(Map.Entry<Integer, Long> entry: countedUsers.entrySet()) {
+            result.add(String.valueOf(entry.getKey()) + ";" + String.valueOf(entry.getValue()));
+        }
+
+        return result;
     }
 
     @Transactional

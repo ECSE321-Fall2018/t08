@@ -15,8 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,11 +44,6 @@ public class rideshareUserAdvancedTests {
     private static final String ADMIN_PASSWORD = "adminpass";
     private static final boolean USER_STATUS = false;
 
-    @Mock
-    EntityManager entityManager;
-
-    @Mock
-    Query query;
 
     @Mock
     UserRepository userDao;
