@@ -256,6 +256,24 @@ public class ATripController {
         }
     }
 
+    //Finds ranking of users for all trips between dates, returns list of user ids and number of trips for each
+    //Returns all trip ids of trips with the trip status (status)
+    @RequestMapping(value = "/ranking", method = RequestMethod.POST)
+    public ResponseEntity<?> findtripstatus(@RequestParam("username") String username,
+                                            @RequestParam("password") String password,
+                                            @RequestParam("startdate") Long start,
+                                            @RequestParam("enddate") Long end) {
+        List<String> list = repository.ranking(username, password, start, end);
+        if(list.isEmpty()) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        } else {
+            String[] arr = list.stream().toArray(String[]::new);
+            JSONObject json = new JSONObject();
+            json.put("data", arr);
+            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
+        }
+    }
+
     @RequestMapping(value = "/find", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> findTrip(

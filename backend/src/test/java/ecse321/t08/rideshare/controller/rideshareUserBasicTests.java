@@ -13,9 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import javax.persistence.EntityManager;
-
-
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.when;
@@ -27,9 +24,6 @@ import static org.mockito.Mockito.when;
 public class rideshareUserBasicTests {
     @Mock
     private UserRepository userDao;
-
-    @Mock
-    private EntityManager entityManager;
 
     @InjectMocks
     private UserController userController;
