@@ -43,7 +43,7 @@ public class ATripRepository {
         if (driverId == -1) {
             return null;
         }
-        User user = userRep.getUser(driverId);
+        User user = userRep.getUserUnsecured(driverId);
         if (!(user.getRole().equalsIgnoreCase("Driver"))) {
             return null;
         }
@@ -196,7 +196,7 @@ public class ATripRepository {
                     ArrayList<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
                     for (String s : ids) {
                         if(!s.equals("")) {
-                            User passenger = userRep.getUser(Integer.parseInt(s));
+                            User passenger = userRep.getUserUnsecured(Integer.parseInt(s));
                             if (passenger != null) {
                                 passenger.setTripnumber(passenger.getTripnumber() - 1);
                                 em.merge(passenger);

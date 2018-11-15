@@ -57,7 +57,17 @@ public class UserRepository {
     }
 
     @Transactional
-    public User getUser(int userId) {
+    public User getUser(int userId, String username, String password) {
+        if(authorizeUser(username, password, "Administrator") == -1) {
+            return null;
+        }
+
+        return em.find(User.class, userId);
+    }
+
+    //INTERNAL USAGE ONLY
+    @Transactional
+    public User getUserUnsecured(int userId) {
         return em.find(User.class, userId);
     }
 
@@ -150,6 +160,7 @@ public class UserRepository {
             .collect(Collectors.toList());
     }
 
+    //INTERNAL USAGE ONLY
     @Transactional
     public List<User> findUser(String userName, String emailAddress) {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
@@ -159,6 +170,7 @@ public class UserRepository {
             .collect(Collectors.toList());
     }
 
+    //INTERNAL USAGE ONLY
     @Transactional
     public List<User> findUser(String userName) {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
@@ -167,6 +179,7 @@ public class UserRepository {
             .collect(Collectors.toList());
     }
 
+    //INTERNAL USAGE ONLY
     @Transactional
     public List<User> findUserByEmail(String emailAddress) {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
