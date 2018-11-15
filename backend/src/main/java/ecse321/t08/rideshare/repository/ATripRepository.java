@@ -425,6 +425,47 @@ public class ATripRepository {
     }
 
     @Transactional
+    public List<String> popularroute(String username, String password, long start, long end) {
+        if(userRep.authorizeUser(username, password, "Administrator") == -1) {
+            return new ArrayList<>();
+        }
+
+        List<ATrip> trips = em.createNamedQuery("ATrip.findAll").getResultList();
+
+        return getPopularRoutes(start, end, trips);
+    }
+
+    public List<String> getPopularRoutes(long start, long end, List<ATrip> trips) {
+
+        //Gets all trips between start and end date
+        trips = trips.stream().filter(trip -> trip.getStartdate() >= start && trip.getEnddate() <= end)
+                .collect(Collectors.toList());
+
+        //Adds routes to list
+        List<String> routes = new ArrayList<String>();
+        for(ATrip trip: trips) {
+            List<String> stopList = rideshareHelper.tokenizer(trip.getStops(), ";"); //Gets list of stops on trip
+            for (String stop : stopList) { //Iterates through all stops of trip to generate routes
+                if(!stop.equals("")) {
+                    routes.add(trip.getStartLocation()+ " - " + stop);
+                }
+            }
+        }
+
+        //Counts number of routes and groups by route, count number
+        Map<String, Long> countedTrips = routes.stream()
+                .collect(Collectors.groupingBy(e->e, Collectors.counting()));
+
+        List<String> result = new ArrayList<String>();
+
+        //Iterates over each map item, formats it and adds it to return list
+        for(Map.Entry<String, Long> entry: countedTrips.entrySet()) {
+            result.add(entry.getKey() + ";" + String.valueOf(entry.getValue()));
+        }
+        return result;
+    }
+
+    @Transactional
     public List<Integer> findtrip(String startLocation, String stop, long startdate, long enddate, String vehtype, Double maxcost) {
         List<ATrip> trips = em.createNamedQuery("ATrip.findAll").getResultList();
         if(trips != null && !(trips.isEmpty())) {
