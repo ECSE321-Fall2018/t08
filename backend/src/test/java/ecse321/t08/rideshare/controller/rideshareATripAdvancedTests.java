@@ -283,13 +283,13 @@ public class rideshareATripAdvancedTests {
     @Test
     public void getUnfilteredTripsList() {
         ResponseEntity<?> result = aTripController.getUnfilteredTripsList(ADMIN_USERNAME, ADMIN_PASSWORD);
-        assertEquals(result.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, result.getStatusCode()) ;
     }
 
     @Test
     public void getUnfilteredTripsListUnsuccessful() {
         ResponseEntity<?> result= aTripController.getUnfilteredTripsList(ADMIN_USERNAME, DRIVER_PASSWORD);
-        assertEquals(result.getStatusCode(), HttpStatus.FORBIDDEN);
+        assertEquals(HttpStatus.FORBIDDEN, result.getStatusCode());
     }
 
     @Test
@@ -305,7 +305,7 @@ public class rideshareATripAdvancedTests {
                 DRIVER_PASSWORD
         );
 
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
@@ -321,7 +321,7 @@ public class rideshareATripAdvancedTests {
                 ADMIN_PASSWORD
         );
 
-        assertEquals(response.getStatusCode(), HttpStatus.FORBIDDEN);
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
     }
     @Test
     public void selectTrip() {
@@ -676,7 +676,7 @@ public class rideshareATripAdvancedTests {
         ATripRepository repo = new ATripRepository();
         List<Integer> response = repo.findTripWithStatus(TRIP_STATUS, trips);
 
-        assertEquals(response.size(), result.size());
+        assertEquals(result.size(), response.size());
         for (int i = 0; i < result.size(); i++) {
             assertEquals(result.get(i), response.get(i));
         }

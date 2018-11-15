@@ -163,14 +163,14 @@ public class rideshareUserAdvancedTests {
     public void testAdvancedUserQuery() {
         ResponseEntity<?> response = userController.findUser(ADMIN_USERNAME, ADMIN_PASSWORD, USER_KEY, USER_EMAIL, USER_FULLNAME);
 
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     public void testAdvancedUserQueryNotFound() {
         ResponseEntity<?> response = userController.findUser(ADMIN_USERNAME, ADMIN_PASSWORD, USER_KEY2, USER_EMAIL, USER_FULLNAME);
 
-        assertEquals(response.getStatusCode(), HttpStatus.NOT_FOUND);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
 
     }
 
@@ -185,7 +185,7 @@ public class rideshareUserAdvancedTests {
             USER_PASSWORD
         );
 
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
@@ -199,7 +199,7 @@ public class rideshareUserAdvancedTests {
             USER_PASSWORD
         );
 
-        assertEquals(response.getStatusCode(), HttpStatus.FORBIDDEN);
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
     }
 
     @Test

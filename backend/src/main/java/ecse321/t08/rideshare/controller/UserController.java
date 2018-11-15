@@ -104,8 +104,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-    public ResponseEntity<?> getUser(@PathVariable("id") int id) {
-        User user = repository.getUser(id);
+    public ResponseEntity<?> getUser(@PathVariable("id") int id,
+                                     @RequestParam("adminusername") String adusername,
+                                     @RequestParam("adminpass") String adpass) {
+        User user = repository.getUser(id, adusername, adpass);
         if (user == null) {
             return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
         }

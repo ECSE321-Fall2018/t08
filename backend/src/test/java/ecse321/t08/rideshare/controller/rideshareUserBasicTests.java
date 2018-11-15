@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.when;
 
@@ -33,10 +34,13 @@ public class rideshareUserBasicTests {
     private static final String USER_EMAIL = "testemail@testemail.com";
     private static final String USER_FULLNAME = "testuserfullname";
     private static final int NONEXISTING_USER_ID = -2;
+    private static final String ADMINISTRATOR_USER = "admin";
+    private static final String ADMINISTRATOR_PASSWORD = "password";
+
 
     @Before
     public void setMockOutput() {
-        when(userDao.getUser(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+        when(userDao.getUser(anyInt(), anyString(), anyString())).thenAnswer((InvocationOnMock invocation) -> {
             if (invocation.getArgument(0).equals(USER_ID)) {
                 User user = new User();
                 user.setUserID(USER_ID);
@@ -54,12 +58,12 @@ public class rideshareUserBasicTests {
 
     @Test
     public void testUserSimpleQueryFound() {
-        ResponseEntity<?> response = userController.getUser(USER_ID);
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        ResponseEntity<?> response = userController.getUser(USER_ID, ADMINISTRATOR_USER, ADMINISTRATOR_PASSWORD);
+        assertEquals( HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
     public void testUserQueryNotFound() {
-        assertEquals(userController.getUser(NONEXISTING_USER_ID).getStatusCode(), HttpStatus.NOT_FOUND);
+        assertEquals(HttpStatus.NOT_FOUND, userController.getUser(NONEXISTING_USER_ID, ADMINISTRATOR_USER, ADMINISTRATOR_PASSWORD).getStatusCode());
     }
 }
