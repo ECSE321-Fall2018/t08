@@ -749,7 +749,7 @@ public class rideshareATripAdvancedTests {
     }
 
     @Test
-    public void userRanking2() { //Tests duplicate passenger, duplicate driver on trip with set status
+    public void userRanking2() {
         List<ATrip> trips = new ArrayList<ATrip>();
         ATrip trip = new ATrip();
         trip.setDriverid(DRIVER_ID);
@@ -785,7 +785,7 @@ public class rideshareATripAdvancedTests {
     }
 
     @Test
-    public void userRanking3() { //Tests duplicate passenger, duplicate driver on trip with set status
+    public void userRanking3() {
         List<ATrip> trips = new ArrayList<ATrip>();
         ATrip trip = new ATrip();
         trip.setDriverid(DRIVER_ID);
@@ -821,7 +821,7 @@ public class rideshareATripAdvancedTests {
     }
 
     @Test
-    public void userRanking4() { //Tests duplicate passenger, duplicate driver on trip with set status
+    public void userRanking4() {
         List<ATrip> trips = new ArrayList<ATrip>();
         ATrip trip = new ATrip();
         trip.setDriverid(DRIVER_ID);
@@ -858,7 +858,7 @@ public class rideshareATripAdvancedTests {
     }
 
     @Test
-    public void userRankingFailure() { //Tests duplicate passenger, duplicate driver on trip with set status
+    public void userRankingFailure() {
         List<ATrip> trips = new ArrayList<ATrip>();
         ATrip trip = new ATrip();
         trip.setDriverid(DRIVER_ID);
@@ -905,7 +905,215 @@ public class rideshareATripAdvancedTests {
 
         ATripRepository repo = new ATripRepository();
         List<String> response = repo.getUserRankings(1, 10, trips);
-        
+
+        assertTrue(response.isEmpty());
+    }
+
+    @Test
+    public void routeRanking() {
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setStartLocation(START_LOCATION);
+        trip.setStops(STOPS);
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(2);
+        trip.setStartdate(1);
+        trip.setEnddate(10);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setStartLocation(START_LOCATION);
+        trip2.setStops(TEST_STOP);
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStartdate(1);
+        trip2.setEnddate(10);
+        trips.add(trip2);
+
+        ATrip trip3 = new ATrip();
+        trip3.setStartLocation(START_LOCATION);
+        trip3.setStops(TEST_FAKE_STOP);
+        trip3.setTripid(TRIP_ID3);
+        trip3.setStatus(1);
+        trip3.setStartdate(2);
+        trip3.setEnddate(9);
+        trips.add(trip3);
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add(START_LOCATION + " - Ottawa;2");
+        result.add(START_LOCATION + " - Toronto;1");
+        result.add(START_LOCATION + " - Vancouver;1");
+
+
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.getPopularRoutes(0, 10, trips);
+
+        assertEquals(result.size(), response.size());
+        for (int i = 0; i < result.size(); i++) {
+            assertTrue(response.contains(result.get(i)));
+        }
+    }
+
+    @Test
+    public void routeRanking2() {
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setStartLocation(START_LOCATION);
+        trip.setStops(STOPS);
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(2);
+        trip.setStartdate(1);
+        trip.setEnddate(10);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setStartLocation(START_LOCATION);
+        trip2.setStops(TEST_STOP);
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStartdate(1);
+        trip2.setEnddate(10);
+        trips.add(trip2);
+
+        ATrip trip3 = new ATrip();
+        trip3.setStartLocation(TEST_FAKE_STOP);
+        trip3.setStops(STOPS);
+        trip3.setTripid(TRIP_ID3);
+        trip3.setStatus(1);
+        trip3.setStartdate(2);
+        trip3.setEnddate(9);
+        trips.add(trip3);
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add(START_LOCATION + " - Ottawa;2");
+        result.add(START_LOCATION + " - Toronto;1");
+        result.add(TEST_FAKE_STOP + " - Ottawa;1");
+        result.add(TEST_FAKE_STOP + " - Toronto;1");
+
+
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.getPopularRoutes(0, 10, trips);
+
+        assertEquals(result.size(), response.size());
+        for (int i = 0; i < result.size(); i++) {
+            assertTrue(response.contains(result.get(i)));
+        }
+    }
+
+    @Test
+    public void routeRanking3() {
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setStartLocation(START_LOCATION);
+        trip.setStops(STOPS);
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(2);
+        trip.setStartdate(1);
+        trip.setEnddate(10);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setStartLocation(START_LOCATION);
+        trip2.setStops(TEST_STOP);
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStartdate(1);
+        trip2.setEnddate(10);
+        trips.add(trip2);
+
+        ATrip trip3 = new ATrip();
+        trip3.setStartLocation(TEST_FAKE_STOP);
+        trip3.setStops(STOPS);
+        trip3.setTripid(TRIP_ID3);
+        trip3.setStatus(1);
+        trip3.setStartdate(2);
+        trip3.setEnddate(11);
+        trips.add(trip3);
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add(START_LOCATION + " - Ottawa;2");
+        result.add(START_LOCATION + " - Toronto;1");
+
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.getPopularRoutes(0, 10, trips);
+
+        assertEquals(result.size(), response.size());
+        for (int i = 0; i < result.size(); i++) {
+            assertTrue(response.contains(result.get(i)));
+        }
+    }
+
+    @Test
+    public void routeRanking4() {
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setStartLocation(START_LOCATION);
+        trip.setStops(STOPS);
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(2);
+        trip.setStartdate(1);
+        trip.setEnddate(10);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setStartLocation(START_LOCATION);
+        trip2.setStops(STOPS);
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStartdate(1);
+        trip2.setEnddate(10);
+        trips.add(trip2);
+
+        ATrip trip3 = new ATrip();
+        trip3.setStartLocation(TEST_FAKE_STOP);
+        trip3.setStops(STOPS);
+        trip3.setTripid(TRIP_ID3);
+        trip3.setStatus(1);
+        trip3.setStartdate(-1);
+        trip3.setEnddate(9);
+        trips.add(trip3);
+
+        ArrayList<String> result = new ArrayList<String>();
+        result.add(START_LOCATION + " - Ottawa;2");
+        result.add(START_LOCATION + " - Toronto;2");
+
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.getPopularRoutes(0, 10, trips);
+
+        assertEquals(result.size(), response.size());
+        for (int i = 0; i < result.size(); i++) {
+            assertTrue(response.contains(result.get(i)));
+        }
+    }
+
+    @Test
+    public void routeRankingFailure() {
+        List<ATrip> trips = new ArrayList<ATrip>();
+        ATrip trip = new ATrip();
+        trip.setStartLocation(START_LOCATION);
+        trip.setStops(STOPS);
+        trip.setTripid(TRIP_ID);
+        trip.setStatus(2);
+        trip.setStartdate(1);
+        trip.setEnddate(10);
+        trips.add(trip);
+
+        ATrip trip2 = new ATrip();
+        trip2.setStartLocation(START_LOCATION);
+        trip2.setStops("");
+        trip2.setTripid(TRIP_ID2);
+        trip2.setStartdate(1);
+        trip2.setEnddate(10);
+        trips.add(trip2);
+
+        ATrip trip3 = new ATrip();
+        trip3.setStartLocation(TEST_FAKE_STOP);
+        trip3.setStops(STOPS);
+        trip3.setTripid(TRIP_ID3);
+        trip3.setStatus(1);
+        trip3.setStartdate(1);
+        trip3.setEnddate(7);
+        trips.add(trip3);
+
+        ATripRepository repo = new ATripRepository();
+        List<String> response = repo.getPopularRoutes(2, 7, trips);
+
         assertTrue(response.isEmpty());
     }
 
