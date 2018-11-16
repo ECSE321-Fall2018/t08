@@ -1,12 +1,12 @@
 # RideShare
 
-**TravisCI Build Status for Master:** [![Build Status](https://travis-ci.com/ECSE321-Fall2018/t08.svg?token=atEt1SppUvzajjRzBkhC&branch=master)](https://travis-ci.com/ECSE321-Fall2018/t08)
+**TravisCI Build Status for Master Branch:** [![Build Status](https://travis-ci.com/ECSE321-Fall2018/t08.svg?token=atEt1SppUvzajjRzBkhC&branch=master)](https://travis-ci.com/ECSE321-Fall2018/t08)
 
 **Heroku Website:** rideshare08.herokuapp.com
 
-**Heroku dashboard:** heroku.com
+**Heroku Dashboard:** heroku.com
 
-**Our wiki:** https://github.com/ECSE321-Fall2018/t08/wiki
+**Our Wiki:** https://github.com/ECSE321-Fall2018/t08/wiki
 
 ## Main Components
 * Spring Boot Backend (RESTful API)
