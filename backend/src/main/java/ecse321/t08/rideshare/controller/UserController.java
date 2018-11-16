@@ -2,6 +2,7 @@ package ecse321.t08.rideshare.controller;
 
 import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.repository.UserRepository;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,17 +15,18 @@ import java.util.List;
 @RestController
 @RequestMapping("api/user")
 public class UserController {
+
     @Autowired
     UserRepository repository;
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> createUser(
-        @RequestParam("username") String userName,
-        @RequestParam("email") String emailAddress,
-        @RequestParam("fullname") String fullname,
-        @RequestParam("role") String role,
-        @RequestParam("password") String password
+            @RequestParam("username") String userName,
+            @RequestParam("email") String emailAddress,
+            @RequestParam("fullname") String fullname,
+            @RequestParam("role") String role,
+            @RequestParam("password") String password
     ) {
         User user = repository.createUser(userName, emailAddress, fullname, role, password);
         if (user != null) {
@@ -41,12 +43,12 @@ public class UserController {
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> updateUser(
-        @RequestParam("username") String userName,
-        @RequestParam(value = "email", required = false) String emailAddress,
-        @RequestParam(value = "name", required = false) String name,
-        @RequestParam(value = "role", required = false) String role,
-        @RequestParam("oldpass") String oldpassword,
-        @RequestParam(value="newpass", required = false) String newpassword) {
+            @RequestParam("username") String userName,
+            @RequestParam(value = "email", required = false) String emailAddress,
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "role", required = false) String role,
+            @RequestParam("oldpass") String oldpassword,
+            @RequestParam(value="newpass", required = false) String newpassword) {
         if (emailAddress == null) {
             emailAddress = "";
         }
@@ -70,15 +72,14 @@ public class UserController {
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> authenticateUser(
-        @RequestParam("username") String userName,
-        @RequestParam("password") String password
+            @RequestParam("username") String userName,
+            @RequestParam("password") String password
     ) {
         JSONObject json = new JSONObject();
         json.put("data",repository.authenticateUser(userName, password));
         return new ResponseEntity<>(json.toString(), HttpStatus.OK);
     }
 
-    //Returns role
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<?> login(

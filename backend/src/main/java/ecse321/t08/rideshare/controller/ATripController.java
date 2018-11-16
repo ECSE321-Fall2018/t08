@@ -2,7 +2,7 @@ package ecse321.t08.rideshare.controller;
 
 import ecse321.t08.rideshare.entity.ATrip;
 import ecse321.t08.rideshare.repository.ATripRepository;
-import org.json.JSONArray;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/trip")
 public class ATripController {
+
     @Autowired
     ATripRepository repository;
 
@@ -121,7 +122,6 @@ public class ATripController {
         }
     }
 
-    // User selects trip and we record it on ATrip
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     public ResponseEntity<?> selectTrip(
         @RequestParam("tripid") int ATripID,
@@ -141,7 +141,6 @@ public class ATripController {
         }
     }
 
-    // Cancel trip based on ID, if you are a user
     @RequestMapping(value = "/cancel", method = RequestMethod.POST)
     public ResponseEntity<?> cancelATrip(
         @RequestParam("tripid") int ATripID,
@@ -159,7 +158,6 @@ public class ATripController {
             return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         }
     }
-
 
     @RequestMapping(value = "/status", method = RequestMethod.POST)
     public ResponseEntity<?> changeTripStatus(
@@ -180,7 +178,6 @@ public class ATripController {
         }
     }
 
-    //Finds passenger on trip tripid
     @RequestMapping(value = "/passengers", method = RequestMethod.POST)
     public ResponseEntity<?> passengerOnTrip(@RequestParam("tripid") Integer ATripID) {
         List<String> list = repository.findPassengerOnTrip(ATripID);
@@ -194,7 +191,6 @@ public class ATripController {
         }
     }
 
-    //Finds driver on trip tripid
     @RequestMapping(value = "/driver", method = RequestMethod.POST)
     public ResponseEntity<?> driverOnTrip(@RequestParam("tripid") Integer ATripID) {
         int driverid =  repository.findDriverOnTrip(ATripID);
@@ -209,7 +205,6 @@ public class ATripController {
         }
     }
 
-    //Finds all trips associated with user
     @RequestMapping(value = "/usertrips", method = RequestMethod.POST)
     public ResponseEntity<?> usertrip(@RequestParam("username") String username,
                                   @RequestParam("password") String password) {
@@ -224,7 +219,6 @@ public class ATripController {
         }
     }
 
-    //Find all users on trip with trip status (status), returns user id list and trip id list
     @RequestMapping(value = "/usertripstatus", method = RequestMethod.POST)
     public ResponseEntity<?> usertripstatus(@RequestParam("username") String username,
                                             @RequestParam("password") String password,
@@ -240,7 +234,6 @@ public class ATripController {
         }
     }
 
-    //Returns all trip ids of trips with the trip status (status)
     @RequestMapping(value = "/findtripstatus", method = RequestMethod.POST)
     public ResponseEntity<?> findtripstatus(@RequestParam("username") String username,
                                             @RequestParam("password") String password,
@@ -256,7 +249,6 @@ public class ATripController {
         }
     }
 
-    //Finds ranking of users for all trips between dates, returns list of user ids and number of trips for each
     @RequestMapping(value = "/ranking", method = RequestMethod.POST)
     public ResponseEntity<?> findtripstatus(@RequestParam("username") String username,
                                             @RequestParam("password") String password,
@@ -273,7 +265,6 @@ public class ATripController {
         }
     }
 
-    //Finds ranking of routes for all trips between dates, returns list of routes and number for each
     @RequestMapping(value = "/popularroute", method = RequestMethod.POST)
     public ResponseEntity<?> popularroute(@RequestParam("username") String username,
                                             @RequestParam("password") String password,

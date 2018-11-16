@@ -8,6 +8,7 @@ import javax.persistence.*;
     @NamedQuery(name = "Vehicle.findAll", query = "SELECT e FROM Vehicle e")
 })
 public class Vehicle {
+
     private int vehicleId;
     private int nbOfSeats;
     private String colour;

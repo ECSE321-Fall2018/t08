@@ -1,18 +1,19 @@
 package ecse321.t08.rideshare.repository;
 
-import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.entity.Vehicle;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
 public class VehicleRepository {
+
     @PersistenceContext
     EntityManager em;
 
@@ -39,8 +40,6 @@ public class VehicleRepository {
             return null;
         }
 
-
-
         Vehicle aVehicle = new Vehicle();
         aVehicle.setDriverId(driverId);
         aVehicle.setNbOfSeats(nbOfSeats);
@@ -64,10 +63,9 @@ public class VehicleRepository {
             return -1;
         }
         vehList = vehList.stream().filter(u -> u.getDriverId() == driverid)
-            
         .collect(Collectors.toList());
 
-        if (vehList.size() > 1 || vehList.size() < 1) {
+        if (vehList.size() != 1) {
             return -1;
         } else {
             return vehList.get(0).getVehicleId();

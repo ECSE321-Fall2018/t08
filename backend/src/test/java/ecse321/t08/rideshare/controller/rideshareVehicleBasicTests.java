@@ -2,6 +2,7 @@ package ecse321.t08.rideshare.controller;
 
 import ecse321.t08.rideshare.entity.Vehicle;
 import ecse321.t08.rideshare.repository.VehicleRepository;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,10 +17,10 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.when;
 
-
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 public class rideshareVehicleBasicTests {
+
     @Mock
     private VehicleRepository vehicleDao;
 

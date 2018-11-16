@@ -2,6 +2,7 @@ package ecse321.t08.rideshare.controller;
 
 import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.repository.UserRepository;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,10 +20,10 @@ import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.when;
 
 
-
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 public class rideshareUserBasicTests {
+
     @Mock
     private UserRepository userDao;
 
@@ -36,7 +37,6 @@ public class rideshareUserBasicTests {
     private static final int NONEXISTING_USER_ID = -2;
     private static final String ADMINISTRATOR_USER = "admin";
     private static final String ADMINISTRATOR_PASSWORD = "password";
-
 
     @Before
     public void setMockOutput() {

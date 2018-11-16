@@ -2,6 +2,7 @@ package ecse321.t08.rideshare.controller;
 
 import ecse321.t08.rideshare.entity.Vehicle;
 import ecse321.t08.rideshare.repository.VehicleRepository;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/vehicle")
 public class VehicleController {
+
     @Autowired
     VehicleRepository repository;
 

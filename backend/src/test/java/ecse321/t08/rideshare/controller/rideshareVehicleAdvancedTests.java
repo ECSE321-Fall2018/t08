@@ -1,6 +1,7 @@
 package ecse321.t08.rideshare.controller;
 
 import ecse321.t08.rideshare.repository.VehicleRepository;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,18 +21,16 @@ import static org.mockito.Mockito.when;
 @Transactional
 public class rideshareVehicleAdvancedTests {
 
-    private static final int VEHICLE_ID = -3;
-    private static final String USERNAME = "username";
-    private static final String PASSWORD = "password";
-    private static final String NONEXISTING_PASSWORD= "badpassword";
-
-
     @Mock
     VehicleRepository vehicleDao;
 
     @InjectMocks
     VehicleController vehicleController;
 
+    private static final int VEHICLE_ID = -3;
+    private static final String USERNAME = "username";
+    private static final String PASSWORD = "password";
+    private static final String NONEXISTING_PASSWORD= "badpassword";
 
     @Before
     public void setMockOutput() {

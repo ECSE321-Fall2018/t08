@@ -1,8 +1,10 @@
+package ecse321.t08.rideshare.utility;
+
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.SecureRandom;
-import org.apache.commons.codec.binary.Base64;
+import org.apache.tomcat.util.codec.binary.Base64;
 
 public class Crypt {
     // The higher the number of iterations the more 

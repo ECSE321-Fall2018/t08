@@ -1,11 +1,13 @@
 package ecse321.t08.rideshare.repository;
 
 import ecse321.t08.rideshare.entity.User;
+import ecse321.t08.rideshare.utility.Crypt;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Repository
 public class UserRepository {
+
     @PersistenceContext
     EntityManager em;
 
@@ -38,10 +41,6 @@ public class UserRepository {
         if (existingUserName.size() != 0 || existingUserEmail.size() != 0 || password.length() < 8) {
             return null;
         }
-        if(password.length() < 8) {
-            return null;
-        }
-
 
         User user = new User();
         user.setUsername(userName);
@@ -49,7 +48,11 @@ public class UserRepository {
         user.setEmailAddress(emailaddress);
         user.setFullName(fullname);
         user.setRole(role);
-        user.setPassword(password);
+        try {
+            user.setPassword(Crypt.getSaltedHash(password));
+        } catch(Exception e) {
+            return null;
+        }
         user.setTripnumber(0);
 
         em.persist(user);
@@ -65,7 +68,7 @@ public class UserRepository {
         return em.find(User.class, userId);
     }
 
-    //INTERNAL USAGE ONLY
+    //INTERNAL USE ONLY
     @Transactional
     public User getUserUnsecured(int userId) {
         return em.find(User.class, userId);
@@ -80,8 +83,6 @@ public class UserRepository {
         String oldpassword,
         String newpassword
     ) {
-
-
         if (authenticateUser(userName, oldpassword) == -1) {
             return null;
         }
@@ -103,9 +104,20 @@ public class UserRepository {
                 user.setRole(role);
             }
         }
+
+        //Check if newpassword is current password, else sets it
         if(!(newpassword.equals(""))) {
-            if (!(user.getPassword().equalsIgnoreCase(newpassword))) {
-                user.setPassword(newpassword);
+            try {
+                if (!Crypt.check(newpassword, user.getPassword())) {
+                    try {
+                        user.setPassword(Crypt.getSaltedHash(newpassword));
+                    }
+                    catch (Exception e) {
+                        return null;
+                    }
+                }
+            } catch (Exception e) {
+                return null;
             }
         }
         em.merge(user);
@@ -120,15 +132,23 @@ public class UserRepository {
     @Transactional
     public int authorizeUser(String username, String password, String role) {
         List<User> userlist = findUser(username);
-        if (userlist.size() < 1 || userlist.size() > 1) {
+        if (userlist.size() != 1) {
             return -1;
         }
         User user = userlist.get(0);
-        if (user.getPassword().equals(password) && role.equals("")) {
-            return user.getUserID();
+        try {
+            if (Crypt.check(password, user.getPassword()) && role.equals("")) {
+                return user.getUserID();
+            }
+        } catch (Exception e) {
+            return -1;
         }
-        if(user.getPassword().equals(password) && user.getRole().equals(role)) {
-            return user.getUserID();
+        try {
+            if(Crypt.check(password, user.getPassword()) && user.getRole().equals(role)) {
+                return user.getUserID();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return -1;
     }
@@ -136,12 +156,16 @@ public class UserRepository {
     @Transactional
     public String login(String username, String password) {
         List<User> userlist = findUser(username);
-        if (userlist.size() < 1 || userlist.size() > 1) {
+        if (userlist.size() != 1) {
             return "";
         }
         User user = userlist.get(0);
-        if (user.getPassword().equals(password)) {
-            return user.getRole();
+        try {
+            if (Crypt.check(password, user.getPassword())) {
+                return user.getRole();
+            }
+        } catch (Exception e) {
+            return "";
         }
         return "";
     }
@@ -160,7 +184,7 @@ public class UserRepository {
             .collect(Collectors.toList());
     }
 
-    //INTERNAL USAGE ONLY
+    //INTERNAL USE ONLY
     @Transactional
     public List<User> findUser(String userName, String emailAddress) {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
@@ -170,7 +194,7 @@ public class UserRepository {
             .collect(Collectors.toList());
     }
 
-    //INTERNAL USAGE ONLY
+    //INTERNAL USE ONLY
     @Transactional
     public List<User> findUser(String userName) {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
@@ -179,7 +203,7 @@ public class UserRepository {
             .collect(Collectors.toList());
     }
 
-    //INTERNAL USAGE ONLY
+    //INTERNAL USE ONLY
     @Transactional
     public List<User> findUserByEmail(String emailAddress) {
         List<User> userlist = em.createNamedQuery("User.findAll").getResultList();
@@ -190,8 +214,6 @@ public class UserRepository {
 
     @Transactional
     public List getUnfilteredUserList(String username, String password) {
-        List<User> user = findUser(username);
-        // Check if user is admin
         if (authorizeUser(username, password, "Administrator") == -1){
             return new ArrayList<User>();
         }
@@ -200,8 +222,6 @@ public class UserRepository {
 
     @Transactional
     public List getFilteredUserList(String username, String password) {
-        List<User> user = findUser(username);
-        // Check if user is admin
         if (authorizeUser(username, password, "Administrator") == -1) {
             return new ArrayList<User>();
         }
