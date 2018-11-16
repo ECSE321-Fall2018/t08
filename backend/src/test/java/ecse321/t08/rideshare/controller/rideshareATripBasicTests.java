@@ -2,6 +2,7 @@ package ecse321.t08.rideshare.controller;
 
 import ecse321.t08.rideshare.entity.ATrip;
 import ecse321.t08.rideshare.repository.ATripRepository;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,10 +17,10 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
-
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
 public class rideshareATripBasicTests {
+
     @Mock
     private ATripRepository tripDao;
 
@@ -57,7 +58,6 @@ public class rideshareATripBasicTests {
             }
         });
     }
-
 
     @Test
     public void testTripSimpleQueryFound() {

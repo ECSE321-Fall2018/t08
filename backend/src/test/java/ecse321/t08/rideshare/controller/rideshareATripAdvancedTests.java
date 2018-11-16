@@ -5,6 +5,7 @@ import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.entity.Vehicle;
 import ecse321.t08.rideshare.repository.ATripRepository;
 import ecse321.t08.rideshare.utility.rideshareHelper;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -15,14 +16,14 @@ import org.mockito.invocation.InvocationOnMock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static junit.framework.TestCase.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class rideshareATripAdvancedTests {
 
@@ -278,8 +279,6 @@ public class rideshareATripAdvancedTests {
         });
     }
 
-
-
     @Test
     public void getUnfilteredTripsList() {
         ResponseEntity<?> result = aTripController.getUnfilteredTripsList(ADMIN_USERNAME, ADMIN_PASSWORD);
@@ -323,6 +322,7 @@ public class rideshareATripAdvancedTests {
 
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
     }
+
     @Test
     public void selectTrip() {
         JSONObject json = new JSONObject();
@@ -403,12 +403,6 @@ public class rideshareATripAdvancedTests {
     public void passengerOnTrip() {
         ResponseEntity<?> result = aTripController.passengerOnTrip(TRIP_ID);
         assertEquals(HttpStatus.OK, result.getStatusCode());
-
-        /*int iter = 1;
-        for (String s : result) {
-            assertEquals(String.valueOf(iter), result.get(iter - 1));
-            iter++;
-        }*/
     }
 
     @Test

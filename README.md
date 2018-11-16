@@ -16,17 +16,17 @@
   * JUnit and Mockito
 
 * Android Passenger Application
+  * Gradle Build System
   * Multi-Activity Application
   * Includes Master/Detail Flow, DatePickerDialog, TimePickerDialog, etc...
   * Calls backend API endpoints
   * JUnit and Mockito
-  * Gradle Build System
   
 * Android Driver Application
+  * Gradle Build System
   * Multi-Activity Application
   * Includes Master/Detail Flow, DatePickerDialog, TimePickerDialog, etc...
   * Calls backend API endpoints
   * JUnit and Mockito
-  * Gradle Build System
-  
+   
 * TravisCI Build Matrix

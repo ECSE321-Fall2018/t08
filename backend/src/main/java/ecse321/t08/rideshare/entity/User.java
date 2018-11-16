@@ -8,6 +8,7 @@ import javax.persistence.*;
     @NamedQuery(name = "User.findAll", query = "SELECT e FROM User e")
 })
 public class User {
+
     private int userID;
     private String username;
     private boolean isUserActive = false;
@@ -15,7 +16,7 @@ public class User {
     private String fullName;
     private String password;
     private int tripnumber;
-    private String role; // Either Driver, Passenger or Administrator (case-sensitive!)
+    private String role; // Either Driver, Passenger or Administrator
 
     public User() {
     }
@@ -59,7 +60,6 @@ public class User {
     public String getEmailAddress() {
         return this.emailAddress;
     }
-
 
     public void setPassword(String value) {
         this.password = value;

@@ -2,6 +2,7 @@ package ecse321.t08.rideshare.controller;
 
 import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.repository.UserRepository;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -15,20 +16,24 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-
 @RunWith(MockitoJUnitRunner.class)
 @Transactional
 public class rideshareUserAdvancedTests {
-    private static final String findall = "User.findAll";
-    private static final String findUser = "User.findUsername";
+
+    @Mock
+    UserRepository userDao;
+
+    @InjectMocks
+    UserController userController;
 
     private static final String USER_KEY = "username";
     private static final String USER_KEY2 = "username2";
@@ -43,15 +48,6 @@ public class rideshareUserAdvancedTests {
     private static final String ADMIN_USERNAME = "admintest";
     private static final String ADMIN_PASSWORD = "adminpass";
     private static final boolean USER_STATUS = false;
-
-
-    @Mock
-    UserRepository userDao;
-
-    @InjectMocks
-    UserController userController;
-
-    // it looks like you are testing user controller so move the userDao part under ecse321.t08.rideshare.repository
 
     @Before
     public void setMockOutput() {
@@ -171,7 +167,6 @@ public class rideshareUserAdvancedTests {
         ResponseEntity<?> response = userController.findUser(ADMIN_USERNAME, ADMIN_PASSWORD, USER_KEY2, USER_EMAIL, USER_FULLNAME);
 
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
-
     }
 
     @Test
