@@ -4,6 +4,7 @@ import ecse321.t08.rideshare.entity.ATrip;
 import ecse321.t08.rideshare.entity.User;
 import ecse321.t08.rideshare.entity.Vehicle;
 import ecse321.t08.rideshare.repository.ATripRepository;
+import ecse321.t08.rideshare.repository.UserRepository;
 import ecse321.t08.rideshare.utility.rideshareHelper;
 
 import org.json.JSONException;
@@ -32,6 +33,12 @@ public class rideshareATripAdvancedTests {
 
     @InjectMocks
     ATripController aTripController;
+
+    @Mock
+    UserRepository userRep;
+
+    @InjectMocks
+    ATripRepository repo;
 
     private static final int TRIP_ID = -1;
     private static final int TRIP_ID2 = -5;
@@ -277,6 +284,13 @@ public class rideshareATripAdvancedTests {
                 return new ArrayList<Integer>();
             }
         });
+        when(userRep.getUserUnsecured(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+            User user = new User();
+            user.setUserID(invocation.getArgument(0));
+            user.setUsername(PASSENGER_USERNAME);
+            user.setRole("Passenger");
+            return user;
+        });
     }
 
     @Test
@@ -497,7 +511,7 @@ public class rideshareATripAdvancedTests {
         result.add(4);
         result.add(5);
         result.add(6);
-        ATripRepository repo = new ATripRepository();
+
         List<ATripRepository.userTripStatus> response = repo.findUserOnTripWithStatus(TRIP_STATUS, trips, "Passenger");
 
         assertEquals(result.size(), response.size());
@@ -537,7 +551,7 @@ public class rideshareATripAdvancedTests {
         result.add(6);
         result.add(7);
         result.add(8);
-        ATripRepository repo = new ATripRepository();
+
         List<ATripRepository.userTripStatus> response = repo.findUserOnTripWithStatus(TRIP_STATUS_2, trips, "Passenger");
 
         assertEquals(result.size(), response.size());
@@ -579,7 +593,7 @@ public class rideshareATripAdvancedTests {
         result.add(6);
         result.add(7);
         result.add(8);
-        ATripRepository repo = new ATripRepository();
+
         List<ATripRepository.userTripStatus> response = repo.findUserOnTripWithStatus(TRIP_STATUS_2, trips, "Passenger");
 
         assertEquals(result.size(), response.size());
@@ -612,7 +626,7 @@ public class rideshareATripAdvancedTests {
         trip3.setStatus(TRIP_STATUS);
         trips.add(trip3);
 
-        ATripRepository repo = new ATripRepository();
+
         List<ATripRepository.userTripStatus> response = repo.findUserOnTripWithStatus(TRIP_STATUS_2, trips, "Passenger");
 
         assertTrue(response.isEmpty());
@@ -631,7 +645,6 @@ public class rideshareATripAdvancedTests {
         ArrayList<Integer> result = new ArrayList<Integer>();
         result.add(DRIVER_ID);
 
-        ATripRepository repo = new ATripRepository();
         List<ATripRepository.userTripStatus> response = repo.findUserOnTripWithStatus(TRIP_STATUS, trips, "Driver");
 
         assertEquals(result.size(), response.size());
@@ -662,7 +675,6 @@ public class rideshareATripAdvancedTests {
         result.add(TRIP_ID);
         result.add(TRIP_ID2);
 
-        ATripRepository repo = new ATripRepository();
         List<ATrip> response = repo.findTripWithStatus(TRIP_STATUS, trips);
 
         assertEquals(result.size(), response.size());
@@ -684,7 +696,6 @@ public class rideshareATripAdvancedTests {
         trip2.setStatus(TRIP_STATUS);
         trips.add(trip2);
 
-        ATripRepository repo = new ATripRepository();
         List<ATrip> response = repo.findTripWithStatus(TRIP_STATUS_2, trips);
 
         assertTrue(response.isEmpty());
@@ -727,7 +738,7 @@ public class rideshareATripAdvancedTests {
         result.add("4;" + 2);
         result.add("5;" + 1);
         result.add("6;" + 1);
-        ATripRepository repo = new ATripRepository();
+
         List<ATripRepository.userTripRanking> response = repo.getUserRankings(0, 10, trips, "Passenger");
 
         assertEquals(result.size(), response.size());
@@ -759,7 +770,7 @@ public class rideshareATripAdvancedTests {
         result.add("2;" + 1);
         result.add("3;" + 1);
         result.add("4;" + 1);
-        ATripRepository repo = new ATripRepository();
+
         List<ATripRepository.userTripRanking> response = repo.getUserRankings(0, 10, trips, "Passenger");
 
         assertEquals(result.size(), response.size());
@@ -791,7 +802,7 @@ public class rideshareATripAdvancedTests {
         result.add("2;" + 1);
         result.add("3;" + 1);
         result.add("4;" + 1);
-        ATripRepository repo = new ATripRepository();
+
         List<ATripRepository.userTripRanking> response = repo.getUserRankings(0, 10, trips, "Passenger");
 
         assertEquals(result.size(), response.size());
@@ -823,7 +834,7 @@ public class rideshareATripAdvancedTests {
         result.add("2;" + 2);
         result.add("3;" + 2);
         result.add("4;" + 2);
-        ATripRepository repo = new ATripRepository();
+
         List<ATripRepository.userTripRanking> response = repo.getUserRankings(0, 10, trips, "Passenger");
 
         assertEquals(result.size(), response.size());
@@ -853,7 +864,7 @@ public class rideshareATripAdvancedTests {
         ArrayList<String> result = new ArrayList<String>();
         result.add(DRIVER_ID + ";" + 1);
         result.add(DRIVER_ID_2 + ";" + 1);
-        ATripRepository repo = new ATripRepository();
+
         List<ATripRepository.userTripRanking> response = repo.getUserRankings(3, 6, trips, "Driver");
 
         assertTrue(response.isEmpty());
@@ -871,7 +882,6 @@ public class rideshareATripAdvancedTests {
         trip.setEnddate(5);
         trips.add(trip);
 
-        ATripRepository repo = new ATripRepository();
         List<ATripRepository.userTripRanking> response = repo.getUserRankings(1, 10, trips, "Passenger");
 
         assertTrue(response.isEmpty());
@@ -911,8 +921,6 @@ public class rideshareATripAdvancedTests {
         result.add(START_LOCATION + " - Toronto;1");
         result.add(START_LOCATION + " - Vancouver;1");
 
-
-        ATripRepository repo = new ATripRepository();
         List<String> response = repo.getPopularRoutes(0, 10, trips);
 
         assertEquals(result.size(), response.size());
@@ -956,8 +964,6 @@ public class rideshareATripAdvancedTests {
         result.add(TEST_FAKE_STOP + " - Ottawa;1");
         result.add(TEST_FAKE_STOP + " - Toronto;1");
 
-
-        ATripRepository repo = new ATripRepository();
         List<String> response = repo.getPopularRoutes(0, 10, trips);
 
         assertEquals(result.size(), response.size());
@@ -999,7 +1005,6 @@ public class rideshareATripAdvancedTests {
         result.add(START_LOCATION + " - Ottawa;2");
         result.add(START_LOCATION + " - Toronto;1");
 
-        ATripRepository repo = new ATripRepository();
         List<String> response = repo.getPopularRoutes(0, 10, trips);
 
         assertEquals(result.size(), response.size());
@@ -1041,7 +1046,6 @@ public class rideshareATripAdvancedTests {
         result.add(START_LOCATION + " - Ottawa;2");
         result.add(START_LOCATION + " - Toronto;2");
 
-        ATripRepository repo = new ATripRepository();
         List<String> response = repo.getPopularRoutes(0, 10, trips);
 
         assertEquals(result.size(), response.size());
@@ -1079,7 +1083,6 @@ public class rideshareATripAdvancedTests {
         trip3.setEnddate(7);
         trips.add(trip3);
 
-        ATripRepository repo = new ATripRepository();
         List<String> response = repo.getPopularRoutes(2, 7, trips);
 
         assertTrue(response.isEmpty());
