@@ -3,7 +3,6 @@ package ecse321.t08.rideshare.controller;
 import ecse321.t08.rideshare.entity.ATrip;
 import ecse321.t08.rideshare.repository.ATripRepository;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -229,8 +228,7 @@ public class ATripController {
         if(list.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
-            JSONArray json = new JSONArray(list);
-            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
+            return new ResponseEntity<>(list, HttpStatus.OK);
         }
     }
 
@@ -242,8 +240,7 @@ public class ATripController {
         if(list.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
-            JSONArray json = new JSONArray(list);
-            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
+            return new ResponseEntity<>(list, HttpStatus.OK);
         }
     }
 
@@ -257,8 +254,7 @@ public class ATripController {
         if(list.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
-            JSONArray json = new JSONArray(list);
-            return new ResponseEntity<>(json.toString(), HttpStatus.OK);
+            return new ResponseEntity<>(list, HttpStatus.OK);
         }
     }
 
