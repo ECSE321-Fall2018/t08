@@ -378,6 +378,7 @@ public class ATripRepository {
                     }
 
                     if (!onTrip) {
+                        userIds.add(trip.getDriverid());
                         User user = userRep.getUserUnsecured(trip.getDriverid());
                         if(user != null) {
                             result.add(new userTripStatus(user.getUserID(), user.getUsername(), user.getRole(), trip.getStartLocation(), trip.getStops(), trip.getTripid()));
