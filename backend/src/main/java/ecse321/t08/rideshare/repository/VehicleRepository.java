@@ -20,6 +20,8 @@ public class VehicleRepository {
     @Autowired
     UserRepository userRep;
 
+    private final String DRIVER_ROLE = "Driver";
+
     @Transactional
     public Vehicle createVehicle(
         String driverUserName, 
@@ -29,7 +31,7 @@ public class VehicleRepository {
         String model, 
         String vehicleType
     ) {
-        int driverId = userRep.authorizeUser(driverUserName, driverPassword, "Driver");
+        int driverId = userRep.authorizeUser(driverUserName, driverPassword, DRIVER_ROLE);
         if (driverId == -1) {
             return null;
         }
@@ -58,7 +60,7 @@ public class VehicleRepository {
     @Transactional
     public int findVehicleForDriver(String username, String password) {
         List<Vehicle> vehList = em.createNamedQuery("Vehicle.findAll").getResultList();
-        int driverid = userRep.authorizeUser(username, password, "Driver");
+        int driverid = userRep.authorizeUser(username, password, DRIVER_ROLE);
         if(driverid == -1) {
             return -1;
         }

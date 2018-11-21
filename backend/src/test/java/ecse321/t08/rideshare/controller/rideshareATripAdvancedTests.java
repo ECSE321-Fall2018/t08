@@ -490,20 +490,19 @@ public class rideshareATripAdvancedTests {
         trip3.setStatus(TRIP_STATUS_2);
         trips.add(trip3);
 
-        ArrayList<String> result = new ArrayList<String>();
-        result.add("1;" + TRIP_ID);
-        result.add("2;" + TRIP_ID);
-        result.add("3;" + TRIP_ID);
-        result.add("4;" + TRIP_ID);
-        result.add(DRIVER_ID + ";" + TRIP_ID);
-        result.add("5;" + TRIP_ID2);
-        result.add("6;" + TRIP_ID2);
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        result.add(1);
+        result.add(2);
+        result.add(3);
+        result.add(4);
+        result.add(5);
+        result.add(6);
         ATripRepository repo = new ATripRepository();
-        List<String> response = repo.findUserOnTripWithStatus(TRIP_STATUS, trips);
+        List<ATripRepository.userTripStatus> response = repo.findUserOnTripWithStatus(TRIP_STATUS, trips, "Passenger");
 
         assertEquals(result.size(), response.size());
         for (int i = 0; i < result.size(); i++) {
-            assertEquals(result.get(i), response.get(i));
+            assertEquals(result.get(i), new Integer(response.get(i).userid));
         }
     }
 
@@ -531,21 +530,19 @@ public class rideshareATripAdvancedTests {
         trip3.setStatus(TRIP_STATUS_2);
         trips.add(trip3);
 
-        ArrayList<String> result = new ArrayList<String>();
-        result.add("3;" + TRIP_ID2);
-        result.add("4;" + TRIP_ID2);
-        result.add("5;" + TRIP_ID2);
-        result.add("6;" + TRIP_ID2);
-        result.add(DRIVER_ID + ";" + TRIP_ID2);
-        result.add("7;" + TRIP_ID3);
-        result.add("8;" + TRIP_ID3);
-        result.add(DRIVER_ID_2 + ";" + TRIP_ID3);
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        result.add(3);
+        result.add(4);
+        result.add(5);
+        result.add(6);
+        result.add(7);
+        result.add(8);
         ATripRepository repo = new ATripRepository();
-        List<String> response = repo.findUserOnTripWithStatus(TRIP_STATUS_2, trips);
+        List<ATripRepository.userTripStatus> response = repo.findUserOnTripWithStatus(TRIP_STATUS_2, trips, "Passenger");
 
         assertEquals(result.size(), response.size());
         for (int i = 0; i < result.size(); i++) {
-            assertEquals(result.get(i), response.get(i));
+            assertEquals(result.get(i), new Integer(response.get(i).userid));
         }
     }
 
@@ -573,23 +570,21 @@ public class rideshareATripAdvancedTests {
         trip3.setStatus(TRIP_STATUS_2);
         trips.add(trip3);
 
-        ArrayList<String> result = new ArrayList<String>();
-        result.add("1;" + TRIP_ID);
-        result.add("2;" + TRIP_ID);
-        result.add("3;" + TRIP_ID);
-        result.add("4;" + TRIP_ID);
-        result.add(DRIVER_ID + ";" + TRIP_ID);
-        result.add(DRIVER_ID_2 + ";" + TRIP_ID2);
-        result.add("5;" + TRIP_ID3);
-        result.add("6;" + TRIP_ID3);
-        result.add("7;" + TRIP_ID3);
-        result.add("8;" + TRIP_ID3);
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        result.add(1);
+        result.add(2);
+        result.add(3);
+        result.add(4);
+        result.add(5);
+        result.add(6);
+        result.add(7);
+        result.add(8);
         ATripRepository repo = new ATripRepository();
-        List<String> response = repo.findUserOnTripWithStatus(TRIP_STATUS_2, trips);
+        List<ATripRepository.userTripStatus> response = repo.findUserOnTripWithStatus(TRIP_STATUS_2, trips, "Passenger");
 
         assertEquals(result.size(), response.size());
         for (int i = 0; i < result.size(); i++) {
-            assertEquals(result.get(i), response.get(i));
+            assertEquals(result.get(i), new Integer(response.get(i).userid));
         }
     }
 
@@ -618,7 +613,7 @@ public class rideshareATripAdvancedTests {
         trips.add(trip3);
 
         ATripRepository repo = new ATripRepository();
-        List<String> response = repo.findUserOnTripWithStatus(TRIP_STATUS_2, trips);
+        List<ATripRepository.userTripStatus> response = repo.findUserOnTripWithStatus(TRIP_STATUS_2, trips, "Passenger");
 
         assertTrue(response.isEmpty());
     }
@@ -633,15 +628,15 @@ public class rideshareATripAdvancedTests {
         trip.setStatus(TRIP_STATUS);
         trips.add(trip);
 
-        ArrayList<String> result = new ArrayList<String>();
-        result.add(DRIVER_ID + ";" + TRIP_ID);
+        ArrayList<Integer> result = new ArrayList<Integer>();
+        result.add(DRIVER_ID);
 
         ATripRepository repo = new ATripRepository();
-        List<String> response = repo.findUserOnTripWithStatus(TRIP_STATUS, trips);
+        List<ATripRepository.userTripStatus> response = repo.findUserOnTripWithStatus(TRIP_STATUS, trips, "Driver");
 
         assertEquals(result.size(), response.size());
         for (int i = 0; i < result.size(); i++) {
-            assertEquals(result.get(i), response.get(i));
+            assertEquals(result.get(i), new Integer(response.get(i).userid));
         }
     }
 
@@ -668,11 +663,11 @@ public class rideshareATripAdvancedTests {
         result.add(TRIP_ID2);
 
         ATripRepository repo = new ATripRepository();
-        List<Integer> response = repo.findTripWithStatus(TRIP_STATUS, trips);
+        List<ATrip> response = repo.findTripWithStatus(TRIP_STATUS, trips);
 
         assertEquals(result.size(), response.size());
         for (int i = 0; i < result.size(); i++) {
-            assertEquals(result.get(i), response.get(i));
+            assertEquals(result.get(i), new Integer(response.get(i).getTripid()));
         }
     }
 
@@ -690,7 +685,7 @@ public class rideshareATripAdvancedTests {
         trips.add(trip2);
 
         ATripRepository repo = new ATripRepository();
-        List<Integer> response = repo.findTripWithStatus(TRIP_STATUS_2, trips);
+        List<ATrip> response = repo.findTripWithStatus(TRIP_STATUS_2, trips);
 
         assertTrue(response.isEmpty());
     }
@@ -731,15 +726,11 @@ public class rideshareATripAdvancedTests {
         result.add("3;" + 2);
         result.add("4;" + 2);
         result.add("5;" + 1);
-        result.add(DRIVER_ID + ";" + 2);
         result.add("6;" + 1);
         ATripRepository repo = new ATripRepository();
-        List<String> response = repo.getUserRankings(0, 10, trips);
+        List<ATripRepository.userTripRanking> response = repo.getUserRankings(0, 10, trips, "Passenger");
 
         assertEquals(result.size(), response.size());
-        for (int i = 0; i < result.size(); i++) {
-            assertTrue(response.contains(result.get(i)));
-        }
     }
 
     @Test
@@ -768,14 +759,10 @@ public class rideshareATripAdvancedTests {
         result.add("2;" + 1);
         result.add("3;" + 1);
         result.add("4;" + 1);
-        result.add(DRIVER_ID + ";" + 1);
         ATripRepository repo = new ATripRepository();
-        List<String> response = repo.getUserRankings(0, 10, trips);
+        List<ATripRepository.userTripRanking> response = repo.getUserRankings(0, 10, trips, "Passenger");
 
         assertEquals(result.size(), response.size());
-        for (int i = 0; i < result.size(); i++) {
-            assertTrue(response.contains(result.get(i)));
-        }
     }
 
     @Test
@@ -804,14 +791,10 @@ public class rideshareATripAdvancedTests {
         result.add("2;" + 1);
         result.add("3;" + 1);
         result.add("4;" + 1);
-        result.add(DRIVER_ID + ";" + 1);
         ATripRepository repo = new ATripRepository();
-        List<String> response = repo.getUserRankings(0, 10, trips);
+        List<ATripRepository.userTripRanking> response = repo.getUserRankings(0, 10, trips, "Passenger");
 
         assertEquals(result.size(), response.size());
-        for (int i = 0; i < result.size(); i++) {
-            assertTrue(response.contains(result.get(i)));
-        }
     }
 
     @Test
@@ -840,15 +823,10 @@ public class rideshareATripAdvancedTests {
         result.add("2;" + 2);
         result.add("3;" + 2);
         result.add("4;" + 2);
-        result.add(DRIVER_ID + ";" + 1);
-        result.add(DRIVER_ID_2 + ";" + 1);
         ATripRepository repo = new ATripRepository();
-        List<String> response = repo.getUserRankings(0, 10, trips);
+        List<ATripRepository.userTripRanking> response = repo.getUserRankings(0, 10, trips, "Passenger");
 
         assertEquals(result.size(), response.size());
-        for (int i = 0; i < result.size(); i++) {
-            assertTrue(response.contains(result.get(i)));
-        }
     }
 
     @Test
@@ -873,14 +851,10 @@ public class rideshareATripAdvancedTests {
         trips.add(trip2);
 
         ArrayList<String> result = new ArrayList<String>();
-        result.add("1;" + 2);
-        result.add("2;" + 2);
-        result.add("3;" + 2);
-        result.add("4;" + 2);
         result.add(DRIVER_ID + ";" + 1);
         result.add(DRIVER_ID_2 + ";" + 1);
         ATripRepository repo = new ATripRepository();
-        List<String> response = repo.getUserRankings(3, 6, trips);
+        List<ATripRepository.userTripRanking> response = repo.getUserRankings(3, 6, trips, "Driver");
 
         assertTrue(response.isEmpty());
     }
@@ -898,7 +872,7 @@ public class rideshareATripAdvancedTests {
         trips.add(trip);
 
         ATripRepository repo = new ATripRepository();
-        List<String> response = repo.getUserRankings(1, 10, trips);
+        List<ATripRepository.userTripRanking> response = repo.getUserRankings(1, 10, trips, "Passenger");
 
         assertTrue(response.isEmpty());
     }

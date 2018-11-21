@@ -3,6 +3,7 @@ package ecse321.t08.rideshare.controller;
 import ecse321.t08.rideshare.entity.ATrip;
 import ecse321.t08.rideshare.repository.ATripRepository;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -222,14 +223,13 @@ public class ATripController {
     @RequestMapping(value = "/usertripstatus", method = RequestMethod.POST)
     public ResponseEntity<?> usertripstatus(@RequestParam("username") String username,
                                             @RequestParam("password") String password,
-                                            @RequestParam("status") Integer tripstatus) {
-        List<String> list = repository.usertripstatus(username, password, tripstatus);
+                                            @RequestParam("status") Integer tripstatus,
+                                            @RequestParam("role") String userrole) {
+        List<ATripRepository.userTripStatus> list = repository.usertripstatus(username, password, tripstatus, userrole);
         if(list.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
-            String[] arr = list.stream().toArray(String[]::new);
-            JSONObject json = new JSONObject();
-            json.put("data", arr);
+            JSONArray json = new JSONArray(list);
             return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         }
     }
@@ -238,29 +238,26 @@ public class ATripController {
     public ResponseEntity<?> findtripstatus(@RequestParam("username") String username,
                                             @RequestParam("password") String password,
                                             @RequestParam("status") Integer tripstatus) {
-        List<Integer> list = repository.findtripstatus(username, password, tripstatus);
+        List<ATrip> list = repository.findtripstatus(username, password, tripstatus);
         if(list.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
-            int[] arr = list.stream().mapToInt(Integer::intValue).toArray();
-            JSONObject json = new JSONObject();
-            json.put("data", arr);
+            JSONArray json = new JSONArray(list);
             return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         }
     }
 
     @RequestMapping(value = "/ranking", method = RequestMethod.POST)
-    public ResponseEntity<?> findtripstatus(@RequestParam("username") String username,
+    public ResponseEntity<?> ranking(@RequestParam("username") String username,
                                             @RequestParam("password") String password,
                                             @RequestParam("startdate") Long start,
-                                            @RequestParam("enddate") Long end) {
-        List<String> list = repository.ranking(username, password, start, end);
+                                            @RequestParam("enddate") Long end,
+                                            @RequestParam("role") String userrole ){
+        List<ATripRepository.userTripRanking> list = repository.ranking(username, password, start, end, userrole);
         if(list.isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } else {
-            String[] arr = list.stream().toArray(String[]::new);
-            JSONObject json = new JSONObject();
-            json.put("data", arr);
+            JSONArray json = new JSONArray(list);
             return new ResponseEntity<>(json.toString(), HttpStatus.OK);
         }
     }
