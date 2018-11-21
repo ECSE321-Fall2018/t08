@@ -20,6 +20,8 @@ public class UserRepository {
     @PersistenceContext
     EntityManager em;
 
+    private final String ADMINISTRATOR_ROLE = "Administrator";
+
     @Transactional
     public User createUser(
         String userName,
@@ -172,7 +174,7 @@ public class UserRepository {
 
     @Transactional
     public List<User> findUser(String adminUser, String adminPass, String userName, String emailAddress, String name) {
-        if(authorizeUser(adminUser, adminPass, "Administrator") == -1) {
+        if(authorizeUser(adminUser, adminPass, ADMINISTRATOR_ROLE) == -1) {
             return new ArrayList<>();
         }
 
@@ -214,7 +216,7 @@ public class UserRepository {
 
     @Transactional
     public List getUnfilteredUserList(String username, String password) {
-        if (authorizeUser(username, password, "Administrator") == -1){
+        if (authorizeUser(username, password, ADMINISTRATOR_ROLE) == -1){
             return new ArrayList<User>();
         }
         return em.createNamedQuery("User.findAll").getResultList();
@@ -222,7 +224,7 @@ public class UserRepository {
 
     @Transactional
     public List getFilteredUserList(String username, String password) {
-        if (authorizeUser(username, password, "Administrator") == -1) {
+        if (authorizeUser(username, password, ADMINISTRATOR_ROLE) == -1) {
             return new ArrayList<User>();
         }
         List<User> userli = em.createNamedQuery("User.findAll").getResultList();

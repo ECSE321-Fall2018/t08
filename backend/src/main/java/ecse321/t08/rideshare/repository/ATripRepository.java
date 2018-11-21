@@ -28,6 +28,10 @@ public class ATripRepository {
     @Autowired
     VehicleRepository vehRep;
 
+    private final String PASSENGER_ROLE = "Passenger";
+    private final String DRIVER_ROLE = "Driver";
+    private final String ADMINISTRATOR_ROLE = "Administrator";
+
     @Transactional
     public ATrip createATrip(
         int status,
@@ -46,7 +50,7 @@ public class ATripRepository {
             return null;
         }
         User user = userRep.getUserUnsecured(driverId);
-        if (!(user.getRole().equalsIgnoreCase("Driver"))) {
+        if (!(user.getRole().equalsIgnoreCase(DRIVER_ROLE))) {
             return null;
         }
         user.setTripnumber(user.getTripnumber() + 1);
@@ -76,7 +80,7 @@ public class ATripRepository {
             String password
     ) {
 
-        int driverid = userRep.authorizeUser(username, password, "Driver");
+        int driverid = userRep.authorizeUser(username, password, DRIVER_ROLE);
         if (driverid == -1) {
             return null;
         }
@@ -124,7 +128,7 @@ public class ATripRepository {
     // If you are an admin, you get to see all the trips
     @Transactional
     public List getUnfilteredTripsList(String username, String password) {
-        if (userRep.authorizeUser(username, password, "Administrator") == -1 ) {
+        if (userRep.authorizeUser(username, password, ADMINISTRATOR_ROLE) == -1 ) {
             return new ArrayList<User>();
         }
         return em.createNamedQuery("ATrip.findAll").getResultList();
@@ -144,7 +148,7 @@ public class ATripRepository {
             return "Trip does not exist.";
         }
 
-        int userId = userRep.authorizeUser(username, password, "Passenger");
+        int userId = userRep.authorizeUser(username, password, PASSENGER_ROLE);
         if(userId == -1) {
             return "User password incorrect, user must be a passenger.";
         }
@@ -184,7 +188,7 @@ public class ATripRepository {
         User user = userRep.getUserUnsecured(userId);
 
         // If user is driver, delete entire trip
-        if ("Driver".equalsIgnoreCase(user.getRole())) {
+        if (DRIVER_ROLE.equalsIgnoreCase(user.getRole())) {
             if (user.getUserID() == trip.getDriverid()) {
                 user.setTripnumber(user.getTripnumber() - 1);
                 if(trip.getPassengerid() != null && !(trip.getPassengerid().equals(""))) {
@@ -206,7 +210,7 @@ public class ATripRepository {
         }
 
         // Is user is passenger, just remove passenger ID
-        if ("Passenger".equalsIgnoreCase(user.getRole())) {
+        if (PASSENGER_ROLE.equalsIgnoreCase(user.getRole())) {
             if(trip.getPassengerid() != null && !(trip.getPassengerid().equals(""))) {
                 List<String> ids = rideshareHelper.tokenizer(trip.getPassengerid(), ";");
                 List<String> newIds = new ArrayList<String>(ids);
@@ -234,7 +238,7 @@ public class ATripRepository {
             return "Trip does not exist.";
         }
 
-        int userId = userRep.authorizeUser(username, password, "Driver");
+        int userId = userRep.authorizeUser(username, password, DRIVER_ROLE);
         if(userId == -1) {
             return "User password incorrect, user must be a driver.";
         }
@@ -279,7 +283,7 @@ public class ATripRepository {
 
         List<ATrip> trips = em.createNamedQuery("ATrip.findAll").getResultList();
 
-        if (user.getRole().equalsIgnoreCase("Driver")) {
+        if (user.getRole().equalsIgnoreCase(DRIVER_ROLE)) {
             List<ATrip> filteredlist = trips.stream().filter(u -> (u.getDriverid() == user.getUserID()))
                     .collect(Collectors.toList());
             List<Integer> result = new ArrayList<Integer>();
@@ -289,7 +293,7 @@ public class ATripRepository {
             return result;
         }
 
-        if (user.getRole().equalsIgnoreCase("Passenger")) {
+        if (user.getRole().equalsIgnoreCase(PASSENGER_ROLE)) {
             List<Integer> result = new ArrayList<Integer>();
             for (ATrip trip : trips) {
                 if(trip.getPassengerid()!= null && !(trip.getPassengerid().equals(""))) {
@@ -307,51 +311,78 @@ public class ATripRepository {
     }
 
     @Transactional
-    public List<String> usertripstatus(String username, String password, int status) {
-        if(userRep.authorizeUser(username, password, "Administrator") == -1) {
+    public List<userTripStatus> usertripstatus(String username, String password, int status, String role) {
+        if(userRep.authorizeUser(username, password, ADMINISTRATOR_ROLE) == -1) {
             return new ArrayList<>();
         }
 
         List<ATrip> trips = em.createNamedQuery("ATrip.findAll").getResultList();
 
-        return findUserOnTripWithStatus(status, trips);
+        return findUserOnTripWithStatus(status, trips, role);
     }
 
-    public List<String> findUserOnTripWithStatus(int status, List<ATrip> trips) {
+    //Inner class to store and return result of userTripStatus and findUserOnTripWithStatus to generate JSON
+    public class userTripStatus {
+        public userTripStatus(int userid, String username, String role, String startlocation, String stops, int tripid) {
+            this.userid = userid;
+            this.username = username;
+            this.userrole = role;
+            this.startlocation = startlocation;
+            this.stops = stops;
+            this.tripid = tripid;
+        }
+
+        public int userid;
+        public String username;
+        public String userrole;
+        public String startlocation;
+        public String stops;
+        public int tripid;
+    }
+
+    public List<userTripStatus> findUserOnTripWithStatus(int status, List<ATrip> trips, String role) {
 
         List<Integer> userIds = new ArrayList<Integer>();
-        List<String> result = new ArrayList<String>();
+        List<userTripStatus> result = new ArrayList<userTripStatus>();
 
         for(ATrip trip: trips) { //Iterates through all trips
             if(trip.getStatus() == status) {
-                List<String> idlist = rideshareHelper.tokenizer(trip.getPassengerid(), ";"); //Gets list of passenger on trip
-                for (String idPass : idlist) { //Iterates through all passengers on trip
-                    if(!idPass.equals("")) {
-                        boolean onTrip = false;
-                        for (Integer idRecorded : userIds) { //Iterates through all users already recorded, if passenger is already on list, will not add again
-                            if (idPass.equals(String.valueOf(idRecorded))) {
-                                onTrip = true;
+                if(role.equalsIgnoreCase(PASSENGER_ROLE)) {
+                    List<String> idlist = rideshareHelper.tokenizer(trip.getPassengerid(), ";"); //Gets list of passenger on trip
+                    for (String idPass : idlist) { //Iterates through all passengers on trip
+                        if(!idPass.equals("")) {
+                            boolean onTrip = false;
+                            for (Integer idRecorded : userIds) { //Iterates through all users already recorded, if passenger is already on list, will not add again
+                                if (idPass.equals(String.valueOf(idRecorded))) {
+                                    onTrip = true;
+                                }
+                            }
+
+                            if (!onTrip) {
+                                userIds.add(Integer.parseInt(idPass));
+                                User user = userRep.getUserUnsecured(Integer.parseInt(idPass));
+                                if(user != null) {
+                                    result.add(new userTripStatus(user.getUserID(), user.getUsername(), user.getRole(), trip.getStartLocation(), trip.getStops(), trip.getTripid()));
+                                }
                             }
                         }
+                    }
+                } else if (role.equalsIgnoreCase(DRIVER_ROLE)) {
 
-                        if (!onTrip) {
-                            userIds.add(Integer.parseInt(idPass));
-                            result.add(idPass + ";" + trip.getTripid());
+                    //Checks to make sure that driver no already on trip
+                    boolean onTrip = false;
+                    for (Integer idRecorded : userIds) { //Iterates through all users already recorded, if driver is already on list, will not add again
+                        if (trip.getDriverid() == idRecorded) {
+                            onTrip = true;
                         }
                     }
-                }
 
-                //Checks to make sure that driver no already on trip
-                boolean onTrip = false;
-                for (Integer idRecorded : userIds) { //Iterates through all users already recorded, if driver is already on list, will not add again
-                    if (trip.getDriverid() == idRecorded) {
-                        onTrip = true;
+                    if (!onTrip) {
+                        User user = userRep.getUserUnsecured(trip.getDriverid());
+                        if(user != null) {
+                            result.add(new userTripStatus(user.getUserID(), user.getUsername(), user.getRole(), trip.getStartLocation(), trip.getStops(), trip.getTripid()));
+                        }
                     }
-                }
-
-                if (!onTrip) {
-                    userIds.add(trip.getDriverid());
-                    result.add(trip.getDriverid() + ";" + trip.getTripid());
                 }
             }
         }
@@ -359,8 +390,8 @@ public class ATripRepository {
     }
 
     @Transactional
-    public List<Integer> findtripstatus(String username, String password, int status) {
-        if(userRep.authorizeUser(username, password, "Administrator") == -1) {
+    public List<ATrip> findtripstatus(String username, String password, int status) {
+        if(userRep.authorizeUser(username, password, ADMINISTRATOR_ROLE) == -1) {
             return new ArrayList<>();
         }
 
@@ -369,23 +400,38 @@ public class ATripRepository {
         return findTripWithStatus(status, trips);
     }
 
-    public List<Integer> findTripWithStatus(int status, List<ATrip> trips) {
+    public List<ATrip> findTripWithStatus(int status, List<ATrip> trips) {
         return trips.stream().filter(trip -> trip.getStatus() == status)
-                .map(trip -> trip.getTripid()).collect(Collectors.toList());
+                .collect(Collectors.toList());
+    }
+
+    //Inner class to store and return result of ranking and getUserRankings to generate JSON
+    public class userTripRanking {
+        public userTripRanking(int userid, String username, String role, long tripnumber) {
+            this.userid = userid;
+            this.username = username;
+            this.userrole = role;
+            this.tripnumber = tripnumber;
+        }
+
+        public int userid;
+        public String username;
+        public String userrole;
+        public long tripnumber;
     }
 
     @Transactional
-    public List<String> ranking(String username, String password, long start, long end) {
-        if(userRep.authorizeUser(username, password, "Administrator") == -1) {
+    public List<userTripRanking> ranking(String username, String password, long start, long end, String role) {
+        if(userRep.authorizeUser(username, password, ADMINISTRATOR_ROLE) == -1) {
             return new ArrayList<>();
         }
 
         List<ATrip> trips = em.createNamedQuery("ATrip.findAll").getResultList();
 
-        return getUserRankings(start, end, trips);
+        return getUserRankings(start, end, trips, role);
     }
 
-    public List<String> getUserRankings(long start, long end, List<ATrip> trips) {
+    public List<userTripRanking> getUserRankings(long start, long end, List<ATrip> trips, String role) {
 
         //Gets all trips between start and end date with status completed (2)
         trips = trips.stream().filter(trip -> trip.getStartdate() >= start && trip.getEnddate() <= end && trip.getStatus() == 2)
@@ -395,23 +441,29 @@ public class ATripRepository {
         List<Integer> userIds = new ArrayList<Integer>();
         for(ATrip trip: trips) {
             List<String> idlist = rideshareHelper.tokenizer(trip.getPassengerid(), ";"); //Gets list of passenger on trip
-            for (String idPass : idlist) { //Iterates through all passengers on trip
-                if(!idPass.equals("")) {
-                    userIds.add(Integer.parseInt(idPass));
+            if(role.equalsIgnoreCase(PASSENGER_ROLE)) {
+                for (String idPass : idlist) { //Iterates through all passengers on trip
+                    if(!idPass.equals("")) {
+                        userIds.add(Integer.parseInt(idPass));
+                    }
                 }
+            } else if (role.equalsIgnoreCase(DRIVER_ROLE)) {
+                userIds.add(trip.getDriverid());
             }
-            userIds.add(trip.getDriverid());
         }
 
         //Counts number of user ids and groups by userid, count number
         Map<Integer, Long> countedUsers = userIds.stream()
                 .collect(Collectors.groupingBy(e->e, Collectors.counting()));
 
-        List<String> result = new ArrayList<String>();
+        List<userTripRanking> result = new ArrayList<userTripRanking>();
 
         //Iterates over each map item, formats it and adds it to return list
         for(Map.Entry<Integer, Long> entry: countedUsers.entrySet()) {
-            result.add(String.valueOf(entry.getKey()) + ";" + String.valueOf(entry.getValue()));
+            User user = userRep.getUserUnsecured(entry.getKey());
+            if(user != null) {
+                result.add(new userTripRanking(user.getUserID(), user.getUsername(), user.getRole(), entry.getValue()));
+            }
         }
 
         return result;
@@ -419,7 +471,7 @@ public class ATripRepository {
 
     @Transactional
     public List<String> popularroute(String username, String password, long start, long end) {
-        if(userRep.authorizeUser(username, password, "Administrator") == -1) {
+        if(userRep.authorizeUser(username, password, ADMINISTRATOR_ROLE) == -1) {
             return new ArrayList<>();
         }
 
