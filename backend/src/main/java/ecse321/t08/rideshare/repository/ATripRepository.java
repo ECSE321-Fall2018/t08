@@ -460,9 +460,9 @@ public class ATripRepository {
                             userIds.add(Integer.parseInt(idPass));
                         }
                     }
-                } else if (role.equalsIgnoreCase(DRIVER_ROLE)) {
-                    userIds.add(trip.getDriverid());
                 }
+            } else if (role.equalsIgnoreCase(DRIVER_ROLE)) {
+                userIds.add(trip.getDriverid());
             }
         }
 
